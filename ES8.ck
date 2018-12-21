@@ -1,51 +1,57 @@
-public class ES8 {
-    8     => int NUM_OUTPUT_CHANNELS;
-    440.0 => float anchorFrequency;
-    5.0   => float anchorVoltage;
+// ES8.ck
 
-    float voltageMaxs[NUM_OUTPUT_CHANNELS];
-    float voltageMins[NUM_OUTPUT_CHANNELS];
+public class ES8 {
+    8        => int NUM_OUTPUT_CHANNELS;
+    0.072727 => float frequencyScalar;
+    69       => float pitchOffset;
+    5.0      => float pitchVoltageOffset;
+
+    float maxVolts[NUM_OUTPUT_CHANNELS];
+    float minVolts[NUM_OUTPUT_CHANNELS];
 
     [
      -0.015, -0.022, 0.011,  0.012,
      -0.003, -0.014, 0.009, -0.005
-    ] @=> float es8Mins[];
+    ] @=> float es8MinVolts[];
 
     [
      10.06, 10.075, 10.05, 10.02,
      10.07, 10.04,  10.07, 10.01
-    ] @=> float es8Maxs[];
+    ] @=> float es8MaxVolts[];
 
     public void loadConfig() {
         for (0 => int i; i < NUM_OUTPUT_CHANNELS; i++) {
-            setMax(i, es8Maxs[i]);
-            setMin(i, es8Mins[i]);
+            setMaxVolt(i, es8MaxVolts[i]);
+            setMinVolt(i, es8MinVolts[i]);
         }
     }
 
-    public void setMax(int index, float max) {
-        max => voltageMaxs[index];
+    public void setMaxVolt(int index, float maxVolt) {
+        maxVolt => maxVolts[index];
     }
 
-    public void setMin(int index, float min) {
-        min => voltageMins[index];
+    public void setMinVolt(int index, float minVolt) {
+        minVolt => minVolts[index];
     }
 
-    public float getAmplitude(int index, float voltage) {
-        return Std.scalef(voltage, voltageMins[index], voltageMaxs[index], 0.0, 1.0);
+    public void calibratePitch(float pitch, float voltage) {
+        pitch => pitchOffset;
+        voltage => pitchVoltageOffset;
     }
 
-    public float setAnchor(float frequency, float voltage) {
-        frequency => anchorFrequency;
-        voltage => anchorVoltage;
+    public float calibrateFrequency(float frequency, float voltage) {
+        Math.pow(2, voltage)/frequency => float frequencyScalar;
+    }
+
+    public float volt(int index, float voltage) {
+        return Std.scalef(voltage, minVolts[index], maxVolts[index], 0.0, 1.0);
+    }
+
+    public float pitch(int index, float pitch) {
+        return volt(index, (pitch - pitchOffset) * 1.0/12.0 + pitchVoltageOffset);
+    }
+
+    public float freq(int index, float frequency) {
+        return Math.log2(frequency * frequencyScalar);
     }
 }
-
-
-880.0 => float freq;
-Math.log2(freq * 0.072727272727272) => float a;
-<<< a >>>;
-
-// three volts is 220
-// four volts is  440
-// five volts is  880
