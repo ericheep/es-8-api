@@ -5,7 +5,7 @@
 // voltages of the Expert Sleepers ES-8 module.
 
 public class ES8 {
-    // init
+    // init (default values)
     8    => int NUM_OUTPUT_CHANNELS;
     69.0 => float pitchOffset;
     5.0  => float pitchVoltageOffset;
