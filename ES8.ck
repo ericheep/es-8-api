@@ -52,6 +52,6 @@ public class ES8 {
     }
 
     public float freq(int index, float frequency) {
-        return volt(Math.log2(frequency * frequencyScalar));
+        return volt(index, Math.log2(frequency * frequencyScalar));
     }
 }
