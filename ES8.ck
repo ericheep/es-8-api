@@ -1,5 +1,7 @@
 public class ES8 {
-    8 => int NUM_OUTPUT_CHANNELS;
+    8     => int NUM_OUTPUT_CHANNELS;
+    440.0 => float anchorFrequency;
+    5.0   => float anchorVoltage;
 
     float voltageMaxs[NUM_OUTPUT_CHANNELS];
     float voltageMins[NUM_OUTPUT_CHANNELS];
@@ -32,4 +34,18 @@ public class ES8 {
     public float getAmplitude(int index, float voltage) {
         return Std.scalef(voltage, voltageMins[index], voltageMaxs[index], 0.0, 1.0);
     }
+
+    public float setAnchor(float frequency, float voltage) {
+        frequency => anchorFrequency;
+        voltage => anchorVoltage;
+    }
 }
+
+
+880.0 => float freq;
+Math.log2(freq * 0.072727272727272) => float a;
+<<< a >>>;
+
+// three volts is 220
+// four volts is  440
+// five volts is  880
