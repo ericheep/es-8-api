@@ -1,14 +1,24 @@
 // ES8.ck
 
+// Tranlates pitch, frequency, or voltage
+// to an amplitude value based on the
+// maximum and minimum voltages of the
+// Expert Sleepers ES-8 module.
+
 public class ES8 {
-    8        => int NUM_OUTPUT_CHANNELS;
-    0.072727 => float frequencyScalar;
-    69       => float pitchOffset;
-    5.0      => float pitchVoltageOffset;
+    // init
+    8   => int NUM_OUTPUT_CHANNELS;
+    69  => float pitchOffset;
+    5.0 => float pitchVoltageOffset;
+    Math.pow(2, 5.0)/440 => float frequencyScalar;
 
     float maxVolts[NUM_OUTPUT_CHANNELS];
     float minVolts[NUM_OUTPUT_CHANNELS];
 
+    // ES-8 configuration
+    // will have to be set differently for each module
+    // you can use a multimeter on the output to
+    // find the maximum and minimum voltage per channel
     [
      -0.015, -0.022, 0.011,  0.012,
      -0.003, -0.014, 0.009, -0.005
@@ -40,7 +50,7 @@ public class ES8 {
     }
 
     public float calibrateFrequency(float frequency, float voltage) {
-        Math.pow(2, voltage)/frequency => float frequencyScalar;
+        Math.pow(2, voltage)/frequency => frequencyScalar;
     }
 
     public float volt(int index, float voltage) {
