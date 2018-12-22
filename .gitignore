@@ -1,0 +1,14 @@
+# osx
+.DS_Store*
+Icon?
+._*
+
+# linux
+.directory
+*~
+
+# npm
+node_modules
+package-lock.json
+*.log
+*.gz
