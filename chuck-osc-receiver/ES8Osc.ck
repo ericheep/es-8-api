@@ -22,6 +22,7 @@ public class ES8Osc {
 
     for (0 => int i; i < NUM_OUTPUTS; i++) {
         s[i] => dac.chan(i);
+        s[i].next(es8.volt(0, 0.0));
     }
 
     public void listen() {
