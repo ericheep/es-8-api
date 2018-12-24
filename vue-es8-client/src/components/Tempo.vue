@@ -1,15 +1,23 @@
 <template>
   <div>
-    BPM: {{ bpm }}
+    BPM:
+    <input v-model="bpm" placeholder="120" v-on:change="changeTempo(bpm)">
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'Tempo',
   props: {
     bpm : Number,
-  }
+  },
+  methods: {
+    ...mapActions([
+      'changeTempo'
+    ]),
+  },
 }
 </script>
 
