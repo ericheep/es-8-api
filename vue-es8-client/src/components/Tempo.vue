@@ -10,9 +10,9 @@ import { mapActions } from 'vuex'
 
 export default {
   name: 'Tempo',
-  props: {
-    bpm : Number,
-  },
+  data: () => ({
+    bpm: ''
+  }),
   methods: {
     ...mapActions([
       'changeTempo'

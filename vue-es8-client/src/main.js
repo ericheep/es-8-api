@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import { store } from './store/store'
 
-// export const SocketInstance = socketio('http://localhost:4113'
+// export const SocketInstance = socketio('http://localhost:4113')
 
 // Vue.use(VueSocketIO, SocketInstance)
 Vue.config.productionTip = false

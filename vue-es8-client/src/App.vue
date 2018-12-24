@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Tempo bpm="120.0"/>
+    <Tempo/>
   </div>
 </template>
 
