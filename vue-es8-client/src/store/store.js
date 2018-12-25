@@ -16,6 +16,14 @@ export const store = new Vuex.Store({
     changeTempo(state, payload) {
       state.tempo = payload
     },
+    // vue-socket.io
+    SOCKET_CONNECT(state) {
+      state.isConnected = true
+    },
+
+    SOCKET_DISCONNECT(state) {
+      state.isConnected = false
+    },
   },
 
   actions: {
