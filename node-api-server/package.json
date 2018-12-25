@@ -19,6 +19,7 @@
   "homepage": "https://github.com/ericheep/es-8-api#readme",
   "dependencies": {
     "express": "^4.16.4",
-    "osc": "^2.2.4"
+    "osc": "^2.2.4",
+    "socket.io": "^2.2.0"
   }
 }

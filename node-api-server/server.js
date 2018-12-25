@@ -1,34 +1,20 @@
-// server.js
+const http = require('http')
+const server = http.createServer()
+const allowedOrigins = "http://localhost:* http://127.0.0.1:*";
 
-const express = require('express')
-const bodyParser = require('body-parser')
-const controlRouter = require('./routes/control')
+const io = require('socket.io')(server, {
+  path: '/',
+  serveClient: false,
+  origins: allowedOrigins,
 
-const HOST = process.env.HOST || '127.0.0.1'
-const PORT = process.env.PORT || 3128
-
-const app = express()
-
-// cors
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header('Access-Control-Allow-Headers', '*')
-  if (req.method === 'OPTIONS') {
-    res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET')
-    return res.status(200).json({})
-  }
-  next()
+  // below are engine.IO options
+  pingInterval: 10000,
+  pingTimeout: 5000,
+  cookie: false
 })
 
-app.use(bodyParser.urlencoded({extended: false}))
-app.use(bodyParser.json())
-
-app.get('/', (req, res) => {
-  res.send("Welcome to the ES-8-API home page!")
+io.on('connect', (socket) => {
+  console.log('connected')
 })
 
-app.use('/control', controlRouter)
-
-app.listen(PORT, () => {
-  console.log(`ES-8-API running on ${HOST}:${PORT}`)
-})
+server.listen(3000)
