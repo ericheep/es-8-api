@@ -13,6 +13,11 @@ export default {
   data: () => ({
     bpm: ''
   }),
+  computed: {
+    tempo() {
+      return this.$store.state.tempo
+    },
+  },
   methods: {
     ...mapActions([
       'changeTempo'
