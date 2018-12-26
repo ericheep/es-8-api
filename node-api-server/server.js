@@ -1,5 +1,14 @@
 const http = require('http')
 const server = http.createServer()
+const osc = require('osc')
+
+const udpPort = new osc.UDPPort({
+  localAddress: "localhost",
+  localPort: 10001,
+  metadata: true
+})
+
+udpPort.open();
 
 const allowedOrigins = "http://localhost:* http://127.0.0.1:*";
 const wtc = require('wrtc')
@@ -26,6 +35,26 @@ io.on('connect', (socket) => {
   socket.on('tempo', (data) => {
     state.tempo = data
     io.emit('tempo', data)
+  })
+
+  socket.on('freqLoop', (data) => {
+    udpPort.send({
+      address: "/freqLoop",
+      args: [
+        {
+          type: "i",
+          value: data.channel,
+        },
+        {
+          type: "f",
+          value: data.freq,
+        },
+        {
+          type: "i",
+          value: data.index,
+        }
+      ]
+    }, "127.0.0.1", 12345);
   })
 })
 
