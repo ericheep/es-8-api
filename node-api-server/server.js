@@ -34,33 +34,33 @@ io.on('connect', (socket) => {
   io.emit('state', state)
   console.log('connected')
 
-  socket.on('sample', (data) => {
+  socket.on('sequencer', (data) => {
     // store state
     samples[data.index] = {
       freq: data.freq
     }
 
     // send back to clients
-    io.emit('sample', data)
+    io.emit('sequencer', data)
 
     // send osc
     udpPort.send({
-      address: "/sample",
+      address: '/sequencer',
       args: [
         {
-          type: "i",
+          type: 'i',
           value: data.channel,
         },
         {
-          type: "f",
+          type: 'f',
           value: data.freq,
         },
         {
-          type: "i",
+          type: 'i',
           value: data.index,
         }
       ]
-    }, "127.0.0.1", 12345);
+    }, '127.0.0.1', 12345)
   })
 })
 

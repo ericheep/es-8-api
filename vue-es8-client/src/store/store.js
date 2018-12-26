@@ -35,5 +35,8 @@ export const store = new Vuex.Store({
     changeTempo(state, payload) {
       this._vm.$socket.emit('tempo', payload)
     },
+    changeSequencer(state, payload) {
+      this._vm.$socket.emit('sequencer', payload)
+    },
   }
 })
