@@ -7,6 +7,7 @@ export const store = new Vuex.Store({
   strict: true,
   state: {
     tempo: '',
+    isConnected: '',
   },
 
   getters: {
@@ -16,20 +17,23 @@ export const store = new Vuex.Store({
     changeTempo(state, payload) {
       state.tempo = payload
     },
-    // vue-socket.io
+    SOCKET_STATE(state, payload) {
+      state.tempo = payload.tempo
+    },
+    SOCKET_TEMPO(state, payload) {
+      state.tempo = payload
+    },
     SOCKET_CONNECT(state) {
       state.isConnected = true
     },
-
     SOCKET_DISCONNECT(state) {
       state.isConnected = false
     },
   },
 
   actions: {
-    changeTempo ({ dispatch, commit }, payload) {
-      commit('changeTempo', payload)
-      dispatch('updateClient')
+    changeTempo(state, payload) {
+      this._vm.$socket.emit('tempo', payload)
     },
   }
 })
