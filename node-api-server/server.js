@@ -1,6 +1,8 @@
 const http = require('http')
 const server = http.createServer()
+
 const allowedOrigins = "http://localhost:* http://127.0.0.1:*";
+const wtc = require('wrtc')
 
 const io = require('socket.io')(server, {
   path: '/',
