@@ -13,8 +13,18 @@ const io = require('socket.io')(server, {
   cookie: false
 })
 
+const state = {
+  tempo: '120',
+}
+
 io.on('connect', (socket) => {
+  io.emit('state', state)
   console.log('connected')
+
+  socket.on('tempo', (data) => {
+    state.tempo = data
+    io.emit('tempo', data)
+  })
 })
 
 server.listen(3000)
