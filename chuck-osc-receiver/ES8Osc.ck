@@ -42,32 +42,23 @@ public class ES8Osc {
             osc => now;
 
             while (osc.recv(msg)) {
-                msg.getInt(0) => int index;
+                msg.getInt(0) => int channel;
                 msg.getFloat(0) => float val;
 
-                0 => int sampleIndex;
-                if (msg.getInt(1)) {
-                    msg.getInt(1) => sampleIndex;
-                }
-                <<< msg.address, index, val >>>;
+                <<< msg.address, channel, val >>>;
 
                 if (msg.address == "/freq") {
-                    s[index].next(es8.freq(index, val));
+                    s[channel].next(es8.freq(channel, val));
                 }
                 if (msg.address == "/volt") {
-                    s[index].next(es8.volt(index, val));
+                    s[channel].next(es8.volt(channel, val));
                 }
                 if (msg.address == "/pitch") {
-                    s[index].next(es8.pitch(index, val));
-                }
-                if (msg.address == "/voltLoop") {
-                    es8.volt(index, val) => samples[sampleIndex];
+                    s[channel].next(es8.pitch(channel, val));
                 }
                 if (msg.address == "/freqLoop") {
-                    es8.freq(index, val) => samples[sampleIndex];
-                }
-                if (msg.address == "/pitchLoop") {
-                    es8.pitch(index, val) => samples[sampleIndex];
+                    msg.getInt(1) => int index;
+                    es8.freq(channel, val) => samples[index];
                 }
             }
         }
