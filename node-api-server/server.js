@@ -24,22 +24,28 @@ const io = require('socket.io')(server, {
   cookie: false
 })
 
-const state = {
-  tempo: '120',
-}
+
+var numSamples = 44100;
+var samples= [];
+for (var i = 0; i < numSamples; i++)
+  samples.push({});
 
 io.on('connect', (socket) => {
   io.emit('state', state)
   console.log('connected')
 
-  socket.on('tempo', (data) => {
-    state.tempo = data
-    io.emit('tempo', data)
-  })
+  socket.on('sample', (data) => {
+    // store state
+    samples[data.index] = {
+      freq: data.freq
+    }
 
-  socket.on('freqLoop', (data) => {
+    // send back to clients
+    io.emit('sample', data)
+
+    // send osc
     udpPort.send({
-      address: "/freqLoop",
+      address: "/sample",
       args: [
         {
           type: "i",

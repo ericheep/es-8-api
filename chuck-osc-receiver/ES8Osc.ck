@@ -56,7 +56,7 @@ public class ES8Osc {
                 if (msg.address == "/pitch") {
                     s[channel].next(es8.pitch(channel, val));
                 }
-                if (msg.address == "/freqLoop") {
+                if (msg.address == "/sample") {
                     msg.getInt(1) => int index;
                     es8.freq(channel, val) => samples[index];
                 }
