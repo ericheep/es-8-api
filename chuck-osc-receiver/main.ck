@@ -1,2 +1,5 @@
+// main.ck
 ES8Osc es8osc;
-es8osc.listen();
+
+spork ~ es8osc.listen();
+es8osc.loop();

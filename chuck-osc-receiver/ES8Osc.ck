@@ -28,7 +28,7 @@ public class ES8Osc {
         s[i].next(es8.volt(0, 0.0));
     }
 
-    public void loopSample() {
+    public void loop() {
         while (true) {
             for (0 => int i; i < samplesLength; i++) {
                 s[0].next(samples[i]);
