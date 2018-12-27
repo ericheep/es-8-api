@@ -27,7 +27,11 @@ export default {
     window.onload = () => {
       paper.setup('sequencer')
 
-      const path = new Path.Rectangle(0, 0, 20, 40)
+      const div = document.getElementById('sequencer')
+      const w = div.clientWidth
+      const h = div.clientHeight
+
+      const path = new Path.Rectangle(0, 0, w, h)
       path.strokeColor = 'black'
     }
   }
@@ -35,4 +39,8 @@ export default {
 </script>
 
 <style scoped>
+#sequencer {
+  width: 100%;
+  height: 300px;
+}
 </style>
