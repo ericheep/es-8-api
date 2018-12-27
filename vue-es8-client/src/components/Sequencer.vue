@@ -27,15 +27,8 @@ export default {
     window.onload = () => {
       paper.setup('sequencer')
 
-      const w = window.innerWidth
-      const h = window.innerHeight
-
-      console.log(window)
-
-      const path = new Path.Rectangle(0, 0, w, h)
+      const path = new Path.Rectangle(0, 0, 20, 40)
       path.strokeColor = 'black'
-
-      console.log(w, h)
     }
   }
 }

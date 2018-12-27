@@ -1,5 +1,6 @@
 <template>
   <div>
+    Informative Text About The Project
   </div>
 </template>
 
