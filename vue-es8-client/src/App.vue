@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <Tempo/>
+    <Sequencer/>
   </div>
 </template>
 
 <script>
-import Tempo from './components/Tempo.vue'
+import Sequencer from './components/Sequencer.vue'
 
 export default {
   name: 'app',
   components: {
-    Tempo
+    Sequencer
   }
 }
 </script>
