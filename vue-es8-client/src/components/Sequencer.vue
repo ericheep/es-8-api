@@ -5,8 +5,12 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import paper from 'paper'
+
+const frequencyToPitch = (freq) => {
+  return 12 * Math.log(freq / 440.0) / Math.log(2) + 69
+}
 
 export default {
   name: 'Sequencer',
@@ -14,26 +18,36 @@ export default {
     bpm: ''
   }),
   computed: {
+    ...mapGetters([
+      'sequence',
+      'sequenceLength',
+    ]),
   },
   methods: {
     ...mapActions([
-      'changeSequencer'
+      'changeSequence'
     ]),
   },
   mounted() {
-    /* eslint-disable no-undef */
     paper.install(window)
 
     window.onload = () => {
       paper.setup('sequencer')
-
-      const div = document.getElementById('sequencer')
-      const w = div.clientWidth
-      const h = div.clientHeight
-
-      const path = new Path.Rectangle(0, 0, w, h)
-      path.strokeColor = 'black'
     }
+  },
+  updated() {
+    const freqRange = [1.0, 24000.0]
+    frequencyToPitch(freqRange[0])
+
+    const sequence = this.$store.getters['sequence']
+    const sequenceLength = this.$store.getters['sequence']
+
+    const div = document.getElementById('sequencer')
+    const width = div.clientWidth
+    const height = div.clientHeight
+
+    const path = new paper.Path.Rectangle(0, 0, width, height)
+    path.strokeColor = 'black'
   }
 }
 </script>

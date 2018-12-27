@@ -6,22 +6,23 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   strict: true,
   state: {
-    tempo: '',
+    sequence: '',
     isConnected: '',
   },
-
   getters: {
+    sequence: state => {
+      return state.sequence
+    },
+    sequenceLength: getters => {
+      return getters.sequence.length
+    }
   },
-
   mutations: {
-    changeTempo(state, payload) {
-      state.tempo = payload
-    },
     SOCKET_STATE(state, payload) {
-      state.tempo = payload.tempo
+      state.sequence = payload.sequence
     },
-    SOCKET_TEMPO(state, payload) {
-      state.tempo = payload
+    SOCKET_CHANGE_SEQUENCE(state, sample) {
+      state.sequence[sample.index] = sample
     },
     SOCKET_CONNECT(state) {
       state.isConnected = true
@@ -30,13 +31,12 @@ export const store = new Vuex.Store({
       state.isConnected = false
     },
   },
-
   actions: {
     changeTempo(state, payload) {
       this._vm.$socket.emit('tempo', payload)
     },
-    changeSequencer(state, payload) {
-      this._vm.$socket.emit('sequencer', payload)
+    changeSequence(state, payload) {
+      this._vm.$socket.emit('changeSequence', payload)
     },
   }
 })
