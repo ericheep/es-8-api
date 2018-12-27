@@ -39,6 +39,8 @@ const drawSequencer = () => {
 
   var rect = new Rectangle(0, 0, w, h)
   rect.fillColor = 'black'
+  console.log(Object.keys(window))
+  console.log(View)
 }
 </script>
 
