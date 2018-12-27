@@ -31,7 +31,7 @@ for (var i = 0; i < numSamples; i++)
   samples.push({});
 
 io.on('connect', (socket) => {
-  io.emit('state', state)
+  // io.emit('state', state)
   console.log('connected')
 
   socket.on('sequencer', (data) => {
