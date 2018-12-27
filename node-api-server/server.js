@@ -24,28 +24,38 @@ const io = require('socket.io')(server, {
   cookie: false
 })
 
+var numSamples = 4410;
+var sequence= [];
+for (var i = 0; i < numSamples; i++) {
+  sequence.push({
+    channel: 0,
+    index: i,
+    freq: 440,
+  })
+}
 
-var numSamples = 44100;
-var samples= [];
-for (var i = 0; i < numSamples; i++)
-  samples.push({});
+const state = {
+ sequence
+}
 
 io.on('connect', (socket) => {
-  // io.emit('state', state)
+  io.emit('state', state)
   console.log('connected')
 
-  socket.on('sequencer', (data) => {
+  socket.on('changeSequence', (data) => {
     // store state
-    samples[data.index] = {
-      freq: data.freq
+    sequence[data.index] = {
+      channel: data.channel,
+      freq: data.freq,
+      index: data.index,
     }
 
     // send back to clients
-    io.emit('sequencer', data)
+    io.emit('changeSequence', data)
 
-    // send osc
+    // send osc to ChucK
     udpPort.send({
-      address: '/sequencer',
+      address: '/changeSequence',
       args: [
         {
           type: 'i',
