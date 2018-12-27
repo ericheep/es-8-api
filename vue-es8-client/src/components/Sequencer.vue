@@ -1,7 +1,6 @@
 <template>
   <div>
     <canvas id='sequencer'></canvas>
-    <!-- <resize-observer @notify="handleResize"/> -->
   </div>
 </template>
 
@@ -17,30 +16,28 @@ export default {
   computed: {
   },
   methods: {
-    // handleResize() {
-    //   drawSequencer()
-    // },
     ...mapActions([
       'changeSequencer'
     ]),
   },
   mounted() {
-    drawSequencer()
+    /* eslint-disable no-undef */
+    paper.install(window)
+
+    window.onload = () => {
+      paper.setup('sequencer')
+
+      const w = window.innerWidth
+      const h = window.innerHeight
+
+      console.log(window)
+
+      const path = new Path.Rectangle(0, 0, w, h)
+      path.strokeColor = 'black'
+
+      console.log(w, h)
+    }
   }
-}
-
-const drawSequencer = () => {
-  /* eslint-disable no-undef */
-  paper.install(window)
-  paper.setup(document.getElementById('sequencer'))
-
-  const w = window.innerWidth
-  const h = window.innerHeight
-
-  var rect = new Rectangle(0, 0, w, h)
-  rect.fillColor = 'black'
-  console.log(Object.keys(window))
-  console.log(View)
 }
 </script>
 
