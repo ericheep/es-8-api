@@ -6,15 +6,18 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   strict: true,
   state: {
-    sequence: '',
+    sequence: [],
     isConnected: '',
   },
   getters: {
     sequence: state => {
       return state.sequence
     },
-    sequenceLength: getters => {
-      return getters.sequence.length
+    sequenceLength: state => {
+      return state.sequence.length
+    },
+    averagedSequence: (state, getters) => (width) => {
+      return width + getters.sequenceLength
     }
   },
   mutations: {
@@ -32,9 +35,6 @@ export const store = new Vuex.Store({
     },
   },
   actions: {
-    changeTempo(state, payload) {
-      this._vm.$socket.emit('tempo', payload)
-    },
     changeSequence(state, payload) {
       this._vm.$socket.emit('changeSequence', payload)
     },
