@@ -8,6 +8,7 @@ export const store = new Vuex.Store({
   state: {
     sequence: [],
     isConnected: '',
+    sequencerWidth: '',
   },
   getters: {
     sequence: state => {
@@ -17,7 +18,7 @@ export const store = new Vuex.Store({
       return state.sequence.length
     },
     averagedSequence: (state, getters) => (width) => {
-      return width + getters.sequenceLength
+      return getters.sequence
     }
   },
   mutations: {
@@ -37,6 +38,9 @@ export const store = new Vuex.Store({
   actions: {
     changeSequence(state, payload) {
       this._vm.$socket.emit('changeSequence', payload)
+    },
+    changeView(state, payload) {
+      this._vm.$socket.emit('changeView', payload)
     },
   }
 })
