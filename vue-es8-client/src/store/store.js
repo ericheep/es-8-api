@@ -7,6 +7,7 @@ export const store = new Vuex.Store({
   strict: true,
   state: {
     sequence: [],
+    freqs: [],
     isConnected: '',
     sequencerWidth: '',
   },
@@ -14,14 +15,30 @@ export const store = new Vuex.Store({
     sequence: state => {
       return state.sequence
     },
+    freqs: state => {
+      return state.sequence.map((elem) => elem['freq'])
+    },
     sequenceLength: state => {
       return state.sequence.length
     },
-    averagedSequence: (state, getters) => (width) => {
-      return getters.sequence
+    averagedSequence: (state, getters) => {
+      if (state.sequence.length > 0 && state.sequencerWidth > 0) {
+        const N = Math.floor(getters.sequenceLength / state.sequencerWidth)
+        const averageFreqs = []
+        const reducer = (acc, curr) => acc + curr
+
+        for (var i = 0; i < state.sequencerWidth; i++) {
+          averageFreqs[i] = getters.freqs.slice(i * N, (i + 1) * N).reduce(reducer) / N
+        }
+
+        return averageFreqs
+      }
     }
   },
   mutations: {
+    changeSequencerWidth(state, payload) {
+      state.sequencerWidth = payload
+    },
     SOCKET_STATE(state, payload) {
       state.sequence = payload.sequence
     },
@@ -36,6 +53,9 @@ export const store = new Vuex.Store({
     },
   },
   actions: {
+    changeSequencerWidth({ state, commit }, payload) {
+      commit('changeSequencerWidth', payload)
+    },
     changeSequence(state, payload) {
       this._vm.$socket.emit('changeSequence', payload)
     },
