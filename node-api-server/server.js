@@ -34,8 +34,11 @@ for (var i = 0; i < numSamples; i++) {
   })
 }
 
+// 38hz to 24khz
+// frequency response of my Yamaha hs4s
 const state = {
- sequence
+  sequence,
+  frequencyResponse: [38.0, 24000.0],
 }
 
 io.on('connect', (socket) => {

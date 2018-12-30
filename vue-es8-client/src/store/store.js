@@ -8,6 +8,7 @@ export const store = new Vuex.Store({
   state: {
     sequence: [],
     freqs: [],
+    frequencyResponse: [],
     isConnected: '',
     sequencerWidth: '',
   },
@@ -21,17 +22,18 @@ export const store = new Vuex.Store({
     sequenceLength: state => {
       return state.sequence.length
     },
-    averagedSequence: (state, getters) => {
+    averagedFreqs: (state, getters) => {
       if (state.sequence.length > 0 && state.sequencerWidth > 0) {
         const N = Math.floor(getters.sequenceLength / state.sequencerWidth)
-        const averageFreqs = []
+        const averagedFreqs = []
         const reducer = (acc, curr) => acc + curr
 
         for (var i = 0; i < state.sequencerWidth; i++) {
-          averageFreqs[i] = getters.freqs.slice(i * N, (i + 1) * N).reduce(reducer) / N
+          const slice = getters.freqs.slice(i * N, (i + 1) * N)
+          averagedFreqs[i] = slice.reduce(reducer) / slice.length
         }
 
-        return averageFreqs
+        return averagedFreqs
       }
     }
   },
@@ -41,6 +43,7 @@ export const store = new Vuex.Store({
     },
     SOCKET_STATE(state, payload) {
       state.sequence = payload.sequence
+      state.frequencyResponse = payload.frequencyResponse
     },
     SOCKET_CHANGE_SEQUENCE(state, sample) {
       state.sequence[sample.index] = sample
