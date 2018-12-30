@@ -1,13 +1,15 @@
 <template>
   <div id="sequencer">
     <EditWindow/>
-    <GuideWidow/>
+    <GuideWindow/>
   </div>
 </template>
 
 <script>
+import EditWindow from './Sequencer/EditWindow.vue'
+import GuideWindow from './Sequencer/GuideWindow.vue'
+
 import { mapActions, mapGetters } from 'vuex'
-import paper from 'paper'
 
 export default {
   name: 'Sequencer',
@@ -25,17 +27,6 @@ export default {
       'changeView'
     ]),
   },
-  watch: {
-    averagedSequence: (s) => {
-      drawSequencer(s)
-    }
-  },
-  mounted() {
-    paper.install(window)
-    window.onload = () => {
-      paper.setup('sequencer')
-    }
-  }
 }
 </script>
 
