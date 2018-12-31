@@ -1,6 +1,6 @@
 <template>
   <div>
-    <canvas id='guideWindow'></canvas>
+    <canvas @click='selectArea' id='guideWindow'></canvas>
   </div>
 </template>
 
@@ -42,19 +42,23 @@ export default {
     ...mapGetters([
       'averagedFreqs',
       'frequencyResponse',
+      'selectedArea',
       'view',
     ]),
 
   },
   methods: {
     ...mapActions([
-      'changeView',
       'changeGuideWidth',
+      'selectArea',
     ]),
   },
   watch: {
     averagedFreqs: (s) => {
       drawGuide(s)
+    },
+    selectedArea: (s) => {
+      console.log('watch', s)
     },
   },
   mounted() {

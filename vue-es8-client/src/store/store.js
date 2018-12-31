@@ -11,6 +11,7 @@ export const store = new Vuex.Store({
     frequencyResponse: [],
     isConnected: '',
     guideWidth: '',
+    selectedArea: '',
     view: 'pitches',
   },
   getters: {
@@ -19,6 +20,9 @@ export const store = new Vuex.Store({
     },
     sequence: state => {
       return state.sequence
+    },
+    selectedArea: state => {
+      return state.selectedArea
     },
     view: state => {
       return state.view
@@ -43,6 +47,9 @@ export const store = new Vuex.Store({
     }
   },
   mutations: {
+    selectArea(state, payload) {
+      state.selectedArea = payload
+    },
     changeGuideWidth(state, payload) {
       state.guideWidth = payload
     },
@@ -63,6 +70,9 @@ export const store = new Vuex.Store({
   actions: {
     changeGuideWidth({ state, commit }, payload) {
       commit('changeGuideWidth', payload)
+    },
+    selectArea({ state, commit }, payload) {
+      commit('selectArea', payload.x / state.guideWidth)
     },
     changeSequence(state, payload) {
       this._vm.$socket.emit('changeSequence', payload)
