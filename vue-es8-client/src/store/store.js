@@ -10,26 +10,31 @@ export const store = new Vuex.Store({
     freqs: [],
     frequencyResponse: [],
     isConnected: '',
-    sequencerWidth: '',
+    guideWidth: '',
+    view: 'pitches',
   },
   getters: {
+    frequencyResponse: state => {
+      return state.frequencyResponse
+    },
     sequence: state => {
       return state.sequence
+    },
+    view: state => {
+      return state.view
     },
     freqs: state => {
       return state.sequence.map((elem) => elem['freq'])
     },
-    sequenceLength: state => {
-      return state.sequence.length
-    },
     averagedFreqs: (state, getters) => {
-      if (state.sequence.length > 0 && state.sequencerWidth > 0) {
-        const N = Math.floor(getters.sequenceLength / state.sequencerWidth)
-        const averagedFreqs = []
+      const freqs = getters.freqs
+      if (freqs.length > 0 && state.guideWidth > 0) {
+        const N = Math.floor(freqs.length / state.guideWidth)
         const reducer = (acc, curr) => acc + curr
 
-        for (var i = 0; i < state.sequencerWidth; i++) {
-          const slice = getters.freqs.slice(i * N, (i + 1) * N)
+        const averagedFreqs = []
+        for (var i = 0; i < state.guideWidth; i++) {
+          const slice = freqs.slice(i * N, (i + 1) * N)
           averagedFreqs[i] = slice.reduce(reducer) / slice.length
         }
 
@@ -38,8 +43,8 @@ export const store = new Vuex.Store({
     }
   },
   mutations: {
-    changeSequencerWidth(state, payload) {
-      state.sequencerWidth = payload
+    changeGuideWidth(state, payload) {
+      state.guideWidth = payload
     },
     SOCKET_STATE(state, payload) {
       state.sequence = payload.sequence
@@ -56,8 +61,8 @@ export const store = new Vuex.Store({
     },
   },
   actions: {
-    changeSequencerWidth({ state, commit }, payload) {
-      commit('changeSequencerWidth', payload)
+    changeGuideWidth({ state, commit }, payload) {
+      commit('changeGuideWidth', payload)
     },
     changeSequence(state, payload) {
       this._vm.$socket.emit('changeSequence', payload)
