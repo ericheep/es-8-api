@@ -10,12 +10,18 @@ export const store = new Vuex.Store({
     sequence: [],
     freqs: [],
     sequencerWidth: '',
-    selectedArea: '',
     editWidth: 25,
+    selectedArea: {
+      width: 12,
+      position: '',
+    }
   },
   getters: {
-    selectedArea: state => {
+    selectedArea: (state, getters) => {
       return state.selectedArea
+    },
+    selectedAreaWidth: state => {
+      return state.sequencerWidth / state.sequence.length * state.editWidth
     },
     freqs: state => {
       return state.sequence.map((elem) => elem['freq'])
@@ -37,8 +43,11 @@ export const store = new Vuex.Store({
     }
   },
   mutations: {
-    selectArea(state, payload) {
-      state.selectedArea = payload
+    selectAreaPosition(state, payload) {
+      state.selectedArea.position = payload
+    },
+    selectAreaWidth(state, payload) {
+      state.selectedArea.width = payload
     },
     updateSequencerWidth(state, payload) {
       state.sequencerWidth = payload
@@ -61,8 +70,12 @@ export const store = new Vuex.Store({
     updateSequencerWidth({ state, commit }, payload) {
       commit('updateSequencerWidth', payload)
     },
-    selectArea({ state, commit }, payload) {
-      commit('selectArea', payload.x / state.guideWidth)
+    selectAreaWidth({ state, commit }, payload) {
+      const w = state.sequencerWidth / state.sequence.length * state.editWidth
+      commit('selectAreaWidth', w)
+    },
+    selectAreaPosition({ state, commit }, payload) {
+      commit('selectAreaPosition', payload.x / state.sequencerWidth)
     },
     changeSequence(state, payload) {
       this._vm.$socket.emit('changeSequence', payload)

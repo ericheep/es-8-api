@@ -1,6 +1,6 @@
 <template>
   <div>
-    <canvas @click='selectArea' id='guideWindow'></canvas>
+    <canvas @click='selectAreaPosition' id='guideWindow'></canvas>
   </div>
 </template>
 
@@ -36,6 +36,10 @@ const drawGuide = (freqs) => {
   }
 }
 
+const drawSelectedArea = (s) => {
+  console.log(s.width, s.position)
+}
+
 export default {
   name: 'GuideWindow',
   computed: {
@@ -47,15 +51,18 @@ export default {
   },
   methods: {
     ...mapActions([
-      'selectArea',
+      'selectAreaPosition',
     ]),
   },
   watch: {
-    averagedFreqs: (s) => {
-      drawGuide(s)
+    averagedFreqs: (f) => {
+      drawGuide(f)
     },
-    selectedArea: (s) => {
-      console.log('watch', s)
+    selectedArea: {
+      handler(s) {
+        drawSelectedArea(s)
+      },
+      deep: true
     },
   },
   mounted() {
