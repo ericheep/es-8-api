@@ -41,15 +41,12 @@ export default {
   computed: {
     ...mapGetters([
       'averagedFreqs',
-      'frequencyResponse',
       'selectedArea',
-      'view',
     ]),
 
   },
   methods: {
     ...mapActions([
-      'changeGuideWidth',
       'selectArea',
     ]),
   },
@@ -62,9 +59,6 @@ export default {
     },
   },
   mounted() {
-    const div = document.getElementById('guideWindow')
-    this.changeGuideWidth(div.clientWidth)
-
     paper.install(window)
     window.onload = () => {
       paper.setup('guideWindow')

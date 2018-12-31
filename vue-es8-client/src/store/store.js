@@ -6,21 +6,14 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   strict: true,
   state: {
+    isConnected: '',
     sequence: [],
     freqs: [],
-    frequencyResponse: [],
-    isConnected: '',
-    guideWidth: '',
+    sequencerWidth: '',
     selectedArea: '',
-    editwidth: 25,
+    editWidth: 25,
   },
   getters: {
-    frequencyResponse: state => {
-      return state.frequencyResponse
-    },
-    sequence: state => {
-      return state.sequence
-    },
     selectedArea: state => {
       return state.selectedArea
     },
@@ -29,12 +22,12 @@ export const store = new Vuex.Store({
     },
     averagedFreqs: (state, getters) => {
       const freqs = getters.freqs
-      if (freqs.length > 0 && state.guideWidth > 0) {
-        const N = Math.floor(freqs.length / state.guideWidth)
+      if (freqs.length > 0 && state.sequencerWidth > 0) {
+        const N = Math.floor(freqs.length / state.sequencerWidth)
         const reducer = (acc, curr) => acc + curr
 
         const averagedFreqs = []
-        for (var i = 0; i < state.guideWidth; i++) {
+        for (var i = 0; i < state.sequencerWidth; i++) {
           const slice = freqs.slice(i * N, (i + 1) * N)
           averagedFreqs[i] = slice.reduce(reducer) / slice.length
         }
@@ -47,8 +40,8 @@ export const store = new Vuex.Store({
     selectArea(state, payload) {
       state.selectedArea = payload
     },
-    changeGuideWidth(state, payload) {
-      state.guideWidth = payload
+    updateSequencerWidth(state, payload) {
+      state.sequencerWidth = payload
     },
     SOCKET_STATE(state, payload) {
       state.sequence = payload.sequence
@@ -65,8 +58,8 @@ export const store = new Vuex.Store({
     },
   },
   actions: {
-    changeGuideWidth({ state, commit }, payload) {
-      commit('changeGuideWidth', payload)
+    updateSequencerWidth({ state, commit }, payload) {
+      commit('updateSequencerWidth', payload)
     },
     selectArea({ state, commit }, payload) {
       commit('selectArea', payload.x / state.guideWidth)

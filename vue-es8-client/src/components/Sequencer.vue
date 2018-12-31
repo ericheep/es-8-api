@@ -24,9 +24,13 @@ export default {
   },
   methods: {
     ...mapActions([
-      'changeView'
+      'updateSequencerWidth'
     ]),
   },
+  mounted() {
+    const div = document.getElementById('sequencer')
+    this.updateSequencerWidth(div.clientWidth)
+  }
 }
 </script>
 
