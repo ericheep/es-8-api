@@ -12,7 +12,7 @@ export const store = new Vuex.Store({
     isConnected: '',
     guideWidth: '',
     selectedArea: '',
-    view: 'pitches',
+    editwidth: 25,
   },
   getters: {
     frequencyResponse: state => {
@@ -23,9 +23,6 @@ export const store = new Vuex.Store({
     },
     selectedArea: state => {
       return state.selectedArea
-    },
-    view: state => {
-      return state.view
     },
     freqs: state => {
       return state.sequence.map((elem) => elem['freq'])
