@@ -10,7 +10,7 @@ export const store = new Vuex.Store({
     sequence: [],
     freqs: [],
     sequencerWidth: '',
-    editWidth: 5,
+    editWidth: 35,
     selectedArea: {
       width: 0,
       position: 0,

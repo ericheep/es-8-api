@@ -12,7 +12,7 @@ const frequencyToPitch = (freq) => {
   return 12 * Math.log(freq / 440.0) / Math.log(2) + 69
 }
 
-const drawEditWindow = (partialSequence) => {
+const drawEditWindow = (partialSequence, paper) => {
   const div = document.getElementById('editWindow')
   const width = div.clientWidth
   const height = div.clientHeight
@@ -20,11 +20,12 @@ const drawEditWindow = (partialSequence) => {
 
   const pitchResponse = frequencyResponse.map(frequencyToPitch)
   const range = pitchResponse[1] - pitchResponse[0]
+  // eslint-disable-next-line
   const scale = height / range
 
   const path = new paper.Path.Rectangle(0, 0, width, height)
   path.strokeColor = 'gray'
-  path.strokeWidth = 2
+  path.strokeWidth = 8
   // console.log(width, height)
 
   // for (var i = 0; i < width; i++) {
@@ -38,6 +39,9 @@ const drawEditWindow = (partialSequence) => {
 
 export default {
   name: 'EditWindow',
+  data: () => ({
+    editPaper: null,
+  }),
   computed: {
     ...mapGetters([
       'averagedFreqs',
@@ -52,15 +56,15 @@ export default {
   watch: {
     selectedArea: {
       handler(s) {
-        drawEditWindow(s)
+        drawEditWindow(s, this.editPaper)
       },
       deep: true
     }
   },
   mounted() {
-    paper.install(window)
+    this.editPaper = new paper.PaperScope()
     window.onload = () => {
-      paper.setup('editWindow')
+      this.editPaper.setup('editWindow')
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div id="sequencer">
-    <EditWindow/>
+    <!-- <EditWindow/> -->
     <GuideWindow/>
   </div>
 </template>

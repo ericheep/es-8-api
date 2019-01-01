@@ -12,7 +12,7 @@ const frequencyToPitch = (freq) => {
   return 12 * Math.log(freq / 440.0) / Math.log(2) + 69
 }
 
-const drawGuide = (freqs) => {
+const drawGuide = (freqs, paper) => {
   const div = document.getElementById('guideWindow')
   const width = div.clientWidth
   const height = div.clientHeight
@@ -52,6 +52,7 @@ const drawSelectedArea = (s) => {
 export default {
   name: 'GuideWindow',
   data: () => ({
+    guidePaper: null,
     guideLayer: null,
     selectedAreaLayer: null,
   }),
@@ -71,24 +72,24 @@ export default {
       if (this.guideLayer != null) {
         this.guideLayer.remove()
       }
-      this.guideLayer = new paper.Layer()
-      drawGuide(f)
+      this.guideLayer = new this.guidePaper.Layer()
+      drawGuide(f, this.guidePaper)
     },
     selectedArea: {
       handler(s) {
         if (this.selectedAreaLayer != null) {
           this.selectedAreaLayer.remove()
         }
-        this.selectedAreaLayer = new paper.Layer()
-        drawSelectedArea(s)
+        this.selectedAreaLayer = new this.guidePaper.Layer()
+        drawSelectedArea(s, this.guidePaper)
       },
       deep: true
     },
   },
   mounted() {
-    paper.install(window)
+    this.guidePaper = new paper.PaperScope()
     window.onload = () => {
-      paper.setup('guideWindow')
+      this.guidePaper.setup('guideWindow')
     }
   }
 }
