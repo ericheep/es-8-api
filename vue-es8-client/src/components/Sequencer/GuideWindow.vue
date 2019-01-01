@@ -24,7 +24,7 @@ const drawGuide = (freqs) => {
   const scale = height / range
 
   const path = new paper.Path.Rectangle(0, 0, width, height)
-  path.strokeColor = 'blue'
+  path.strokeColor = 'gray'
   path.strokeWidth = 2
 
   for (var i = 0; i < width; i++) {
@@ -32,12 +32,21 @@ const drawGuide = (freqs) => {
       size: [1, scale],
       center: [i, scale * pitches[i]],
     })
-    pitchRect.fillColor = 'blue'
+    pitchRect.fillColor = 'gray'
   }
 }
 
 const drawSelectedArea = (s) => {
-  console.log(s.width, s.position)
+  const div = document.getElementById('guideWindow')
+  const height = div.clientHeight
+  const width = div.clientWidth
+
+  const selectedAreaRect = new paper.Path.Rectangle({
+    size: [s.width, height - 2],
+    center: [s.position * width, height * 0.5],
+    dashArray: [2, 2],
+  })
+  selectedAreaRect.strokeColor = 'gray'
 }
 
 export default {

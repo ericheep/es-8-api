@@ -12,8 +12,8 @@ export const store = new Vuex.Store({
     sequencerWidth: '',
     editWidth: 25,
     selectedArea: {
-      width: 12,
-      position: '',
+      width: 0,
+      position: 0,
     }
   },
   getters: {
@@ -46,15 +46,13 @@ export const store = new Vuex.Store({
     selectAreaPosition(state, payload) {
       state.selectedArea.position = payload
     },
-    selectAreaWidth(state, payload) {
-      state.selectedArea.width = payload
-    },
     updateSequencerWidth(state, payload) {
       state.sequencerWidth = payload
     },
     SOCKET_STATE(state, payload) {
       state.sequence = payload.sequence
       state.frequencyResponse = payload.frequencyResponse
+      state.selectedArea.width = state.sequencerWidth / state.sequence.length * state.editWidth
     },
     SOCKET_CHANGE_SEQUENCE(state, sample) {
       state.sequence[sample.index] = sample
@@ -69,10 +67,6 @@ export const store = new Vuex.Store({
   actions: {
     updateSequencerWidth({ state, commit }, payload) {
       commit('updateSequencerWidth', payload)
-    },
-    selectAreaWidth({ state, commit }, payload) {
-      const w = state.sequencerWidth / state.sequence.length * state.editWidth
-      commit('selectAreaWidth', w)
     },
     selectAreaPosition({ state, commit }, payload) {
       commit('selectAreaPosition', payload.x / state.sequencerWidth)
