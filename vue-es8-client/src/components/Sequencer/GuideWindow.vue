@@ -51,6 +51,12 @@ const drawSelectedArea = (s) => {
 
 export default {
   name: 'GuideWindow',
+  data: () => {
+    return {
+      guideLayer: null,
+      selectedAreaLayer: null,
+    }
+  },
   computed: {
     ...mapGetters([
       'averagedFreqs',
@@ -65,10 +71,18 @@ export default {
   },
   watch: {
     averagedFreqs: (f) => {
+      if (this.guideLayer != null) {
+        this.guideLayer.remove()
+      }
+      this.guideLayer = new paper.Layer()
       drawGuide(f)
     },
     selectedArea: {
       handler(s) {
+        if (this.selectedAreaLayer != null) {
+          this.selectedAreaLayer.remove()
+        }
+        this.selectedAreaLayer = new paper.Layer()
         drawSelectedArea(s)
       },
       deep: true
@@ -78,6 +92,9 @@ export default {
     paper.install(window)
     window.onload = () => {
       paper.setup('guideWindow')
+
+      this.guideLayer = new paper.Layer()
+      this.selectedAreaLayer = new paper.Layer()
     }
   }
 }
