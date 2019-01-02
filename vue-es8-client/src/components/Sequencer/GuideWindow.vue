@@ -5,20 +5,13 @@
 </template>
 
 <script>
+import paper from 'paper'
 import { mapActions, mapGetters } from 'vuex'
 import drawGuideWindow from '../../paper/drawGuideWindow.js'
 import drawSelectedArea from '../../paper/drawSelectedArea.js'
 
 export default {
   name: 'GuideWindow',
-  props: {
-    paper: {
-      type: Object,
-      default: function () {
-        return null
-      },
-    },
-  },
   data: () => ({
     guideLayer: null,
     selectedAreaLayer: null,
@@ -28,6 +21,9 @@ export default {
       'averagedFreqs',
       'selectedArea',
     ]),
+    scope: () => {
+      return new paper.PaperScope()
+    }
   },
   methods: {
     ...mapActions([
@@ -40,8 +36,8 @@ export default {
         if (this.guideLayer != null) {
           this.guideLayer.remove()
         }
-        this.guideLayer = new this.paper.Layer()
-        drawGuideWindow(f, this.paper)
+        this.guideLayer = new this.scope.Layer()
+        drawGuideWindow(f, this.scope)
       }
     },
     selectedArea: {
@@ -50,14 +46,14 @@ export default {
           this.selectedAreaLayer.remove()
         }
 
-        this.selectedAreaLayer = new this.paper.Layer()
-        drawSelectedArea(s, this.paper)
+        this.selectedAreaLayer = new this.scope.Layer()
+        drawSelectedArea(s, this.scope)
       },
       deep: true
     },
   },
   mounted() {
-    this.paper.setup('guideWindow')
+    this.scope.setup('guideWindow')
   }
 }
 </script>

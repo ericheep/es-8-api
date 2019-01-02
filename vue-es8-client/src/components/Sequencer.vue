@@ -1,13 +1,11 @@
 <template>
   <div id="sequencer">
-    <EditWindow v-bind:paper='editPaper'/>
-    <GuideWindow v-bind:paper='guidePaper'/>
+    <EditWindow/>
+    <GuideWindow/>
   </div>
 </template>
 
 <script>
-import paper from 'paper'
-
 import EditWindow from './Sequencer/EditWindow.vue'
 import GuideWindow from './Sequencer/GuideWindow.vue'
 
@@ -23,12 +21,6 @@ export default {
     ...mapGetters([
       'averagedSequence'
     ]),
-    guidePaper: () => {
-      return new paper.PaperScope()
-    },
-    editPaper: () => {
-      return new paper.PaperScope()
-    },
   },
   methods: {
     ...mapActions([
@@ -45,6 +37,6 @@ export default {
 <style scoped>
 #sequencer {
   width: 100%;
-  height: 300px;
+  height: 400px;
 }
 </style>
