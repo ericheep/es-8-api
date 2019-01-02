@@ -17,7 +17,7 @@ export default (freqs, paper) => {
 
   for (var i = 0; i < width; i++) {
     const pitchRect = new paper.Path.Rectangle({
-      size: [1, scale],
+      size: [1, scale * 2],
       center: [i, scale * pitches[i]],
     })
     pitchRect.fillColor = 'gray'

@@ -30,7 +30,7 @@ for (var i = 0; i < numSamples; i++) {
   sequence.push({
     channel: 0,
     index: i,
-    freq: 440,
+    freq: Math.floor(Math.random() * 1000),
   })
 }
 

@@ -19,6 +19,7 @@ export default {
     },
   },
   data: () => ({
+    editLayer: null,
     scope: null,
   }),
   computed: {
@@ -36,6 +37,12 @@ export default {
     selectedArea: {
       handler(s) {
         this.scope.activate()
+
+        if (this.editLayer != null) {
+          this.editLayer.remove()
+        }
+
+        this.editLayer = new this.scope.Layer()
         drawEditWindow(s, this.scope)
       },
       deep: true
