@@ -1,11 +1,12 @@
 <template>
   <div id="sequencer">
-    <EditWindow/>
-    <GuideWindow/>
+    <EditWindow v-bind:paper="paper"/>
+    <GuideWindow v-bind:paper="paper"/>
   </div>
 </template>
 
 <script>
+import paper from 'paper'
 import EditWindow from './Sequencer/EditWindow.vue'
 import GuideWindow from './Sequencer/GuideWindow.vue'
 
@@ -21,6 +22,9 @@ export default {
     ...mapGetters([
       'averagedSequence'
     ]),
+    paper: function() {
+      return paper
+    }
   },
   methods: {
     ...mapActions([

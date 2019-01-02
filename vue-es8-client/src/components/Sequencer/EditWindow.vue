@@ -5,20 +5,27 @@
 </template>
 
 <script>
-import paper from 'paper'
 import { mapGetters, mapActions } from 'vuex'
 import drawEditWindow from '../../paper/drawEditWindow.js'
 
 export default {
   name: 'EditWindow',
+  props: {
+    paper: {
+      type: Object,
+      default: () => {
+        return null
+      }
+    },
+  },
+  data: () => ({
+    scope: null,
+  }),
   computed: {
     ...mapGetters([
       'averagedFreqs',
       'selectedArea',
     ]),
-    scope: () => {
-      return new paper.PaperScope()
-    }
   },
   methods: {
     ...mapActions([
@@ -28,12 +35,14 @@ export default {
   watch: {
     selectedArea: {
       handler(s) {
+        this.scope.activate()
         drawEditWindow(s, this.scope)
       },
       deep: true
     }
   },
   mounted() {
+    this.scope = new this.paper.PaperScope()
     this.scope.setup('editWindow')
   }
 }
