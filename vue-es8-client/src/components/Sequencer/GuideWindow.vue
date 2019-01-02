@@ -70,7 +70,7 @@ export default {
 </script>
 
 <style scoped>
-#guideWindow {
+#guideWindow, div {
   width: 100%;
   height: 100px;
 }

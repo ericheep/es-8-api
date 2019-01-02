@@ -49,7 +49,7 @@ export default {
 </script>
 
 <style scoped>
-#editWindow {
+#editWindow, div {
   width: 100%;
   height: 300px;
 }
