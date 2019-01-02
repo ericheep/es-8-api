@@ -6,53 +6,20 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import paper from 'paper'
-
-const frequencyToPitch = (freq) => {
-  return 12 * Math.log(freq / 440.0) / Math.log(2) + 69
-}
-
-const drawGuide = (freqs, paper) => {
-  const div = document.getElementById('guideWindow')
-  const width = div.clientWidth
-  const height = div.clientHeight
-  const frequencyResponse = [38.0, 24000.0]
-
-  const pitches = freqs.map(frequencyToPitch)
-  const pitchResponse = frequencyResponse.map(frequencyToPitch)
-  const range = pitchResponse[1] - pitchResponse[0]
-  const scale = height / range
-
-  const path = new paper.Path.Rectangle(0, 0, width, height)
-  path.strokeColor = 'gray'
-  path.strokeWidth = 2
-
-  for (var i = 0; i < width; i++) {
-    const pitchRect = new paper.Path.Rectangle({
-      size: [1, scale],
-      center: [i, scale * pitches[i]],
-    })
-    pitchRect.fillColor = 'gray'
-  }
-}
-
-const drawSelectedArea = (s) => {
-  const div = document.getElementById('guideWindow')
-  const height = div.clientHeight
-  const width = div.clientWidth
-
-  const selectedAreaRect = new paper.Path.Rectangle({
-    size: [s.width, height - 2],
-    center: [s.position * width, height * 0.5],
-    dashArray: [2, 2],
-  })
-  selectedAreaRect.strokeColor = 'gray'
-}
+import drawGuideWindow from '../../paper/drawGuideWindow.js'
+import drawSelectedArea from '../../paper/drawSelectedArea.js'
 
 export default {
   name: 'GuideWindow',
+  props: {
+    paper: {
+      type: Object,
+      default: function () {
+        return null
+      },
+    },
+  },
   data: () => ({
-    guidePaper: null,
     guideLayer: null,
     selectedAreaLayer: null,
   }),
@@ -68,29 +35,29 @@ export default {
     ]),
   },
   watch: {
-    averagedFreqs: (f) => {
-      if (this.guideLayer != null) {
-        this.guideLayer.remove()
+    averagedFreqs: {
+      handler(f) {
+        if (this.guideLayer != null) {
+          this.guideLayer.remove()
+        }
+        this.guideLayer = new this.paper.Layer()
+        drawGuideWindow(f, this.paper)
       }
-      this.guideLayer = new this.guidePaper.Layer()
-      drawGuide(f, this.guidePaper)
     },
     selectedArea: {
       handler(s) {
         if (this.selectedAreaLayer != null) {
           this.selectedAreaLayer.remove()
         }
-        this.selectedAreaLayer = new this.guidePaper.Layer()
-        drawSelectedArea(s, this.guidePaper)
+
+        this.selectedAreaLayer = new this.paper.Layer()
+        drawSelectedArea(s, this.paper)
       },
       deep: true
     },
   },
   mounted() {
-    this.guidePaper = new paper.PaperScope()
-    window.onload = () => {
-      this.guidePaper.setup('guideWindow')
-    }
+    this.paper.setup('guideWindow')
   }
 }
 </script>
