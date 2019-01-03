@@ -1,5 +1,6 @@
 <template>
   <div id="sequencer">
+    <ControlWindow/>
     <EditWindow v-bind:paper="paper"/>
     <GuideWindow v-bind:paper="paper"/>
   </div>
@@ -7,6 +8,8 @@
 
 <script>
 import paper from 'paper'
+
+import ControlWindow from './Sequencer/ControlWindow.vue'
 import EditWindow from './Sequencer/EditWindow.vue'
 import GuideWindow from './Sequencer/GuideWindow.vue'
 
@@ -15,6 +18,7 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'Sequencer',
   components: {
+    ControlWindow,
     EditWindow,
     GuideWindow,
   },
@@ -41,6 +45,6 @@ export default {
 <style scoped>
 #sequencer {
   width: 100%;
-  height: 400px;
+  height: 500px;
 }
 </style>

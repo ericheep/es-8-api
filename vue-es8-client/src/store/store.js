@@ -11,15 +11,39 @@ export const store = new Vuex.Store({
     freqs: [],
     sequencerWidth: '',
     editWidth: 35,
+    selectedSample: {
+      index: 0,
+    },
     selectedArea: {
       width: 0,
       position: 0,
       samples: [],
-    }
+    },
   },
   getters: {
     selectedArea: (state, getters) => {
       return state.selectedArea
+    },
+    selectedAreaStartIndex: state => {
+      const length = state.selectedArea.samples.length
+      const samples = state.selectedArea.samples
+      if (length) {
+        return samples[0].index
+      } else {
+        return 0
+      }
+    },
+    selectedAreaEndIndex: state => {
+      const length = state.selectedArea.samples.length
+      const samples = state.selectedArea.samples
+      if (length) {
+        return samples[length - 1].index
+      } else {
+        return 0
+      }
+    },
+    selectedSampleIndex: state => {
+      return state.selectedSample.index
     },
     selectedAreaWidth: state => {
       return state.sequencerWidth / state.sequence.length * state.editWidth
@@ -49,6 +73,9 @@ export const store = new Vuex.Store({
     },
     selectAreaSamples(state, payload) {
       state.selectedArea.samples = payload
+    },
+    selectSample(state, payload) {
+      state.selectedSample = payload
     },
     updateSequencerWidth(state, payload) {
       state.sequencerWidth = payload
@@ -81,7 +108,8 @@ export const store = new Vuex.Store({
       commit('selectAreaSamples', state.sequence.slice(firstIndex, firstIndex + state.editWidth))
     },
     selectSample({ state, commit }, payload) {
-      // console.log(payload)
+      const offsetIndex = Math.floor(payload.clientX / state.sequencerWidth * state.editWidth)
+      commit('selectSample', state.selectedAreaBeginIndex + offsetIndex)
     },
     changeSequence(state, payload) {
       this._vm.$socket.emit('changeSequence', payload)
