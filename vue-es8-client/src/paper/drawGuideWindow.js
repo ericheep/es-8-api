@@ -7,8 +7,8 @@ export default (freqs, paper) => {
   const frequencyResponse = [38.0, 24000.0]
 
   const pitches = freqs.map(frequencyToPitch)
-  const pitchResponse = frequencyResponse.map(frequencyToPitch)
-  const range = pitchResponse[1] - pitchResponse[0]
+  const [pitchLo, pitchHi] = frequencyResponse.map(frequencyToPitch)
+  const range = pitchHi - pitchLo
   const scale = height / range
 
   const path = new paper.Path.Rectangle(0, 0, width, height)
@@ -18,7 +18,7 @@ export default (freqs, paper) => {
   for (var i = 0; i < width; i++) {
     const pitchRect = new paper.Path.Rectangle({
       size: [1, scale * 2],
-      center: [i, scale * pitches[i]],
+      center: [i, height - ((pitches[i] - pitchLo) * scale)],
     })
     pitchRect.fillColor = 'gray'
   }

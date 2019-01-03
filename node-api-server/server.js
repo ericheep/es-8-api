@@ -26,11 +26,13 @@ const io = require('socket.io')(server, {
 
 var numSamples = 4410;
 var sequence= [];
+var scale = (24000.0 - 38.0) / numSamples
+
 for (var i = 0; i < numSamples; i++) {
   sequence.push({
     channel: 0,
     index: i,
-    freq: Math.floor(Math.random() * 1000),
+    freq: i * scale + 38.0,
   })
 }
 

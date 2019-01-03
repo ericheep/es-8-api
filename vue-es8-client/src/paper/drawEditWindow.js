@@ -6,8 +6,8 @@ export default (partialSequence, paper) => {
   const height = div.clientHeight
   const frequencyResponse = [38.0, 24000.0]
 
-  const pitchResponse = frequencyResponse.map(frequencyToPitch)
-  const range = pitchResponse[1] - pitchResponse[0]
+  const [pitchLo, pitchHi] = frequencyResponse.map(frequencyToPitch)
+  const range = pitchHi - pitchLo
   const scale = height / range
 
   const path = new paper.Path.Rectangle(0, 0, width, height)
@@ -27,7 +27,7 @@ export default (partialSequence, paper) => {
     const pitch = frequencyToPitch(sample['freq'])
     const sampleRect = new paper.Path.Rectangle({
       size: [sampleWidth, scale * 2],
-      center: [i * sampleWidth + sampleWidth / 2, pitch * scale],
+      center: [i * sampleWidth + sampleWidth / 2, height - ((pitch - pitchLo) * scale)],
     })
     sampleRect.fillColor = 'gray'
   }
