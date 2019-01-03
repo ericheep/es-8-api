@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="controlWindow">
     <div id="left">
       {{ selectedAreaStartIndex }} - {{ selectedAreaEndIndex }}
     </div>
@@ -27,7 +27,7 @@ export default {
 </script>
 
 <style scoped>
-#editWindow, div {
+#controlWindow {
   width: 100%;
   height: 50px;
 }
