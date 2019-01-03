@@ -7,6 +7,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import drawEditWindow from '../../paper/drawEditWindow.js'
+import drawSelectedSample from '../../paper/drawSelectedSample.js'
 
 export default {
   name: 'EditWindow',
@@ -26,6 +27,7 @@ export default {
     ...mapGetters([
       'averagedFreqs',
       'selectedArea',
+      'selectedSample',
     ]),
   },
   methods: {
@@ -44,6 +46,18 @@ export default {
 
         this.editLayer = new this.scope.Layer()
         drawEditWindow(s, this.scope)
+      },
+      deep: true
+    },
+    selectedSample: {
+      handler(s) {
+        console.log('watch selected sample')
+        this.scope.activate()
+        if (this.sampleLayer != null) {
+          this.sampleLayer.remove()
+        }
+        this.sampleLayer = new this.scope.Layer()
+        drawSelectedSample(s, this.scope)
       },
       deep: true
     }
