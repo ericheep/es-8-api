@@ -7,6 +7,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import drawEditWindow from '../../paper/drawEditWindow.js'
+import drawFrequencies from '../../paper/drawFrequencies.js'
 import drawSelectedSample from '../../paper/drawSelectedSample.js'
 
 export default {
@@ -20,32 +21,43 @@ export default {
     },
   },
   data: () => ({
-    editLayer: null,
+    frequenciesLayer: null,
     sampleLayer: null,
     scope: null,
   }),
   computed: {
     ...mapGetters([
-      'averagedFreqs',
-      'frequencyResponse',
+      'samplesShown',
       'selectedArea',
       'selectedSample',
+      'frequencyResponse',
     ]),
   },
   methods: {
     ...mapActions([
+      'selectSample',
       'mouseSelectSample',
     ]),
   },
   watch: {
+    samplesShown: {
+      handler(s) {
+        this.scope.activate()
+        drawEditWindow(s, this.scope)
+      }
+    },
     selectedArea: {
       handler(s) {
         this.scope.activate()
-        if (this.editLayer != null) {
-          this.editLayer.remove()
+        if (this.frequenciesLayer != null) {
+          this.frequenciesLayer.remove()
         }
-        this.editLayer = new this.scope.Layer()
-        drawEditWindow(s, this.scope)
+        this.frequenciesLayer = new this.scope.Layer()
+
+        const index = Math.floor((s.startIndex + s.endIndex) / 2)
+        this.selectSample(index)
+
+        drawFrequencies(s, this.scope)
       },
       deep: true
     },

@@ -26,7 +26,7 @@ export default {
   }),
   computed: {
     ...mapGetters([
-      'averagedFreqs',
+      'guideFrequencies',
       'selectedArea',
       'sequenceLength',
     ]),
@@ -37,7 +37,7 @@ export default {
     ]),
   },
   watch: {
-    averagedFreqs: {
+    guideFrequencies: {
       handler(f) {
         this.scope.activate()
 

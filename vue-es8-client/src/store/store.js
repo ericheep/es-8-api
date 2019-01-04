@@ -8,15 +8,13 @@ export const store = new Vuex.Store({
   state: {
     isConnected: '',
     sequencer: {
-      samples: [],
       length: 0,
-      frequencyResponse: [38.0, 24000.0],
       width: 300,
       samplesShown: 35,
+      frequencyResponse: [38.0, 24000.0],
     },
     selectedSample: {
       index: 0,
-      offsetIndex: 0,
       freq: 0,
     },
     selectedArea: {
@@ -24,13 +22,16 @@ export const store = new Vuex.Store({
       startIndex: 0,
       endIndex: 0,
     },
+    guide: {
+      frequencies: [],
+    },
   },
   getters: {
     samplesShown: state => {
       return state.sequencer.samplesShown
     },
     sequenceLength: state => {
-      return state.sequencer.samples.length
+      return state.sequencer.length
     },
     selectedArea: state => {
       return state.selectedArea
@@ -47,26 +48,16 @@ export const store = new Vuex.Store({
     selectedSampleIndex: state => {
       return state.selectedSample.index
     },
-    averagedFreqs: (state, getters) => {
-      if (state.sequencer.length > 0) {
-        const N = Math.floor(state.sequencer.length / state.sequencer.width)
-        const reducer = (acc, curr) => acc + curr
-
-        const averagedFreqs = []
-        const freqs = state.sequencer.samples.map((elem) => elem.freq)
-
-        for (var i = 0; i < state.sequencer.width; i++) {
-          const slice = freqs.slice(i * N, (i + 1) * N)
-          averagedFreqs[i] = slice.reduce(reducer) / slice.length
-        }
-
-        return averagedFreqs
-      }
+    guideFrequencies: state => {
+      return state.guide.frequencies
     }
   },
   mutations: {
     selectArea(state, selectedArea) {
-      state.selectedArea = selectedArea
+      state.selectedArea = {
+        ...state.selectedArea,
+        ...selectedArea,
+      }
     },
     selectSample(state, sample) {
       state.selectedSample = sample
@@ -89,15 +80,16 @@ export const store = new Vuex.Store({
       state.sequencer = {
         ...state.sequencer,
         ...sequencer,
-        length: sequencer.samples.length
       }
     },
     SOCKET_UPDATE_SELECTED_AREA_SAMPLES(state, samples) {
-      console.log(samples)
       state.selectedArea.samples = samples
     },
+    SOCKET_UPDATE_GUIDE_FREQUENCIES(state, frequencies) {
+      state.guide.frequencies = frequencies
+    },
     SOCKET_UPDATE_SAMPLE(state, sample) {
-      state.sequencer.samples[sample.index] = sample
+      // state.sequencer.samples[sample.index] = sample
     },
     SOCKET_CONNECT(state) {
       state.isConnected = true
@@ -107,8 +99,9 @@ export const store = new Vuex.Store({
     },
   },
   actions: {
-    updateSequencerWidth({ state, commit }, payload) {
-      commit('updateSequencerWidth', payload)
+    updateSequencerWidth({ state, commit, dispatch }, width) {
+      commit('updateSequencerWidth', width)
+      dispatch('emitGuideFrequencies', width)
     },
     mouseSelectArea({ state, dispatch, commit }, mouse) {
       const position = mouse.x / state.sequencer.width
@@ -128,30 +121,22 @@ export const store = new Vuex.Store({
         endIndex = state.sequencer.length
       }
 
-      // const samples = state.sequencer.samples.slice(startIndex, endIndex)
-      const selectedArea = {
-        startIndex,
-        endIndex,
-        // samples,
-      }
-      // commit('selectArea', selectedArea)
-      // dispatch('selectSample', middleIndex)
-      dispatch('emitSelectedArea', selectedArea)
+      commit('selectArea', { startIndex, endIndex })
+      dispatch('emitSelectedArea', { startIndex, endIndex })
     },
     mouseSelectSample({ dispatch, commit, state }, mouse) {
       const position = mouse.clientX / state.sequencer.width
       const offsetIndex = Math.floor(position * state.sequencer.samplesShown)
-      commit('selectSampleOffsetIndex', offsetIndex)
-
       const index = state.selectedArea.startIndex + offsetIndex
       dispatch('selectSample', index)
     },
     selectSample({ state, commit }, index) {
-      const freq = state.sequencer.samples[index].freq
+      // console.log(index, state.selectedArea.samples[0].index)
+      const freq = state.selectedArea.samples.find((el) => el.index === index).freq
+
       commit('selectSample', {
         index,
         freq,
-        offsetIndex: state.selectedArea.offsetIndex,
       })
     },
 
@@ -159,8 +144,11 @@ export const store = new Vuex.Store({
     updateSample(state, sample) {
       this._vm.$socket.emit('updateSample', sample)
     },
-    emitSelectedArea(state, sample) {
-      this._vm.$socket.emit('emitSelectedArea', sample)
+    emitSelectedArea(state, selectedArea) {
+      this._vm.$socket.emit('emitSelectedArea', selectedArea)
+    },
+    emitGuideFrequencies(state, width) {
+      this._vm.$socket.emit('emitGuideFrequencies', width)
     },
   }
 })

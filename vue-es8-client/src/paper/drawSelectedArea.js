@@ -11,7 +11,6 @@ export default (selectedArea, sequenceLength, paper) => {
   const selectedAreaRect = new paper.Path.Rectangle({
     size: [selectedAreaWidth, height - 2],
     center: [centerPixel, height * 0.5],
-    dashArray: [1, 2],
   })
-  selectedAreaRect.strokeColor = 'gray'
+  selectedAreaRect.fillColor = new paper.Color(0, 0, 0, 0.05)
 }

@@ -35,11 +35,28 @@ for (var i = 0; i < numSamples; i++) {
   })
 }
 
+
+const averagedFrequencies = (frequencies, width) => {
+  const averagedFreqs = []
+  const N = Math.floor(frequencies.length / width)
+  const reducer = (acc, curr) => acc + curr
+
+  for (var i = 0; i < width; i++) {
+    const slice = frequencies.slice(i * N, (i + 1) * N)
+    averagedFreqs[i] = slice.reduce(reducer) / slice.length
+  }
+
+  return averagedFreqs
+}
+
+const frequencies = samples.map((el) => el.freq)
+
 // 38hz to 24khz
 // frequency response of my Yamaha hs4s
 const sequencer = {
   frequencyResponse: [38.0, 24000.0],
-  samplesShown: 100,
+  samplesShown: 70,
+  length: frequencies.length,
 }
 
 io.on('connect', (socket) => {
@@ -77,13 +94,11 @@ io.on('connect', (socket) => {
   })
 
   socket.on('emitSelectedArea', (data) => {
-    const samples = sequencer.samples.slice(data.startIndex, data.endIndex)
-    io.emit('UPDATE_SELECTED_AREA_SAMPLES', samples)
+    io.emit('UPDATE_SELECTED_AREA_SAMPLES', samples.slice(data.startIndex, data.endIndex))
   })
 
-  socket.on('emitAveragedFreqs', (data) => {
-    const samples = sequencer.samples.slice(data.startIndex, data.endIndex)
-    io.emit('UPDATE_AVERAGED_FREQS', samples)
+  socket.on('emitGuideFrequencies', (width) => {
+    io.emit('UPDATE_GUIDE_FREQUENCIES', averagedFrequencies(frequencies, width))
   })
 })
 
