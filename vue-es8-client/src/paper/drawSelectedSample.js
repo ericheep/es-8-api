@@ -9,5 +9,5 @@ export default (selectedSample, selectedArea, paper) => {
     size: [sampleWidth, height],
     center: [sampleWidth * offsetIndex + sampleWidth / 2, height / 2],
   })
-  selectedSampleRect.fillColor = new paper.Color(0, 0, 0, 0.025)
+  selectedSampleRect.fillColor = new paper.Color(0.75, 0, 0, 0.125)
 }
