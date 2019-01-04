@@ -24,7 +24,7 @@ const io = require('socket.io')(server, {
   cookie: false
 })
 
-var numSamples = 4410;
+var numSamples = 44100;
 var samples = [];
 var scale = (24000.0 - 38.0) / numSamples
 
@@ -38,7 +38,6 @@ for (var i = 0; i < numSamples; i++) {
 // 38hz to 24khz
 // frequency response of my Yamaha hs4s
 const sequencer = {
-  samples: samples,
   frequencyResponse: [38.0, 24000.0],
   samplesShown: 100,
 }
@@ -75,6 +74,16 @@ io.on('connect', (socket) => {
         }
       ]
     }, '127.0.0.1', 12345)
+  })
+
+  socket.on('emitSelectedArea', (data) => {
+    const samples = sequencer.samples.slice(data.startIndex, data.endIndex)
+    io.emit('UPDATE_SELECTED_AREA_SAMPLES', samples)
+  })
+
+  socket.on('emitAveragedFreqs', (data) => {
+    const samples = sequencer.samples.slice(data.startIndex, data.endIndex)
+    io.emit('UPDATE_AVERAGED_FREQS', samples)
   })
 })
 

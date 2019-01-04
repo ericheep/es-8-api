@@ -53,7 +53,7 @@ export const store = new Vuex.Store({
         const reducer = (acc, curr) => acc + curr
 
         const averagedFreqs = []
-        const freqs = state.sequencer.samples.map((elem) => elem['freq'])
+        const freqs = state.sequencer.samples.map((elem) => elem.freq)
 
         for (var i = 0; i < state.sequencer.width; i++) {
           const slice = freqs.slice(i * N, (i + 1) * N)
@@ -92,6 +92,10 @@ export const store = new Vuex.Store({
         length: sequencer.samples.length
       }
     },
+    SOCKET_UPDATE_SELECTED_AREA_SAMPLES(state, samples) {
+      console.log(samples)
+      state.selectedArea.samples = samples
+    },
     SOCKET_UPDATE_SAMPLE(state, sample) {
       state.sequencer.samples[sample.index] = sample
     },
@@ -124,14 +128,15 @@ export const store = new Vuex.Store({
         endIndex = state.sequencer.length
       }
 
-      const samples = state.sequencer.samples.slice(startIndex, endIndex)
+      // const samples = state.sequencer.samples.slice(startIndex, endIndex)
       const selectedArea = {
         startIndex,
         endIndex,
-        samples,
+        // samples,
       }
-      commit('selectArea', selectedArea)
-      dispatch('selectSample', middleIndex)
+      // commit('selectArea', selectedArea)
+      // dispatch('selectSample', middleIndex)
+      dispatch('emitSelectedArea', selectedArea)
     },
     mouseSelectSample({ dispatch, commit, state }, mouse) {
       const position = mouse.clientX / state.sequencer.width
@@ -153,6 +158,9 @@ export const store = new Vuex.Store({
     // socket actions
     updateSample(state, sample) {
       this._vm.$socket.emit('updateSample', sample)
+    },
+    emitSelectedArea(state, sample) {
+      this._vm.$socket.emit('emitSelectedArea', sample)
     },
   }
 })
