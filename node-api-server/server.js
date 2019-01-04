@@ -25,12 +25,11 @@ const io = require('socket.io')(server, {
 })
 
 var numSamples = 4410;
-var sequence= [];
+var samples = [];
 var scale = (24000.0 - 38.0) / numSamples
 
 for (var i = 0; i < numSamples; i++) {
-  sequence.push({
-    channel: 0,
+  samples.push({
     index: i,
     freq: i * scale + 38.0,
   })
@@ -38,29 +37,29 @@ for (var i = 0; i < numSamples; i++) {
 
 // 38hz to 24khz
 // frequency response of my Yamaha hs4s
-const state = {
-  sequence,
+const sequencer = {
+  samples: samples,
   frequencyResponse: [38.0, 24000.0],
+  samplesShown: 25,
 }
 
 io.on('connect', (socket) => {
-  io.emit('state', state)
+  io.emit('UPDATE_SEQUENCER', sequencer)
   console.log('connected')
 
-  socket.on('changeSequence', (data) => {
+  socket.on('updateSample', (data) => {
     // store state
     sequence[data.index] = {
-      channel: data.channel,
       freq: data.freq,
       index: data.index,
     }
 
     // send back to clients
-    io.emit('changeSequence', data)
+    io.emit('updateSample', data)
 
     // send osc to ChucK
     udpPort.send({
-      address: '/changeSequence',
+      address: '/updateSample',
       args: [
         {
           type: 'i',
