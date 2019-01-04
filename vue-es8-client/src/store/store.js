@@ -131,13 +131,20 @@ export const store = new Vuex.Store({
       dispatch('selectSample', index)
     },
     selectSample({ state, commit }, index) {
-      // console.log(index, state.selectedArea.samples[0].index)
-      const freq = state.selectedArea.samples.find((el) => el.index === index).freq
+      if (state.selectedArea.samples.length > 0) {
+        const samples = state.selectedArea.samples
+        const startIndex = samples[0].index
+        const endIndex = samples[samples.length - 1].index
 
-      commit('selectSample', {
-        index,
-        freq,
-      })
+        if (index > startIndex && index < endIndex) {
+          const freq = state.selectedArea.samples.find((el) => el.index === index).freq
+
+          commit('selectSample', {
+            index,
+            freq,
+          })
+        }
+      }
     },
 
     // socket actions

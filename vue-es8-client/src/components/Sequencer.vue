@@ -24,7 +24,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'averagedSequence'
+      'averagedSequence',
     ]),
     paper: function() {
       return paper
@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'updateSequencerWidth'
+      'updateSequencerWidth',
     ]),
   },
   mounted() {
