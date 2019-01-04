@@ -108,9 +108,22 @@ export const store = new Vuex.Store({
     },
     mouseSelectArea({ state, dispatch, commit }, mouse) {
       const position = mouse.x / state.sequencer.width
-      const middleIndex = Math.floor(position * state.sequencer.length)
-      const startIndex = middleIndex - Math.floor(state.sequencer.samplesShown / 2)
-      const endIndex = startIndex + state.sequencer.samplesShown
+      let middleIndex = Math.floor(position * state.sequencer.length)
+      let startIndex = middleIndex - Math.floor(state.sequencer.samplesShown / 2)
+      let endIndex = startIndex + state.sequencer.samplesShown
+
+      if (startIndex < 0) {
+        startIndex = 0
+        middleIndex = Math.floor(state.sequencer.samplesShown / 2)
+        endIndex = startIndex + state.sequencer.samplesShown
+      }
+
+      if (endIndex >= state.sequencer.length) {
+        startIndex = state.sequencer.length - state.sequencer.samplesShown
+        middleIndex = state.sequencer.length - Math.floor(state.sequencer.samplesShown / 2)
+        endIndex = state.sequencer.length
+      }
+
       const samples = state.sequencer.samples.slice(startIndex, endIndex)
       const selectedArea = {
         startIndex,

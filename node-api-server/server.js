@@ -40,7 +40,7 @@ for (var i = 0; i < numSamples; i++) {
 const sequencer = {
   samples: samples,
   frequencyResponse: [38.0, 24000.0],
-  samplesShown: 25,
+  samplesShown: 100,
 }
 
 io.on('connect', (socket) => {
