@@ -1,6 +1,6 @@
 <template>
   <div>
-    <canvas @click='selectSample' id='editWindow'></canvas>
+    <canvas @click='mouseSelectSample' id='editWindow'></canvas>
   </div>
 </template>
 
@@ -21,29 +21,29 @@ export default {
   },
   data: () => ({
     editLayer: null,
+    sampleLayer: null,
     scope: null,
   }),
   computed: {
     ...mapGetters([
       'averagedFreqs',
+      'frequencyResponse',
       'selectedArea',
       'selectedSample',
     ]),
   },
   methods: {
     ...mapActions([
-      'selectSample',
+      'mouseSelectSample',
     ]),
   },
   watch: {
     selectedArea: {
       handler(s) {
         this.scope.activate()
-
         if (this.editLayer != null) {
           this.editLayer.remove()
         }
-
         this.editLayer = new this.scope.Layer()
         drawEditWindow(s, this.scope)
       },
@@ -51,13 +51,12 @@ export default {
     },
     selectedSample: {
       handler(s) {
-        console.log('watch selected sample')
         this.scope.activate()
         if (this.sampleLayer != null) {
           this.sampleLayer.remove()
         }
         this.sampleLayer = new this.scope.Layer()
-        drawSelectedSample(s, this.scope)
+        drawSelectedSample(s, this.selectedArea, this.scope)
       },
       deep: true
     }

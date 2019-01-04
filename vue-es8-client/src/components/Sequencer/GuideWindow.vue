@@ -1,6 +1,6 @@
 <template>
   <div>
-    <canvas @click='selectAreaPosition' id='guideWindow'></canvas>
+    <canvas @click='mouseSelectArea' id='guideWindow'></canvas>
   </div>
 </template>
 
@@ -28,11 +28,12 @@ export default {
     ...mapGetters([
       'averagedFreqs',
       'selectedArea',
+      'sequenceLength',
     ]),
   },
   methods: {
     ...mapActions([
-      'selectAreaPosition',
+      'mouseSelectArea',
     ]),
   },
   watch: {
@@ -49,7 +50,7 @@ export default {
       }
     },
     selectedArea: {
-      handler(s) {
+      handler(selectedArea) {
         this.scope.activate()
 
         if (this.selectedAreaLayer != null) {
@@ -57,7 +58,7 @@ export default {
         }
 
         this.selectedAreaLayer = new this.scope.Layer()
-        drawSelectedArea(s, this.scope)
+        drawSelectedArea(selectedArea, this.sequenceLength, this.scope)
       },
       deep: true
     },

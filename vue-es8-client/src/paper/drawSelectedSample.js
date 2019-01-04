@@ -1,12 +1,13 @@
-export default (s, paper) => {
-  const div = document.getElementById('guideWindow')
+export default (selectedSample, selectedArea, paper) => {
+  const div = document.getElementById('editWindow')
   const height = div.clientHeight
   const width = div.clientWidth
+  const sampleWidth = width / selectedArea.samples.length
+  const offsetIndex = selectedSample.index - selectedArea.startIndex
 
-  const selectedAreaRect = new paper.Path.Rectangle({
-    size: [s.width, height - 2],
-    center: [s.position * width, height * 0.5],
-    dashArray: [2, 2],
+  const selectedSampleRect = new paper.Path.Rectangle({
+    size: [sampleWidth, height],
+    center: [sampleWidth * offsetIndex + sampleWidth / 2, height / 2],
   })
-  selectedAreaRect.strokeColor = 'gray'
+  selectedSampleRect.fillColor = new paper.Color(0, 0, 0, 0.025)
 }

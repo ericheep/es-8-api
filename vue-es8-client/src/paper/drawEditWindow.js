@@ -1,6 +1,6 @@
 import { frequencyToPitch } from '../helpers.js'
 
-export default (partialSequence, paper) => {
+export default (selectedArea, paper) => {
   const div = document.getElementById('editWindow')
   const width = div.clientWidth
   const height = div.clientHeight
@@ -14,7 +14,7 @@ export default (partialSequence, paper) => {
   path.strokeColor = 'gray'
   path.strokeWidth = 8
 
-  const length = partialSequence.samples.length
+  const length = selectedArea.samples.length
   const sampleWidth = width / length
   for (var i = 0; i < length; i++) {
     const line = new paper.Path({
@@ -23,7 +23,7 @@ export default (partialSequence, paper) => {
     })
     line.dashArray = [1, 10]
 
-    const sample = partialSequence.samples[i]
+    const sample = selectedArea.samples[i]
     const pitch = frequencyToPitch(sample['freq'])
     const sampleRect = new paper.Path.Rectangle({
       size: [sampleWidth, scale * 2],

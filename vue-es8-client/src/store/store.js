@@ -7,23 +7,32 @@ export const store = new Vuex.Store({
   strict: true,
   state: {
     isConnected: '',
-    sequence: [],
-    freqs: [],
-    sequencerWidth: '',
-    editWidth: 35,
+    sequencer: {
+      samples: [],
+      length: 0,
+      frequencyResponse: [38.0, 24000.0],
+      width: 300,
+      samplesShown: 35,
+    },
     selectedSample: {
       index: 0,
+      offsetIndex: 0,
+      freq: 0,
     },
     selectedArea: {
-      width: 0,
-      position: 0,
       samples: [],
       startIndex: 0,
       endIndex: 0,
     },
   },
   getters: {
-    selectedArea: (state, getters) => {
+    samplesShown: state => {
+      return state.sequencer.samplesShown
+    },
+    sequenceLength: state => {
+      return state.sequencer.samples.length
+    },
+    selectedArea: state => {
       return state.selectedArea
     },
     selectedAreaStartIndex: state => {
@@ -32,26 +41,21 @@ export const store = new Vuex.Store({
     selectedAreaEndIndex: state => {
       return state.selectedArea.endIndex
     },
-    selectedSampleIndex: state => {
-      return state.selectedSample.index
-    },
     selectedSample: state => {
       return state.selectedSample
     },
-    selectedAreaWidth: state => {
-      return state.sequencerWidth / state.sequence.length * state.editWidth
-    },
-    freqs: state => {
-      return state.sequence.map((elem) => elem['freq'])
+    selectedSampleIndex: state => {
+      return state.selectedSample.index
     },
     averagedFreqs: (state, getters) => {
-      const freqs = getters.freqs
-      if (freqs.length > 0 && state.sequencerWidth > 0) {
-        const N = Math.floor(freqs.length / state.sequencerWidth)
+      if (state.sequencer.length > 0) {
+        const N = Math.floor(state.sequencer.length / state.sequencer.width)
         const reducer = (acc, curr) => acc + curr
 
         const averagedFreqs = []
-        for (var i = 0; i < state.sequencerWidth; i++) {
+        const freqs = state.sequencer.samples.map((elem) => elem['freq'])
+
+        for (var i = 0; i < state.sequencer.width; i++) {
           const slice = freqs.slice(i * N, (i + 1) * N)
           averagedFreqs[i] = slice.reduce(reducer) / slice.length
         }
@@ -61,33 +65,35 @@ export const store = new Vuex.Store({
     }
   },
   mutations: {
-    selectAreaPosition(state, payload) {
-      state.selectedArea.position = payload
+    selectArea(state, selectedArea) {
+      state.selectedArea = selectedArea
     },
-    selectAreaSamples(state, payload) {
-      state.selectedArea.samples = payload
+    selectSample(state, sample) {
+      state.selectedSample = sample
     },
-    selectAreaStartIndex(state, payload) {
-      state.selectedArea.startIndex = payload
+    selectSampleOffsetIndex(state, offsetIndex) {
+      state.selectedSample = {
+        ...state.selectedSample,
+        offsetIndex
+      }
     },
-    selectAreaEndIndex(state, payload) {
-      state.selectedArea.endIndex = payload
-    },
-    selectSample(state, payload) {
-      state.selectedSample = payload
-    },
-    updateSequencerWidth(state, payload) {
-      state.sequencerWidth = payload
+    updateSequencerWidth(state, width) {
+      state.sequencer = {
+        ...state.sequencer.width,
+        width
+      }
     },
 
     // socket mutations
-    SOCKET_STATE(state, payload) {
-      state.sequence = payload.sequence
-      state.frequencyResponse = payload.frequencyResponse
-      state.selectedArea.width = state.sequencerWidth / state.sequence.length * state.editWidth
+    SOCKET_UPDATE_SEQUENCER(state, sequencer) {
+      state.sequencer = {
+        ...state.sequencer,
+        ...sequencer,
+        length: sequencer.samples.length
+      }
     },
-    SOCKET_CHANGE_SEQUENCE(state, sample) {
-      state.sequence[sample.index] = sample
+    SOCKET_UPDATE_SAMPLE(state, sample) {
+      state.sequencer.samples[sample.index] = sample
     },
     SOCKET_CONNECT(state) {
       state.isConnected = true
@@ -100,28 +106,40 @@ export const store = new Vuex.Store({
     updateSequencerWidth({ state, commit }, payload) {
       commit('updateSequencerWidth', payload)
     },
-    selectAreaPosition({ state, commit }, payload) {
-      const position = payload.x / state.sequencerWidth
-      commit('selectAreaPosition', position)
-
-      const middleIndex = Math.floor(position * state.sequence.length)
-      const startIndex = middleIndex - Math.floor(state.editWidth / 2)
-      const endIndex = startIndex + state.editWidth
-      commit('selectAreaStartIndex', startIndex)
-      commit('selectAreaEndIndex', endIndex)
-      commit('selectAreaSamples', state.sequence.slice(startIndex, endIndex))
+    mouseSelectArea({ state, dispatch, commit }, mouse) {
+      const position = mouse.x / state.sequencer.width
+      const middleIndex = Math.floor(position * state.sequencer.length)
+      const startIndex = middleIndex - Math.floor(state.sequencer.samplesShown / 2)
+      const endIndex = startIndex + state.sequencer.samplesShown
+      const samples = state.sequencer.samples.slice(startIndex, endIndex)
+      const selectedArea = {
+        startIndex,
+        endIndex,
+        samples,
+      }
+      commit('selectArea', selectedArea)
+      dispatch('selectSample', middleIndex)
     },
-    selectSample({ state, commit }, payload) {
-      const offsetIndex = Math.floor(payload.clientX / state.sequencerWidth * state.editWidth)
-      commit('selectSample', state.sequence[state.selectedArea.startIndex + offsetIndex])
+    mouseSelectSample({ dispatch, commit, state }, mouse) {
+      const position = mouse.clientX / state.sequencer.width
+      const offsetIndex = Math.floor(position * state.sequencer.samplesShown)
+      commit('selectSampleOffsetIndex', offsetIndex)
+
+      const index = state.selectedArea.startIndex + offsetIndex
+      dispatch('selectSample', index)
+    },
+    selectSample({ state, commit }, index) {
+      const freq = state.sequencer.samples[index].freq
+      commit('selectSample', {
+        index,
+        freq,
+        offsetIndex: state.selectedArea.offsetIndex,
+      })
     },
 
     // socket actions
-    changeSequence(state, payload) {
-      this._vm.$socket.emit('changeSequence', payload)
-    },
-    changeView(state, payload) {
-      this._vm.$socket.emit('changeView', payload)
+    updateSample(state, sample) {
+      this._vm.$socket.emit('updateSample', sample)
     },
   }
 })
