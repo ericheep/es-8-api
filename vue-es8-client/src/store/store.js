@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+// import { frequencyToNote } from '../helpers.js'
+
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
@@ -84,6 +86,7 @@ export const store = new Vuex.Store({
     },
     SOCKET_UPDATE_SELECTED_AREA_SAMPLES(state, samples) {
       state.selectedArea.samples = samples
+      // state.selectedArea.samples= frequencies.map((freq) => frequencyToNote(freq))
     },
     SOCKET_UPDATE_GUIDE_FREQUENCIES(state, frequencies) {
       state.guide.frequencies = frequencies
