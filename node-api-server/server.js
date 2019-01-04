@@ -71,7 +71,7 @@ io.on('connect', (socket) => {
     }
 
     // send back to clients
-    io.emit('updateSample', data)
+    io.emit('UPDATE_SAMPLE', data)
 
     // send osc to ChucK
     udpPort.send({
