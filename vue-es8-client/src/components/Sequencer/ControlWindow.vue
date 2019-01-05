@@ -6,8 +6,8 @@
     <div id="center">
       <div>
         Sample: {{ selectedSample.index }}
-        Freq: {{ selectedSample.freq }}
-        Pitch: {{ selectedSample.pitch }}
+        Freq: {{ selectedSample.freq.toFixed(2) }}
+        Pitch: {{ pitch}}
       </div>
       <div>Modified by 242.142.132.041 on 01/01/2019</div>
     </div>
@@ -29,9 +29,12 @@ export default {
       'selectedAreaEndIndex',
       'selectedSample',
     ]),
-  },
-  methods: {
-  },
+    pitch: function() {
+      return this.selectedSample.pitch.latin +
+      this.selectedSample.pitch.octave +
+      Math.round((this.selectedSample.pitch.cents * 100))
+    }
+  }
 }
 </script>
 

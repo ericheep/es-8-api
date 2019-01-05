@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-// import { frequencyToNote } from '../helpers.js'
+import { frequencyToNote } from '../helpers.js'
 
 Vue.use(Vuex)
 
@@ -18,6 +18,7 @@ export const store = new Vuex.Store({
     selectedSample: {
       index: 0,
       freq: 0,
+      pitch: 0,
     },
     selectedArea: {
       samples: [],
@@ -62,7 +63,12 @@ export const store = new Vuex.Store({
       }
     },
     selectSample(state, sample) {
-      state.selectedSample = sample
+      const pitch = frequencyToNote(state.selectedSample.freq)
+
+      state.selectedSample = {
+        ...sample,
+        pitch,
+      }
     },
     selectSampleOffsetIndex(state, offsetIndex) {
       state.selectedSample = {
