@@ -8,6 +8,7 @@ export default (selectedSample, selectedArea, paper) => {
   const selectedSampleRect = new paper.Path.Rectangle({
     size: [sampleWidth, height],
     center: [sampleWidth * offsetIndex + sampleWidth / 2, height / 2],
+    strokeWidth: 2,
   })
-  selectedSampleRect.fillColor = new paper.Color(0.75, 0, 0, 0.125)
+  selectedSampleRect.strokeColor = 'black'
 }

@@ -1,11 +1,12 @@
 export default (samplesShown, paper) => {
   const div = document.getElementById('editWindow')
+  console.log(div)
   const width = div.clientWidth
   const height = div.clientHeight
 
   const path = new paper.Path.Rectangle(0, 0, width, height)
-  path.strokeColor = 'gray'
-  path.strokeWidth = 8
+  path.strokeColor = 'black'
+  path.strokeWidth = 6
 
   const length = samplesShown
   const sampleWidth = width / length
@@ -16,8 +17,13 @@ export default (samplesShown, paper) => {
     })
     line.dashArray = [1, 10]
 
+    let widthSubtract = 0
+    if (i === 0 || i === length - 1) {
+      widthSubtract = 8
+    }
+
     const highlight = new paper.Path.Rectangle({
-      size: [sampleWidth, height - 8],
+      size: [sampleWidth - widthSubtract, height - 8],
       center: [i * sampleWidth + sampleWidth / 2, height / 2],
       fillColor: 'white',
     })
