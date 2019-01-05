@@ -27,12 +27,17 @@ const io = require('socket.io')(server, {
 var numSamples = 44100;
 var samples = [];
 var scale = (24000.0 - 38.0) / numSamples
+var harmonic = 55.0
 
 for (var i = 0; i < numSamples; i++) {
   samples.push({
     index: i,
-    freq: i * scale + 38.0,
+    freq: harmonic,
   })
+  harmonic *= 2
+  if (harmonic >= 24000) {
+    harmonic = 55.0
+  }
 }
 
 
