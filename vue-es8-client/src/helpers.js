@@ -9,10 +9,15 @@ export const pitchToFrequency = (pitch) => {
 export const frequencyToNote = (freq) => {
   const latins = ['A', 'Bb', 'B', 'C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab']
   const pitch = frequencyToPitch(freq)
+  let cents = ((pitch % 1) * 100).toFixed(4)
+  let pitchAdjust = 0
 
-  const octave = Math.floor((pitch - 12) / 12)
-  const latin = latins[Math.floor((pitch - 9) % 12)]
-  const cents = (pitch % 1).toFixed(4)
+  if (cents >= 50) {
+    cents = -(100 - cents)
+    pitchAdjust = 1
+  }
+  const octave = Math.floor((pitch + pitchAdjust - 12) / 12)
+  const latin = latins[Math.floor((pitch + pitchAdjust - 9) % 12)]
 
   return {
     latin,

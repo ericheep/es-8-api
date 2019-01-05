@@ -53,6 +53,9 @@ export const store = new Vuex.Store({
     },
     guideFrequencies: state => {
       return state.guide.frequencies
+    },
+    frequencyResponse: state => {
+      return state.sequencer.frequencyResponse
     }
   },
   mutations: {

@@ -1,10 +1,9 @@
 import { frequencyToPitch } from '../helpers.js'
 
-export default (freqs, paper) => {
+export default (freqs, frequencyResponse, paper) => {
   const div = document.getElementById('guideWindow')
   const width = div.clientWidth
   const height = div.clientHeight
-  const frequencyResponse = [38.0, 24000.0]
 
   const pitches = freqs.map(frequencyToPitch)
   const [pitchLo, pitchHi] = frequencyResponse.map(frequencyToPitch)

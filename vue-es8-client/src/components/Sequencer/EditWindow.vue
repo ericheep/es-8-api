@@ -57,7 +57,7 @@ export default {
         const index = Math.floor((s.startIndex + s.endIndex) / 2)
         this.selectSample(index)
 
-        drawFrequencies(s, this.scope)
+        drawFrequencies(s, this.frequencyResponse, this.scope)
       },
       deep: true
     },

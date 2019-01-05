@@ -29,6 +29,7 @@ export default {
       'guideFrequencies',
       'selectedArea',
       'sequenceLength',
+      'frequencyResponse',
     ]),
   },
   methods: {
@@ -46,7 +47,7 @@ export default {
         }
 
         this.guideLayer = new this.scope.Layer()
-        drawGuideWindow(f, this.scope)
+        drawGuideWindow(f, this.frequencyResponse, this.scope)
       }
     },
     selectedArea: {

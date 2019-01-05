@@ -1,10 +1,9 @@
 import { frequencyToPitch } from '../helpers.js'
 
-export default (selectedArea, paper) => {
+export default (selectedArea, frequencyResponse, paper) => {
   const div = document.getElementById('editWindow')
   const width = div.clientWidth
   const height = div.clientHeight
-  const frequencyResponse = [38.0, 24000.0]
 
   const [pitchLo, pitchHi] = frequencyResponse.map(frequencyToPitch)
   const range = pitchHi - pitchLo
