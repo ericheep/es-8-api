@@ -44,7 +44,8 @@ export default {
 
 <style scoped>
 #sequencer {
-  width: 100%;
+  width: 90%;
   height: 500px;
+  margin-left: 5%;
 }
 </style>

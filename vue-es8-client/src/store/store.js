@@ -116,7 +116,8 @@ export const store = new Vuex.Store({
       dispatch('emitGuideFrequencies', width)
     },
     mouseSelectArea({ state, dispatch, commit }, mouse) {
-      const position = mouse.x / state.sequencer.width
+      console.log(mouse.screenX, mouse.x)
+      const position = mouse.screenX / state.sequencer.width
       let middleIndex = Math.floor(position * state.sequencer.length)
       let startIndex = middleIndex - Math.floor(state.sequencer.samplesShown / 2)
       let endIndex = startIndex + state.sequencer.samplesShown
