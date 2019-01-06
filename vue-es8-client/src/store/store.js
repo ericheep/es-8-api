@@ -81,6 +81,9 @@ export const store = new Vuex.Store({
     },
   },
   actions: {
+    commitPrimedSample({ state, commit }, event) {
+      console.log('commit')
+    },
     updatePrimedSampleFrequency({ state, commit }, event) {
       const isValid = RegExp(/^-?\d+\.?\d*$/).test(event.target.value)
       if (isValid) {

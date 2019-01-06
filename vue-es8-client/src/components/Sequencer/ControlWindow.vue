@@ -1,5 +1,9 @@
 <template>
   <div id="control-window">
+    <ConfirmationModal
+      v-show="isModalVisible"
+      @close="closeConfirmationModal"
+    />
     <div id="left-side">
       <div>
         <div class="left-items">
@@ -39,7 +43,7 @@
         </div>
       </div>
       <div>
-        <button>Commit</button>
+        <button @click="showConfirmationModal">Commit</button>
       </div>
     </div>
   </div>
@@ -47,14 +51,19 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import ConfirmationModal from '../Modals/ConfirmationModal'
 
 export default {
   name: 'ControlWindow',
+  components: {
+    ConfirmationModal,
+  },
   data: () => ({
     frequencyInput: 0,
     pitchInput: 0,
     octaveInput: 0,
     centsInput: 0,
+    isModalVisible: false,
   }),
   computed: {
     ...mapGetters([
@@ -73,7 +82,15 @@ export default {
       'updatePrimedSamplePitchClass',
       'updatePrimedSampleOctave',
       'updatePrimedSampleCents',
+      'showConfirmationModal',
+      'commit',
     ]),
+    showConfirmationModal() {
+      this.isModalVisible = true
+    },
+    closeConfirmationModal() {
+      this.isModalVisible = false
+    }
   },
   watch: {
     primedSampleFrequency: {
@@ -133,11 +150,14 @@ button {
   height: 89%;
   width: 110px;
   background-color: white;
-  font: normal 22px inconsolata;
+  font: normal 16px inconsolata;
 }
 button:hover {
   background-color: black;
   color: white;
+}
+button:active {
+  padding: 8px 13px 6px;
 }
 .left-items {
   justify-content: flex-start;
