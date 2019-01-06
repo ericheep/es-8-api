@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import { frequencyToNote } from '../helpers.js'
+import { frequencyToPitch, pitchToFrequency } from '../helpers.js'
 
 Vue.use(Vuex)
 
@@ -18,7 +18,20 @@ export const store = new Vuex.Store({
     selectedSample: {
       index: 0,
       freq: 0,
-      pitch: 0,
+      pitch: {
+        pitchClass: '',
+        octave: 0,
+        cents: '',
+      },
+    },
+    primedSample: {
+      index: 0,
+      freq: 0,
+      pitch: {
+        pitchClass: '',
+        octave: 0,
+        cents: '',
+      },
     },
     selectedArea: {
       samples: [],
@@ -56,67 +69,65 @@ export const store = new Vuex.Store({
     },
     frequencyResponse: state => {
       return state.sequencer.frequencyResponse
-    }
-  },
-  mutations: {
-    selectArea(state, selectedArea) {
-      state.selectedArea = {
-        ...state.selectedArea,
-        ...selectedArea,
-      }
     },
-    selectSample(state, sample) {
-      const pitch = frequencyToNote(state.selectedSample.freq)
-
-      state.selectedSample = {
-        ...sample,
-        pitch,
-      }
+    primedSampleFrequency: state => {
+      return state.primedSample.freq
     },
-    selectSampleOffsetIndex(state, offsetIndex) {
-      state.selectedSample = {
-        ...state.selectedSample,
-        offsetIndex
-      }
+    primedSamplePitch: state => {
+      return state.primedSample.pitch
     },
-    updateSequencerWidth(state, width) {
-      state.sequencer = {
-        ...state.sequencer.width,
-        width
-      }
-    },
-
-    // socket mutations
-    SOCKET_UPDATE_SEQUENCER(state, sequencer) {
-      state.sequencer = {
-        ...state.sequencer,
-        ...sequencer,
-      }
-    },
-    SOCKET_UPDATE_SELECTED_AREA_SAMPLES(state, samples) {
-      state.selectedArea.samples = samples
-      // state.selectedArea.samples= frequencies.map((freq) => frequencyToNote(freq))
-    },
-    SOCKET_UPDATE_GUIDE_FREQUENCIES(state, frequencies) {
-      state.guide.frequencies = frequencies
-    },
-    SOCKET_UPDATE_SAMPLE(state, sample) {
-      // state.sequencer.samples[sample.index] = sample
-    },
-    SOCKET_CONNECT(state) {
-      state.isConnected = true
-    },
-    SOCKET_DISCONNECT(state) {
-      state.isConnected = false
+    primedSample: state => {
+      return state.primedSample
     },
   },
   actions: {
+    updatePrimedSampleFrequency({ state, commit }, event) {
+      const isValid = RegExp(/^-?\d+\.?\d*$/).test(event.target.value)
+      if (isValid) {
+        commit('UPDATE_PRIMED_SAMPLE_FREQUENCY', event.target.value)
+      }
+    },
+    updatePrimedSamplePitch({ state, commit }, pitch) {
+      commit('UPDATE_PRIMED_SAMPLE_PITCH', pitch)
+    },
+    updatePrimedSamplePitchClass({ state, commit }, event) {
+      const pitch = {
+        pitchClass: event.target.value,
+        octave: state.primedSample.pitch.octave,
+        cents: state.primedSample.pitch.cents,
+      }
+
+      commit('UPDATE_PRIMED_SAMPLE_PITCH', pitch)
+    },
+    updatePrimedSampleOctave({ state, commit }, event) {
+      const isValid = RegExp(/^\d+$/).test(event.target.value)
+
+      if (isValid) {
+        const pitch = {
+          pitchClass: state.primedSample.pitch.pitchClass,
+          octave: event.target.value,
+          cents: state.primedSample.pitch.cents,
+        }
+        commit('UPDATE_PRIMED_SAMPLE_PITCH', pitch)
+      }
+    },
+    updatePrimedSampleCents({ state, commit }, event) {
+      const isValid = RegExp(/^-?\d+\.?\d*$/).test(event.target.value)
+
+      if (isValid) {
+        const pitch = {
+          pitchClass: state.primedSample.pitch.pitchClass,
+          octave: state.primedSample.pitch.octave,
+          cents: event.target.value,
+        }
+        commit('UPDATE_PRIMED_SAMPLE_PITCH', pitch)
+      }
+    },
     updateSequencerWidth({ state, commit, dispatch }, width) {
-      commit('updateSequencerWidth', width)
+      commit('UPDATE_SEQUENCER_WIDTH', width)
       dispatch('emitGuideFrequencies', width)
     },
     mouseSelectArea({ state, dispatch, commit }, mouse) {
-      console.log(mouse.screenX, mouse.x)
       const position = mouse.screenX / state.sequencer.width
       let middleIndex = Math.floor(position * state.sequencer.length)
       let startIndex = middleIndex - Math.floor(state.sequencer.samplesShown / 2)
@@ -134,7 +145,7 @@ export const store = new Vuex.Store({
         endIndex = state.sequencer.length
       }
 
-      commit('selectArea', { startIndex, endIndex })
+      commit('UPDATE_SELECTED_AREA', { startIndex, endIndex })
       dispatch('emitSelectedArea', { startIndex, endIndex })
     },
     mouseSelectSample({ dispatch, commit, state }, mouse) {
@@ -151,11 +162,7 @@ export const store = new Vuex.Store({
 
         if (index > startIndex && index < endIndex) {
           const freq = state.selectedArea.samples.find((el) => el.index === index).freq
-
-          commit('selectSample', {
-            index,
-            freq,
-          })
+          commit('UPDATE_SELECTED_SAMPLE', { index, freq })
         }
       }
     },
@@ -170,5 +177,61 @@ export const store = new Vuex.Store({
     emitGuideFrequencies(state, width) {
       this._vm.$socket.emit('emitGuideFrequencies', width)
     },
-  }
+  },
+  mutations: {
+    UPDATE_SELECTED_AREA(state, selectedArea) {
+      state.selectedArea = {
+        ...state.selectedArea,
+        ...selectedArea,
+      }
+    },
+    UPDATE_SELECTED_SAMPLE(state, { index, freq }) {
+      state.selectedSample = {
+        freq: freq,
+        index: index,
+        pitch: frequencyToPitch(freq),
+      }
+      state.primedSample = {
+        freq: freq,
+        index: index,
+        pitch: frequencyToPitch(freq),
+      }
+    },
+    UPDATE_PRIMED_SAMPLE_FREQUENCY(state, freq) {
+      state.primedSample = {
+        freq: freq,
+        pitch: frequencyToPitch(freq),
+        index: state.selectedSample.index,
+      }
+    },
+    UPDATE_PRIMED_SAMPLE_PITCH(state, pitch) {
+      state.primedSample.pitch = pitch
+      state.primedSample.freq = pitchToFrequency(pitch)
+    },
+    UPDATE_SEQUENCER_WIDTH(state, width) {
+      state.sequencer.width = width
+    },
+    SOCKET_UPDATE_SEQUENCER(state, sequencer) {
+      state.sequencer = {
+        ...state.sequencer,
+        ...sequencer,
+      }
+    },
+    SOCKET_UPDATE_SELECTED_AREA_SAMPLES(state, samples) {
+      state.selectedArea.samples = samples
+    },
+    SOCKET_UPDATE_GUIDE_FREQUENCIES(state, frequencies) {
+      state.guide.frequencies = frequencies
+    },
+    SOCKET_UPDATE_SAMPLE(state, sample) {
+      // state.sequencer.samples[sample.index] = sample
+    },
+    SOCKET_CONNECT(state) {
+      state.isConnected = true
+    },
+    SOCKET_DISCONNECT(state) {
+      state.isConnected = false
+    },
+  },
+
 })
