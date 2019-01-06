@@ -1,41 +1,45 @@
 <template>
-  <div id="controlWindow">
-    <div id="left">
-      <div id="top-center">
-      <div class="left-items">
-        Modified by 242.142.132.041 on 01/01/2019
-      </div>
-      </div>
+  <div id="control-window">
+    <div id="left-side">
+      <div>
+        <div class="left-items">
+          Modified by 242.142.132.041 on 01/01/2019
+        </div>
         <div class="left-items">
           Sample: {{ selectedSample.index }}
         </div>
+      </div>
     </div>
-
-    <div id="right">
-      <div class="right-items">
-        <div>Frequency:
-          <input
-            v-model="frequencyInput"
-            @input="updatePrimedSampleFrequency"
-            style="width:65px"
-            placeholder="hz"
-          >
+    <div id="right-side">
+      <div>
+        <div class="right-items">
+          <div>Frequency:
+            <input
+              v-model="frequencyInput"
+              @input="updatePrimedSampleFrequency"
+              style="width:65px"
+              placeholder="hz"
+              >
+          </div>
+        </div>
+        <div class="right-items">
+          <div class="input-right">Pitch:
+            <select v-model="pitchInput" @change="updatePrimedSamplePitchClass">
+              <option>A</option> <option>Bb</option> <option>B</option> <option>C</option>
+              <option>Db</option> <option>D</option> <option>Eb</option> <option>E</option>
+              <option>F</option> <option>F#</option> <option>G</option> <option>Ab</option>
+            </select>
+          </div>
+          <div class="input-right">Octave:
+            <input v-model="octaveInput" style="width:24px" @input="updatePrimedSampleOctave">
+          </div>
+          <div class="input-right">Cents:
+            <input v-model="centsInput" style="width:24px" @input="updatePrimedSampleCents">
+          </div>
         </div>
       </div>
-      <div class="right-items">
-        <div class="input-right">Pitch:
-          <select v-model="pitchInput" @change="updatePrimedSamplePitchClass">
-            <option>A</option> <option>Bb</option> <option>B</option> <option>C</option>
-            <option>Db</option> <option>D</option> <option>Eb</option> <option>E</option>
-            <option>F</option> <option>F#</option> <option>G</option> <option>Ab</option>
-          </select>
-        </div>
-        <div class="input-right">Octave:
-          <input v-model="octaveInput" style="width:24px" @input="updatePrimedSampleOctave">
-        </div>
-        <div class="input-right">Cents:
-          <input v-model="centsInput" style="width:24px" @input="updatePrimedSampleCents">
-        </div>
+      <div>
+        <button>Commit</button>
       </div>
     </div>
   </div>
@@ -104,21 +108,36 @@ export default {
 </script>
 
 <style scoped>
-#controlWindow {
+#control-window {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-between;
   width: 100%;
 }
-#center {
-  /*width: 45%;*/
-  text-align: center;
-}
-#top-center {
+#left-side {
   display: flex;
-  justify-content: space-between;
   flex-direction: row;
+  justify-content: flex-start;
+}
+#right-side {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+button {
+  margin-left: 10px;
+  margin-top: 3px;
+  border: dotted;
+  border-width: 1px;
+  height: 89%;
+  width: 110px;
+  background-color: white;
+  font: normal 22px inconsolata;
+}
+button:hover {
+  background-color: black;
+  color: white;
 }
 .left-items {
   justify-content: flex-start;
