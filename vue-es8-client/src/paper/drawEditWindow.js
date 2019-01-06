@@ -1,6 +1,5 @@
 export default (samplesShown, paper) => {
   const div = document.getElementById('editWindow')
-  console.log(div)
   const width = div.clientWidth
   const height = div.clientHeight
 

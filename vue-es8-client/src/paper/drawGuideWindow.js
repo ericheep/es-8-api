@@ -1,12 +1,12 @@
-import { frequencyToPitch } from '../helpers.js'
+import { frequencyToMIDIPitch } from '../helpers.js'
 
 export default (freqs, frequencyResponse, paper) => {
   const div = document.getElementById('guideWindow')
   const width = div.clientWidth
   const height = div.clientHeight
 
-  const pitches = freqs.map(frequencyToPitch)
-  const [pitchLo, pitchHi] = frequencyResponse.map(frequencyToPitch)
+  const pitches = freqs.map(frequencyToMIDIPitch)
+  const [pitchLo, pitchHi] = frequencyResponse.map(frequencyToMIDIPitch)
   const range = pitchHi - pitchLo
   const scale = height / range
 
