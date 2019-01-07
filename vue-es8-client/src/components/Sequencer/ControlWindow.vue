@@ -10,6 +10,12 @@
           Modified by 242.142.132.041 on 01/01/2019
         </div>
         <div class="left-items">
+          <button class="arrow-button" @click="leftArrowClick">
+            &larr;
+          </button>
+          <button class="arrow-button" @click="rightArrowClick">
+            &rarr;
+          </button>
           Sample: {{ selectedSample.index }}
         </div>
       </div>
@@ -43,7 +49,7 @@
         </div>
       </div>
       <div>
-        <button @click="showConfirmationModal">Commit</button>
+        <button class="commit-button" @click="showConfirmationModal">Commit</button>
       </div>
     </div>
   </div>
@@ -83,6 +89,8 @@ export default {
       'updatePrimedSampleOctave',
       'updatePrimedSampleCents',
       'showConfirmationModal',
+      'leftArrowClick',
+      'rightArrowClick',
       'commit',
     ]),
     showConfirmationModal() {
@@ -143,12 +151,8 @@ export default {
   justify-content: flex-end;
 }
 button {
-  margin-left: 10px;
-  margin-top: 3px;
   border: dotted;
   border-width: 1px;
-  height: 89%;
-  width: 110px;
   background-color: white;
   font: normal 16px inconsolata;
 }
@@ -156,8 +160,14 @@ button:hover {
   background-color: black;
   color: white;
 }
-button:active {
+.commit-button:active {
   padding: 8px 13px 6px;
+}
+.commit-button {
+  margin-left: 10px;
+  margin-top: 3px;
+  height: 89%;
+  width: 110px;
 }
 .left-items {
   justify-content: flex-start;
@@ -176,5 +186,11 @@ button:active {
 }
 .input-right {
   margin-left: 15px;
+}
+.arrow-button {
+  text-align: center;
+  width: 40px;
+  height: 30px;
+  margin-right: 6px;
 }
 </style>

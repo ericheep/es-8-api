@@ -57,9 +57,9 @@ export default {
       const pitchClass = this.selectedSample.pitch.pitchClass
       const octave = this.selectedSample.pitch.octave
       const cents = Math.round(this.selectedSample.pitch.cents)
-      let operator = '+'
-      if (cents < 0) {
-        operator = '-'
+      let operator = ''
+      if (cents >= 0) {
+        operator = '+'
       }
       return pitchClass + octave + ' ' + operator + cents
     },

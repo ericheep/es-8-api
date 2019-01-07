@@ -84,6 +84,30 @@ export const store = new Vuex.Store({
     commitPrimedSample({ state, commit }, event) {
       console.log('commit')
     },
+    leftArrowClick({ state, commit, dispatch }, event) {
+      let startIndex = state.selectedArea.startIndex - state.sequencer.samplesShown
+      let endIndex = state.selectedArea.endIndex - state.sequencer.samplesShown
+
+      if (startIndex < 0) {
+        startIndex = 0
+        endIndex = startIndex + state.sequencer.samplesShown
+      }
+
+      commit('UPDATE_SELECTED_AREA', { startIndex, endIndex })
+      dispatch('emitSelectedArea', { startIndex, endIndex })
+    },
+    rightArrowClick({ state, commit, dispatch }, event) {
+      let startIndex = state.selectedArea.startIndex + state.sequencer.samplesShown
+      let endIndex = state.selectedArea.endIndex + state.sequencer.samplesShown
+
+      if (endIndex >= state.sequencer.length) {
+        startIndex = state.sequencer.length - state.sequencer.samplesShown
+        endIndex = state.sequencer.length
+      }
+
+      commit('UPDATE_SELECTED_AREA', { startIndex, endIndex })
+      dispatch('emitSelectedArea', { startIndex, endIndex })
+    },
     updatePrimedSampleFrequency({ state, commit }, event) {
       const isValid = RegExp(/^-?\d+\.?\d*$/).test(event.target.value)
       if (isValid) {

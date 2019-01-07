@@ -100,6 +100,6 @@ export default {
 <style scoped>
 #editWindow, div {
   width: 100%;
-  height: 300px;
+  height: 500px;
 }
 </style>
