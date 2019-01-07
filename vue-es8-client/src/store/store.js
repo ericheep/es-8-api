@@ -87,7 +87,7 @@ export const store = new Vuex.Store({
     updatePrimedSampleFrequency({ state, commit }, event) {
       const isValid = RegExp(/^-?\d+\.?\d*$/).test(event.target.value)
       if (isValid) {
-        commit('UPDATE_PRIMED_SAMPLE_FREQUENCY', event.target.value)
+        commit('UPDATE_PRIMED_SAMPLE_FREQUENCY', parseFloat(event.target.value))
       }
     },
     updatePrimedSamplePitch({ state, commit }, pitch) {
@@ -131,7 +131,8 @@ export const store = new Vuex.Store({
       dispatch('emitGuideFrequencies', width)
     },
     mouseSelectArea({ state, dispatch, commit }, mouse) {
-      const position = mouse.screenX / state.sequencer.width
+      const x = mouse.layerX - mouse.originalTarget.offsetLeft
+      const position = x / state.sequencer.width
       let middleIndex = Math.floor(position * state.sequencer.length)
       let startIndex = middleIndex - Math.floor(state.sequencer.samplesShown / 2)
       let endIndex = startIndex + state.sequencer.samplesShown
@@ -152,7 +153,8 @@ export const store = new Vuex.Store({
       dispatch('emitSelectedArea', { startIndex, endIndex })
     },
     mouseSelectSample({ dispatch, commit, state }, mouse) {
-      const position = mouse.clientX / state.sequencer.width
+      const x = mouse.layerX - mouse.originalTarget.offsetLeft
+      const position = x / state.sequencer.width
       const offsetIndex = Math.floor(position * state.sequencer.samplesShown)
       const index = state.selectedArea.startIndex + offsetIndex
       dispatch('selectSample', index)
@@ -163,7 +165,7 @@ export const store = new Vuex.Store({
         const startIndex = samples[0].index
         const endIndex = samples[samples.length - 1].index
 
-        if (index > startIndex && index < endIndex) {
+        if (index >= startIndex && index <= endIndex) {
           const freq = state.selectedArea.samples.find((el) => el.index === index).freq
           commit('UPDATE_SELECTED_SAMPLE', { index, freq })
         }
