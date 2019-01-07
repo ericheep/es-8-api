@@ -113,21 +113,6 @@ export default {
         this.frequencyInput = this.primedSample.freq
       }
     },
-    selectedSample: {
-      handler(s) {
-        this.frequencyInput = s.freq
-        this.pitchInput = s.pitch.pitchClass
-        this.octaveInput = s.pitch.octave
-        this.centsInput = Math.round(s.pitch.cents)
-
-        this.updatePrimedSamplePitch({
-          pitchClass: this.pitchInput,
-          octave: this.octaveInput,
-          cents: this.centsInput,
-        })
-      },
-      deep: true
-    },
   },
 }
 </script>

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import { frequencyToPitch, pitchToFrequency } from '../helpers.js'
+import { frequencyToPitch, frequencyToMIDIPitch, MIDIPitchToFrequency, pitchToFrequency } from '../helpers.js'
 
 Vue.use(Vuex)
 
@@ -177,10 +177,19 @@ export const store = new Vuex.Store({
       dispatch('emitSelectedArea', { startIndex, endIndex })
     },
     mouseSelectSample({ dispatch, commit, state }, mouse) {
+      const height = mouse.originalTarget.clientHeight
+      const pos = (mouse.layerY - mouse.originalTarget.offsetTop) / height
+      const [pitchLo, pitchHi] = state.sequencer.frequencyResponse.map(frequencyToMIDIPitch)
+      const range = pitchHi - pitchLo
+      const pitch = (range - pos * range) + pitchLo
+      const freq = MIDIPitchToFrequency(pitch)
+      commit('UPDATE_PRIMED_SAMPLE_FREQUENCY', freq)
+
       const x = mouse.layerX - mouse.originalTarget.offsetLeft
       const position = x / state.sequencer.width
       const offsetIndex = Math.floor(position * state.sequencer.samplesShown)
       const index = state.selectedArea.startIndex + offsetIndex
+
       dispatch('selectSample', index)
     },
     selectSample({ state, commit }, index) {
@@ -195,7 +204,6 @@ export const store = new Vuex.Store({
         }
       }
     },
-
     // socket actions
     updateSample(state, sample) {
       this._vm.$socket.emit('updateSample', sample)
@@ -220,11 +228,7 @@ export const store = new Vuex.Store({
         index: index,
         pitch: frequencyToPitch(freq),
       }
-      state.primedSample = {
-        freq: freq,
-        index: index,
-        pitch: frequencyToPitch(freq),
-      }
+      state.primedSample.index = index
     },
     UPDATE_PRIMED_SAMPLE_FREQUENCY(state, freq) {
       state.primedSample = {

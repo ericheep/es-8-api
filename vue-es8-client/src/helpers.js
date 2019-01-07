@@ -2,7 +2,7 @@ export const frequencyToMIDIPitch = (freq) => {
   return 12 * Math.log(freq / 440.0) / Math.log(2) + 69
 }
 
-export const MIDIpitchToFrequency = (pitch) => {
+export const MIDIPitchToFrequency = (pitch) => {
   return 440 * Math.pow(2, (pitch - 69) / 12)
 }
 
@@ -30,5 +30,5 @@ export const pitchToFrequency = (pitch) => {
   const pitchClasses = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'A#', 'B', 'Bb']
 
   const pitchClassIndex = pitchClasses.indexOf(pitch.pitchClass)
-  return MIDIpitchToFrequency(pitchClassIndex + parseFloat(pitch.cents * 0.01) + (pitch.octave * 12 + 12))
+  return MIDIPitchToFrequency(pitchClassIndex + parseFloat(pitch.cents * 0.01) + (pitch.octave * 12 + 12))
 }
