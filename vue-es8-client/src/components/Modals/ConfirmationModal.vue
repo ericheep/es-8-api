@@ -12,7 +12,7 @@
         from
         {{ formattedSelectedPitch() }} ({{ selectedSample.freq.toFixed(2) }}hz) to
         {{ formattedPrimedPitch() }} ({{ primedSample.freq.toFixed(2) }}hz)
-        on 01/06/19 12:00PM from XXX.XXX.XXX.XXX?
+        on {{ dateTime() }} from XXX.XXX.XXX.XXX?
         </slot>
       </section>
       <footer class="modal-footer">
@@ -39,7 +39,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-
+import format from 'date-fns/format'
 
 export default {
   name: 'ConfirmationModal',
@@ -48,9 +48,6 @@ export default {
       'primedSample',
       'selectedSample',
     ]),
-    ipAddress:() => {
-      return new ActiveXObject('WScript.Network').computerName
-    }
   },
   methods: {
     ...mapActions([
@@ -75,6 +72,9 @@ export default {
         operator = '-'
       }
       return pitchClass + octave + ' ' + operator + cents
+    },
+    dateTime() {
+      return format(new Date(), 'dddd, MMMM Do YYYY, h:mm:ss A')
     },
     close() {
       this.$emit('close')
