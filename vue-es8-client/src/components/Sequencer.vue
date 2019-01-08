@@ -13,7 +13,7 @@ import ControlWindow from './Sequencer/ControlWindow.vue'
 import EditWindow from './Sequencer/EditWindow.vue'
 import GuideWindow from './Sequencer/GuideWindow.vue'
 
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'Sequencer',
@@ -23,9 +23,6 @@ export default {
     GuideWindow,
   },
   computed: {
-    ...mapGetters([
-      'averagedSequence',
-    ]),
     paper: function() {
       return paper
     }

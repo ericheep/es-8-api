@@ -54,6 +54,7 @@ const averagedFrequencies = (frequencies, width) => {
   return averagedFreqs
 }
 
+
 const frequencies = samples.map((el) => el.freq)
 
 // 38hz to 24khz
@@ -65,7 +66,8 @@ const sequencer = {
 }
 
 io.on('connect', (socket) => {
-  io.emit('UPDATE_SEQUENCER', sequencer)
+  io.emit('INITIALIZE_SEQUENCER', sequencer)
+  io.emit('UPDATE_SELECTED_AREA_SAMPLES', samples.slice(0, sequencer.samplesShown))
   console.log('connected')
 
   socket.on('updateSample', (data) => {

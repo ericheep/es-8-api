@@ -37,6 +37,7 @@ export const store = new Vuex.Store({
       samples: [],
       startIndex: 0,
       endIndex: 0,
+      scopedIndex: 0,
     },
     guide: {
       frequencies: [],
@@ -155,6 +156,8 @@ export const store = new Vuex.Store({
       dispatch('emitGuideFrequencies', width)
     },
     mouseSelectArea({ state, dispatch, commit }, mouse) {
+      const scopedIndex = state.selectedSample.index - state.selectedArea.startIndex
+
       const x = mouse.layerX - mouse.originalTarget.offsetLeft
       const position = x / state.sequencer.width
       let middleIndex = Math.floor(position * state.sequencer.length)
@@ -170,8 +173,7 @@ export const store = new Vuex.Store({
         startIndex = state.sequencer.length - state.sequencer.samplesShown
         endIndex = state.sequencer.length
       }
-
-      commit('UPDATE_SELECTED_AREA', { startIndex, endIndex })
+      commit('UPDATE_SELECTED_AREA', { startIndex, endIndex, scopedIndex })
       dispatch('emitSelectedArea', { startIndex, endIndex })
     },
     mouseSelectSample({ dispatch, commit, state }, mouse) {
@@ -242,10 +244,17 @@ export const store = new Vuex.Store({
     UPDATE_SEQUENCER_WIDTH(state, width) {
       state.sequencer.width = width
     },
-    SOCKET_UPDATE_SEQUENCER(state, sequencer) {
+    SOCKET_INITIALIZE_SEQUENCER(state, sequencer) {
       state.sequencer = {
         ...state.sequencer,
         ...sequencer,
+      }
+    },
+    SOCKET_INITIALIZE_SELECTED_AREA(state, selectedArea) {
+      console.log(selectedArea)
+      state.selectedArea = {
+        ...state.selectedArea,
+        ...selectedArea,
       }
     },
     SOCKET_UPDATE_SELECTED_AREA_SAMPLES(state, samples) {
