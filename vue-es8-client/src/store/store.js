@@ -163,13 +163,11 @@ export const store = new Vuex.Store({
 
       if (startIndex < 0) {
         startIndex = 0
-        middleIndex = Math.floor(state.sequencer.samplesShown / 2)
         endIndex = startIndex + state.sequencer.samplesShown
       }
 
       if (endIndex >= state.sequencer.length) {
         startIndex = state.sequencer.length - state.sequencer.samplesShown
-        middleIndex = state.sequencer.length - Math.floor(state.sequencer.samplesShown / 2)
         endIndex = state.sequencer.length
       }
 

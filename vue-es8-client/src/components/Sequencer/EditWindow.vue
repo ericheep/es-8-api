@@ -57,9 +57,6 @@ export default {
         }
         this.frequenciesLayer = new this.scope.Layer()
 
-        const index = Math.floor((s.startIndex + s.endIndex) / 2)
-        this.selectSample(index)
-
         drawFrequencies(s, this.frequencyResponse, this.scope)
       },
       deep: true
