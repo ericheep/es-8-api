@@ -5,10 +5,6 @@
       @close="closeConfirmationModal"
     />
     <div id="left-side">
-      <div>
-        <div class="left-items">
-          Modified by 242.142.132.041 on 01/01/2019
-        </div>
         <div class="left-items">
           <button class="arrow-button" @click="leftArrowClick">
             &larr;
@@ -16,9 +12,15 @@
           <button class="arrow-button" @click="rightArrowClick">
             &rarr;
           </button>
-          Sample: {{ selectedSample.index }}
         </div>
-      </div>
+        <div class="flex-column">
+          <div>
+            Sample: {{ selectedSample.index }}
+          </div>
+          <div>
+            Selected Range: {{ selectedAreaStartIndex }} - {{ selectedAreaEndIndex }}
+          </div>
+        </div>
     </div>
     <div id="right-side">
       <div>
@@ -145,6 +147,11 @@ button:hover {
   background-color: black;
   color: white;
 }
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
 .commit-button:active {
   padding: 8px 13px 6px;
 }
@@ -157,7 +164,7 @@ button:hover {
 .left-items {
   justify-content: flex-start;
   text-align: left;
-  margin-right: 15px;
+  margin-right: 5px;
 }
 .right-items {
   justify-content: flex-end;
@@ -175,7 +182,7 @@ button:hover {
 .arrow-button {
   text-align: center;
   width: 40px;
-  height: 30px;
+  height: 89%px;
   margin-right: 6px;
 }
 </style>
