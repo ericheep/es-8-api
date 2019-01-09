@@ -1,6 +1,7 @@
 <template>
   <div id="bottom-window">
     Modified by 242.142.132.041 on 01/01/2019
+    {{ formattedSelectedPitch() }} ({{ selectedSample.freq }})
   </div>
 </template>
 
@@ -14,6 +15,18 @@ export default {
       'selectedSample',
     ]),
   },
+  methods: {
+    formattedSelectedPitch() {
+      const pitchClass = this.selectedSample.pitch.pitchClass
+      const octave = this.selectedSample.pitch.octave
+      const cents = Math.round(this.selectedSample.pitch.cents)
+      let operator = ''
+      if (cents >= 0) {
+        operator = '+'
+      }
+      return pitchClass + octave + ' ' + operator + cents
+    },
+  }
 }
 </script>
 
@@ -23,5 +36,7 @@ export default {
   flex-direction: row;
   flex-wrap: nowrap;
   width: 100%;
+  font-size: 14px;
+  margin-top: 5px;
 }
 </style>
