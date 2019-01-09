@@ -3,6 +3,7 @@
     <ControlWindow/>
     <EditWindow v-bind:paper="paper"/>
     <GuideWindow v-bind:paper="paper"/>
+    <BottomWindow/>
   </div>
 </template>
 
@@ -12,6 +13,7 @@ import paper from 'paper'
 import ControlWindow from './Sequencer/ControlWindow.vue'
 import EditWindow from './Sequencer/EditWindow.vue'
 import GuideWindow from './Sequencer/GuideWindow.vue'
+import BottomWindow from './Sequencer/BottomWindow.vue'
 
 import { mapActions } from 'vuex'
 
@@ -21,6 +23,7 @@ export default {
     ControlWindow,
     EditWindow,
     GuideWindow,
+    BottomWindow,
   },
   computed: {
     paper: function() {
