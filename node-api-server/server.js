@@ -70,9 +70,10 @@ io.on('connect', (socket) => {
   io.emit('UPDATE_SELECTED_AREA_SAMPLES', samples.slice(0, sequencer.samplesShown))
   console.log('connected')
 
-  socket.on('updateSample', (data) => {
+  socket.on('emitSampleUpdate', (data) => {
+    console.log(data)
     // store state
-    sequence[data.index] = {
+    /*sequence[data.index] = {
       freq: data.freq,
       index: data.index,
     }
@@ -85,10 +86,6 @@ io.on('connect', (socket) => {
       address: '/updateSample',
       args: [
         {
-          type: 'i',
-          value: data.channel,
-        },
-        {
           type: 'f',
           value: data.freq,
         },
@@ -97,7 +94,7 @@ io.on('connect', (socket) => {
           value: data.index,
         }
       ]
-    }, '127.0.0.1', 12345)
+    }, '127.0.0.1', 12345)*/
   })
 
   socket.on('emitSelectedArea', (data) => {

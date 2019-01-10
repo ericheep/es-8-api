@@ -82,9 +82,6 @@ export const store = new Vuex.Store({
     },
   },
   actions: {
-    commitPrimedSample({ state, commit }, event) {
-      console.log('commit')
-    },
     leftArrowClick({ state, commit, dispatch }, event) {
       let startIndex = state.selectedArea.startIndex - state.sequencer.samplesShown
       let endIndex = state.selectedArea.endIndex - state.sequencer.samplesShown
@@ -205,14 +202,14 @@ export const store = new Vuex.Store({
       }
     },
     // socket actions
-    updateSample(state, sample) {
-      this._vm.$socket.emit('updateSample', sample)
-    },
     emitSelectedArea(state, selectedArea) {
       this._vm.$socket.emit('emitSelectedArea', selectedArea)
     },
     emitGuideFrequencies(state, width) {
       this._vm.$socket.emit('emitGuideFrequencies', width)
+    },
+    emitSampleUpdate({ state, commit }, sample) {
+      this._vm.$socket.emit('emitSampleUpdate', state.primedSample)
     },
   },
   mutations: {

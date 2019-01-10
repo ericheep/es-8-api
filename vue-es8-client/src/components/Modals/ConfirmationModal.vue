@@ -27,7 +27,7 @@
           <button
             type="button"
             class="modal-button"
-            @click="commitPrimedSample"
+            @click="emitSampleUpdate"
           >
             Yes
           </button>
@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'commitPrimedSample',
+      'emitSampleUpdate',
     ]),
     formattedSelectedPitch() {
       const pitchClass = this.selectedSample.pitch.pitchClass
