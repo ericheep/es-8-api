@@ -10,8 +10,8 @@
         <slot name="body">
         Are you sure that you want to change sample at index {{ selectedSample.index }}
         from
-        {{ formattedSelectedPitch() }} ({{ selectedSample.freq.toFixed(2) }}hz) to
-        {{ formattedPrimedPitch() }} ({{ primedSample.freq.toFixed(2) }}hz)
+        {{ formatSelectedPitchAndFreq() }}  to
+        {{ formatPrimedPitchAndFreq() }}
         on {{ dateTime() }} from XXX.XXX.XXX.XXX?
         </slot>
       </section>
@@ -40,6 +40,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import format from 'date-fns/format'
+import { formatPitchAndFreq } from '../../helpers'
 
 export default {
   name: 'ConfirmationModal',
@@ -53,25 +54,11 @@ export default {
     ...mapActions([
       'emitUpdateSample',
     ]),
-    formattedSelectedPitch() {
-      const pitchClass = this.selectedSample.pitch.pitchClass
-      const octave = this.selectedSample.pitch.octave
-      const cents = Math.round(this.selectedSample.pitch.cents)
-      let operator = ''
-      if (cents >= 0) {
-        operator = '+'
-      }
-      return pitchClass + octave + ' ' + operator + cents
+    formatSelectedPitchAndFreq() {
+      return formatPitchAndFreq(this.selectedSample)
     },
-    formattedPrimedPitch() {
-      const pitchClass = this.primedSample.pitch.pitchClass
-      const octave = this.primedSample.pitch.octave
-      const cents = Math.round(this.primedSample.pitch.cents)
-      let operator = ''
-      if (cents >= 0) {
-        operator = '+'
-      }
-      return pitchClass + octave + ' ' + operator + cents
+    formatPrimedPitchAndFreq() {
+      return formatPitchAndFreq(this.primedSample)
     },
     dateTime() {
       return format(new Date(), 'dddd, MMMM Do YYYY, h:mm:ss A')

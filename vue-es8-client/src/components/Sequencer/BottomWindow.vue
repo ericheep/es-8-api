@@ -1,12 +1,13 @@
 <template>
   <div id="bottom-window">
     Modified by 242.142.132.041 on 01/01/2019
-    {{ formattedSelectedPitch() }} ({{ selectedSample.freq }})
+    {{ formatSelectedPitchAndFreq() }}
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import { formatPitchAndFreq } from '../../helpers'
 
 export default {
   name: 'BottomWindow',
@@ -16,15 +17,8 @@ export default {
     ]),
   },
   methods: {
-    formattedSelectedPitch() {
-      const pitchClass = this.selectedSample.pitch.pitchClass
-      const octave = this.selectedSample.pitch.octave
-      const cents = Math.round(this.selectedSample.pitch.cents)
-      let operator = ''
-      if (cents >= 0) {
-        operator = '+'
-      }
-      return pitchClass + octave + ' ' + operator + cents
+    formatSelectedPitchAndFreq() {
+      return formatPitchAndFreq(this.selectedSample)
     },
   }
 }

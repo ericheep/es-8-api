@@ -6,6 +6,22 @@ export const MIDIPitchToFrequency = (pitch) => {
   return 440 * Math.pow(2, (pitch - 69) / 12)
 }
 
+const formatPitch = (pitch) => {
+  let cents = Math.round(pitch.cents)
+  if (cents >= 0) {
+    cents = '+' + cents
+  }
+  return pitch.pitchClass + pitch.octave + ' ' + cents
+}
+
+const formatFreq = (freq) => {
+  return freq.toFixed(2) + 'hz'
+}
+
+export const formatPitchAndFreq = (sample) => {
+  return formatPitch(sample.pitch) + ' (' + formatFreq(sample.freq) + ')'
+}
+
 export const frequencyToPitch = (freq) => {
   const pitchClasses = ['A', 'Bb', 'B', 'C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab']
   const MIDIpitch = frequencyToMIDIPitch(freq)
