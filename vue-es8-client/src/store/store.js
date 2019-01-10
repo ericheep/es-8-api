@@ -260,11 +260,15 @@ export const store = new Vuex.Store({
       state.guide.frequencies = frequencies
     },
     SOCKET_UPDATE_SAMPLE(state, sample) {
-      const index = state.selectedArea.samples.findIndex((s) => s.index === sample.index)
-      state.selectedArea.samples[index] = {
+      const samples = state.selectedArea.samples
+      const index = samples.findIndex((s) => s.index === sample.index)
+
+      samples[index] = {
         freq: sample.freq,
         index: sample.index,
       }
+
+      state.selectedArea.samples = samples
     },
     SOCKET_CONNECT(state) {
       state.isConnected = true

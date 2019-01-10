@@ -25,7 +25,7 @@ const io = require('socket.io')(server, {
 })
 
 var numSamples = 44100;
-var samples = [];
+var samples = []
 var scale = (24000.0 - 38.0) / numSamples
 var harmonic = 55.0
 
