@@ -11,9 +11,9 @@ export const store = new Vuex.Store({
     isConnected: '',
     sequencer: {
       length: 0,
-      width: 300,
-      samplesShown: 35,
-      frequencyResponse: [38.0, 24000.0],
+      width: 0,
+      samplesShown: 0,
+      frequencyResponse: 0,
     },
     selectedSample: {
       index: 0,
