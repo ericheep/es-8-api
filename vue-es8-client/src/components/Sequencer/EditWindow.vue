@@ -51,6 +51,7 @@ export default {
     },
     selectedArea: {
       handler(s) {
+        console.log('selectedArea')
         this.scope.activate()
         if (this.frequenciesLayer != null) {
           this.frequenciesLayer.remove()

@@ -27,7 +27,7 @@
           <button
             type="button"
             class="modal-button"
-            @click="emitSampleUpdate"
+            @click="emitUpdateSample"
           >
             Yes
           </button>
@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'emitSampleUpdate',
+      'emitUpdateSample',
     ]),
     formattedSelectedPitch() {
       const pitchClass = this.selectedSample.pitch.pitchClass
@@ -67,9 +67,9 @@ export default {
       const pitchClass = this.primedSample.pitch.pitchClass
       const octave = this.primedSample.pitch.octave
       const cents = Math.round(this.primedSample.pitch.cents)
-      let operator = '+'
-      if (cents < 0) {
-        operator = '-'
+      let operator = ''
+      if (cents >= 0) {
+        operator = '+'
       }
       return pitchClass + octave + ' ' + operator + cents
     },

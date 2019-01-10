@@ -70,17 +70,17 @@ io.on('connect', (socket) => {
   io.emit('UPDATE_SELECTED_AREA_SAMPLES', samples.slice(0, sequencer.samplesShown))
   console.log('connected')
 
-  socket.on('emitSampleUpdate', (data) => {
-    console.log(data)
-    // store state
-    /*sequence[data.index] = {
+  socket.on('emitUpdateSample', (data) => {
+    const index = samples.findIndex((sample) => sample.index = data.index)
+
+    samples[index] = {
       freq: data.freq,
       index: data.index,
     }
 
-    // send back to clients
     io.emit('UPDATE_SAMPLE', data)
 
+    /*
     // send osc to ChucK
     udpPort.send({
       address: '/updateSample',

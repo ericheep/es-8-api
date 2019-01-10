@@ -208,8 +208,8 @@ export const store = new Vuex.Store({
     emitGuideFrequencies(state, width) {
       this._vm.$socket.emit('emitGuideFrequencies', width)
     },
-    emitSampleUpdate({ state, commit }, sample) {
-      this._vm.$socket.emit('emitSampleUpdate', state.primedSample)
+    emitUpdateSample({ state, commit }, sample) {
+      this._vm.$socket.emit('emitUpdateSample', state.primedSample)
     },
   },
   mutations: {
@@ -248,7 +248,6 @@ export const store = new Vuex.Store({
       }
     },
     SOCKET_INITIALIZE_SELECTED_AREA(state, selectedArea) {
-      console.log(selectedArea)
       state.selectedArea = {
         ...state.selectedArea,
         ...selectedArea,
@@ -261,7 +260,11 @@ export const store = new Vuex.Store({
       state.guide.frequencies = frequencies
     },
     SOCKET_UPDATE_SAMPLE(state, sample) {
-      // state.sequencer.samples[sample.index] = sample
+      const index = state.selectedArea.samples.findIndex((s) => s.index === sample.index)
+      state.selectedArea.samples[index] = {
+        freq: sample.freq,
+        index: sample.index,
+      }
     },
     SOCKET_CONNECT(state) {
       state.isConnected = true
