@@ -277,5 +277,4 @@ export const store = new Vuex.Store({
       state.isConnected = false
     },
   },
-
 })
