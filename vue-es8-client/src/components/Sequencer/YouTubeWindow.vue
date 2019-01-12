@@ -7,6 +7,11 @@
 <script>
 export default {
   name: 'YouTubeWindow',
+  data: () => ({
+    playerVars: {
+      autoplay: 1
+    },
+  }),
 }
 </script>
 
