@@ -4,7 +4,6 @@
     <EditWindow v-bind:paper="paper"/>
     <GuideWindow v-bind:paper="paper"/>
     <BottomWindow/>
-    <YouTubeWindow/>
   </div>
 </template>
 
@@ -15,7 +14,6 @@ import ControlWindow from './Sequencer/ControlWindow.vue'
 import EditWindow from './Sequencer/EditWindow.vue'
 import GuideWindow from './Sequencer/GuideWindow.vue'
 import BottomWindow from './Sequencer/BottomWindow.vue'
-import YouTubeWindow from './Sequencer/YouTubeWindow.vue'
 
 import { mapActions } from 'vuex'
 
@@ -26,7 +24,6 @@ export default {
     EditWindow,
     GuideWindow,
     BottomWindow,
-    YouTubeWindow,
   },
   computed: {
     paper: function() {
@@ -47,8 +44,7 @@ export default {
 
 <style scoped>
 #sequencer {
-  width: 90%;
+  width: 100%;
   height: 350px;
-  margin-left: 5%;
 }
 </style>

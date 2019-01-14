@@ -1,18 +1,18 @@
 <template>
   <div id="app">
-    <Topbar/>
+    <Info/>
     <Sequencer/>
   </div>
 </template>
 
 <script>
-import Topbar from './components/Topbar.vue'
+import Info from './components/Info.vue'
 import Sequencer from './components/Sequencer.vue'
 
 export default {
   name: 'app',
   components: {
-    Topbar,
+    Info,
     Sequencer,
   }
 }
