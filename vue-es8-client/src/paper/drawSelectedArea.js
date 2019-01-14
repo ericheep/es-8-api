@@ -1,5 +1,5 @@
 export default (selectedArea, sequenceLength, paper) => {
-  const div = document.getElementById('guideWindow')
+  const div = document.getElementById('transport')
   const height = div.clientHeight
   const width = div.clientWidth
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <canvas @click='mouseSelectArea' id='guideWindow'></canvas>
+    <canvas @click='mouseSelectArea' id='transport'></canvas>
   </div>
 </template>
 
@@ -10,7 +10,7 @@ import drawGuideWindow from '../../paper/drawGuideWindow.js'
 import drawSelectedArea from '../../paper/drawSelectedArea.js'
 
 export default {
-  name: 'GuideWindow',
+  name: 'Transport',
   props: {
     paper: {
       type: Object,
@@ -66,13 +66,13 @@ export default {
   },
   mounted() {
     this.scope = new this.paper.PaperScope()
-    this.scope.setup('guideWindow')
+    this.scope.setup('transport')
   }
 }
 </script>
 
 <style scoped>
-#guideWindow, div {
+#transport, div {
   width: 100%;
   height: 100px;
 }

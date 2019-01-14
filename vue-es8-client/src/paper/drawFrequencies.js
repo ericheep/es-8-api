@@ -1,7 +1,7 @@
 import { frequencyToMIDIPitch } from '../helpers.js'
 
 export default (selectedArea, frequencyResponse, paper) => {
-  const div = document.getElementById('editWindow')
+  const div = document.getElementById('editor')
   const width = div.clientWidth
   const height = div.clientHeight
 

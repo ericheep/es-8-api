@@ -1,5 +1,5 @@
 <template>
-  <div id="control-window">
+  <div id="controls">
     <ConfirmationModal
       v-show="isModalVisible"
       @close="closeConfirmationModal"
@@ -62,7 +62,7 @@ import { mapGetters, mapActions } from 'vuex'
 import ConfirmationModal from '../Modals/ConfirmationModal'
 
 export default {
-  name: 'ControlWindow',
+  name: 'Controls',
   components: {
     ConfirmationModal,
   },
@@ -120,7 +120,7 @@ export default {
 </script>
 
 <style scoped>
-#control-window {
+#controls {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;

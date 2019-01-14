@@ -1,29 +1,29 @@
 <template>
   <div id="sequencer">
-    <ControlWindow/>
-    <EditWindow v-bind:paper="paper"/>
-    <GuideWindow v-bind:paper="paper"/>
-    <BottomWindow/>
+    <Controls/>
+    <Editor v-bind:paper="paper"/>
+    <Transport v-bind:paper="paper"/>
+    <SampleInfo/>
   </div>
 </template>
 
 <script>
 import paper from 'paper'
 
-import ControlWindow from './Sequencer/ControlWindow.vue'
-import EditWindow from './Sequencer/EditWindow.vue'
-import GuideWindow from './Sequencer/GuideWindow.vue'
-import BottomWindow from './Sequencer/BottomWindow.vue'
+import Controls from './Sequencer/Controls.vue'
+import Editor from './Sequencer/Editor.vue'
+import Transport from './Sequencer/Transport.vue'
+import SampleInfo from './Sequencer/SampleInfo.vue'
 
 import { mapActions } from 'vuex'
 
 export default {
   name: 'Sequencer',
   components: {
-    ControlWindow,
-    EditWindow,
-    GuideWindow,
-    BottomWindow,
+    Controls,
+    Editor,
+    Transport,
+    SampleInfo,
   },
   computed: {
     paper: function() {

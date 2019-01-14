@@ -1,5 +1,5 @@
 export default (selectedSample, selectedArea, paper) => {
-  const div = document.getElementById('editWindow')
+  const div = document.getElementById('editor')
   const height = div.clientHeight
   const width = div.clientWidth
   const sampleWidth = width / selectedArea.samples.length

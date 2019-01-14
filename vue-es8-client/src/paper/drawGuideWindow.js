@@ -1,7 +1,7 @@
 import { frequencyToMIDIPitch } from '../helpers.js'
 
 export default (freqs, frequencyResponse, paper) => {
-  const div = document.getElementById('guideWindow')
+  const div = document.getElementById('transport')
   const width = div.clientWidth
   const height = div.clientHeight
 

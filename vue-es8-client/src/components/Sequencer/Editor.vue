@@ -1,6 +1,6 @@
 <template>
   <div>
-    <canvas @click='mouseSelectSample' id='editWindow'></canvas>
+    <canvas @click='mouseSelectSample' id='editor'></canvas>
   </div>
 </template>
 
@@ -12,7 +12,7 @@ import drawSelectedSample from '../../paper/drawSelectedSample.js'
 import drawPrimedSample from '../../paper/drawPrimedSample.js'
 
 export default {
-  name: 'EditWindow',
+  name: 'Editor',
   props: {
     paper: {
       type: Object,
@@ -94,13 +94,13 @@ export default {
   },
   mounted() {
     this.scope = new this.paper.PaperScope()
-    this.scope.setup('editWindow')
+    this.scope.setup('editor')
   }
 }
 </script>
 
 <style scoped>
-#editWindow, div {
+#editor, div {
   width: 100%;
   height: 100%;
 }

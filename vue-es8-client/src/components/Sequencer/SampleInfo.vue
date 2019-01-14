@@ -1,5 +1,5 @@
 <template>
-  <div id="bottom-window">
+  <div id="sample-info">
     Modified by 242.142.132.041 on 01/01/2019
     {{ formatSelectedPitchAndFreq() }}
   </div>
@@ -10,7 +10,7 @@ import { mapGetters } from 'vuex'
 import { formatPitchAndFreq } from '../../helpers'
 
 export default {
-  name: 'BottomWindow',
+  name: 'SampleInfo',
   computed: {
     ...mapGetters([
       'selectedSample',
@@ -25,7 +25,7 @@ export default {
 </script>
 
 <style scoped>
-#bottom-window {
+#sample-info {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
