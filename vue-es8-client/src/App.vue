@@ -36,5 +36,8 @@ div {
 
   text-align: left;
   color: #2c3e50;
+
+  width: 800px;
+  margin: 15px;
 }
 </style>

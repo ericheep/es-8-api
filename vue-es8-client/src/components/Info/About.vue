@@ -12,5 +12,7 @@ export default {
 
 <style scoped>
 #about {
+  width: 95%;
+  margin-right: 5%;
 }
 </style>
