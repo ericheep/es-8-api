@@ -1,6 +1,6 @@
 <template>
   <div id="youTube">
-    <youtube video-id="j1eD_yUFfwk" width="260" height="145"/>
+    <youtube video-id="j1eD_yUFfwk" width="250" height="140"/>
   </div>
 </template>
 

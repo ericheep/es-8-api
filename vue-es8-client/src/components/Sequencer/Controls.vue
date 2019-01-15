@@ -126,6 +126,8 @@ export default {
   flex-wrap: nowrap;
   justify-content: space-between;
   width: 100%;
+  font-size: 14px;
+
 }
 #left-side {
   display: flex;

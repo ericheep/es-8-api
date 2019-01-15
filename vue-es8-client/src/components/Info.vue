@@ -24,7 +24,7 @@ export default {
   flex-direction: column;
   justify-content: space-between;
 
-  width: 260px;
+  width: 250px;
   margin-right: 15px;
 }
 </style>
