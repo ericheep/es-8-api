@@ -38,6 +38,10 @@ div {
   color: #2c3e50;
 
   width: 800px;
+  height: 600px;
   margin: 15px;
+
+  display: flex;
+  flex-direction: row;
 }
 </style>

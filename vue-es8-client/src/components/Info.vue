@@ -21,6 +21,10 @@ export default {
 <style scoped>
 #info {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  justify-content: space-between;
+
+  width: 260px;
+  margin-right: 15px;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div id="youTube">
-    <youtube video-id="j1eD_yUFfwk" width="380" height="213"/>
+    <youtube video-id="j1eD_yUFfwk" width="260" height="145"/>
   </div>
 </template>
 
@@ -17,6 +17,5 @@ export default {
 
 <style scoped>
 #youTube {
-  margin-left: 5px;
 }
 </style>

@@ -102,6 +102,5 @@ export default {
 <style scoped>
 #editor, div {
   width: 100%;
-  height: 100%;
 }
 </style>
