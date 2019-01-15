@@ -26,7 +26,12 @@ export default {
     sampleLayer: null,
     primedLayer: null,
     scope: null,
+    fullHeight: document.documentElement.clientHeight,
+    fullWidth: document.documentElement.clientWidth,
   }),
+  beforeDestroy: () => {
+    window.removeEventListener('resize', this.handleResizeEvent)
+  },
   computed: {
     ...mapGetters([
       'samplesShown',
@@ -41,6 +46,10 @@ export default {
       'selectSample',
       'mouseSelectSample',
     ]),
+    handleResizeEvent (event) {
+      this.fullHeight = document.documentElement.clientHeight
+      this.fullWidth = document.documentElement.clientWidth
+    }
   },
   watch: {
     samplesShown: {
@@ -51,8 +60,6 @@ export default {
     },
     selectedArea: {
       handler(s) {
-        console.log('selectedArea')
-
         this.scope.activate()
         if (this.frequenciesLayer != null) {
           this.frequenciesLayer.remove()
@@ -93,14 +100,15 @@ export default {
     }
   },
   mounted() {
+    window.addEventListener('resize', this.handleResizeEvent)
+
     this.scope = new this.paper.PaperScope()
     this.scope.setup('editor')
-  }
+  },
 }
 </script>
 
 <style scoped>
 #editor, div {
-  width: 100%;
 }
 </style>

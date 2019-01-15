@@ -125,7 +125,6 @@ export default {
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-between;
-  width: 100%;
   font-size: 14px;
 
 }

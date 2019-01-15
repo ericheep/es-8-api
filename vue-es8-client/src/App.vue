@@ -22,6 +22,7 @@ export default {
 html, body, #app {
   margin: 0px;
   border: none;
+  height: 100%;
 }
 div {
   margin: 0px;
@@ -35,8 +36,7 @@ div {
 
   text-align: left;
   color: #2c3e50;
-
-  margin: 15px;
+  height: 100%;
 
   display: flex;
   flex-direction: row;
