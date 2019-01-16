@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { debounce } from 'debounce'
 import { mapGetters, mapActions } from 'vuex'
 import drawEditWindow from '../../paper/drawEditWindow.js'
 import drawFrequencies from '../../paper/drawFrequencies.js'
@@ -22,6 +23,7 @@ export default {
     },
   },
   data: () => ({
+    selectedArea: null,
     frequenciesLayer: null,
     sampleLayer: null,
     primedLayer: null,
@@ -35,7 +37,6 @@ export default {
   computed: {
     ...mapGetters([
       'samplesShown',
-      'selectedArea',
       'selectedSample',
       'primedSample',
       'frequencyResponse',
@@ -46,10 +47,24 @@ export default {
       'selectSample',
       'mouseSelectSample',
     ]),
-    handleResizeEvent (event) {
+    handleResizeEvent: debounce(event => {
       this.fullHeight = document.documentElement.clientHeight
       this.fullWidth = document.documentElement.clientWidth
-    }
+
+      this.redrawEditor()
+    }, 200),
+    redrawEditor: () => {
+      this.scope.activate()
+      if (this.frequenciesLayer != null) {
+        this.frequenciesLayer.remove()
+      }
+      this.frequenciesLayer = new this.scope.Layer()
+
+      const index = this.selectedArea.scopedIndex + this.selectedArea.startIndex
+      this.selectSample(index)
+
+      drawFrequencies(this.selectedArea, this.frequencyResponse, this.scope, this.fullHeight, this.fullWidth)
+    },
   },
   watch: {
     samplesShown: {
@@ -60,16 +75,7 @@ export default {
     },
     selectedArea: {
       handler(s) {
-        this.scope.activate()
-        if (this.frequenciesLayer != null) {
-          this.frequenciesLayer.remove()
-        }
-        this.frequenciesLayer = new this.scope.Layer()
-
-        const index = s.scopedIndex + s.startIndex
-        this.selectSample(index)
-
-        drawFrequencies(s, this.frequencyResponse, this.scope)
+        this.redrawEditor(this.selectedArea, this.frequencyResponse, this.scope, this.fullHeight, this.fullWidth)
       },
       deep: true
     },
