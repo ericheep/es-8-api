@@ -23,7 +23,6 @@ export default {
     },
   },
   data: () => ({
-    selectedArea: null,
     frequenciesLayer: null,
     sampleLayer: null,
     primedLayer: null,
@@ -31,11 +30,9 @@ export default {
     fullHeight: document.documentElement.clientHeight,
     fullWidth: document.documentElement.clientWidth,
   }),
-  beforeDestroy: () => {
-    window.removeEventListener('resize', this.handleResizeEvent)
-  },
   computed: {
     ...mapGetters([
+      'selectedArea',
       'samplesShown',
       'selectedSample',
       'primedSample',
@@ -51,7 +48,7 @@ export default {
       this.fullHeight = document.documentElement.clientHeight
       this.fullWidth = document.documentElement.clientWidth
 
-      this.redrawEditor()
+      // this.redrawEditor()
     }, 200),
     redrawEditor: () => {
       this.scope.activate()
@@ -63,7 +60,7 @@ export default {
       const index = this.selectedArea.scopedIndex + this.selectedArea.startIndex
       this.selectSample(index)
 
-      drawFrequencies(this.selectedArea, this.frequencyResponse, this.scope, this.fullHeight, this.fullWidth)
+      // drawFrequencies(this.selectedArea, this.frequencyResponse, this.scope, this.fullHeight, this.fullWidth)
     },
   },
   watch: {
@@ -75,7 +72,24 @@ export default {
     },
     selectedArea: {
       handler(s) {
-        this.redrawEditor(this.selectedArea, this.frequencyResponse, this.scope, this.fullHeight, this.fullWidth)
+        this.scope.activate()
+        if (this.frequenciesLayer != null) {
+          this.frequenciesLayer.remove()
+        }
+        this.frequenciesLayer = new this.scope.Layer()
+
+        const index = this.selectedArea.scopedIndex + this.selectedArea.startIndex
+        this.selectSample(index)
+
+        const params = {
+          selectedArea: s,
+          frequencyResponse: this.frequencyResponse,
+          scope: this.scope,
+          width: this.width,
+          height: this.height,
+        }
+        console.log(params)
+        drawFrequencies(params)
       },
       deep: true
     },
@@ -104,6 +118,9 @@ export default {
       },
       deep: true,
     }
+  },
+  beforeDestroy: () => {
+    window.removeEventListener('resize', this.handleResizeEvent)
   },
   mounted() {
     window.addEventListener('resize', this.handleResizeEvent)
