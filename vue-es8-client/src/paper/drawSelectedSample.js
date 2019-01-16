@@ -1,7 +1,4 @@
-export default (selectedSample, selectedArea, paper) => {
-  const div = document.getElementById('editor')
-  const height = div.clientHeight
-  const width = div.clientWidth
+export default ({ selectedSample, selectedArea, width, height }, paper) => {
   const sampleWidth = width / selectedArea.samples.length
   const offsetIndex = selectedSample.index - selectedArea.startIndex
 

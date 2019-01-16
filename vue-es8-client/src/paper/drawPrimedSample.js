@@ -1,10 +1,6 @@
 import { frequencyToMIDIPitch } from '../helpers.js'
 
-export default (primedSample, frequencyResponse, selectedArea, paper) => {
-  const div = document.getElementById('editor')
-  const height = div.clientHeight
-  const width = div.clientWidth
-
+export default ({ primedSample, frequencyResponse, selectedArea, width, height }, paper) => {
   const [pitchLo, pitchHi] = frequencyResponse.map(frequencyToMIDIPitch)
   const range = pitchHi - pitchLo
   const scale = height / range

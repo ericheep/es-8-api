@@ -1,8 +1,4 @@
-export default (samplesShown, paper) => {
-  const div = document.getElementById('editor')
-  const width = div.clientWidth
-  const height = div.clientHeight
-
+export default ({ samplesShown, width, height }, paper) => {
   const path = new paper.Path.Rectangle(0, 0, width, height)
   path.strokeColor = 'black'
   path.strokeWidth = 6

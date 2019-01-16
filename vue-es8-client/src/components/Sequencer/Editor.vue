@@ -1,13 +1,13 @@
 <template>
   <div>
-    <canvas @click='mouseSelectSample' id='editor'></canvas>
+    <canvas @click='mouseSelectSample' id='editor' resize></canvas>
   </div>
 </template>
 
 <script>
 import { debounce } from 'debounce'
 import { mapGetters, mapActions } from 'vuex'
-import drawEditWindow from '../../paper/drawEditWindow.js'
+import drawEditorWindow from '../../paper/drawEditorWindow.js'
 import drawFrequencies from '../../paper/drawFrequencies.js'
 import drawSelectedSample from '../../paper/drawSelectedSample.js'
 import drawPrimedSample from '../../paper/drawPrimedSample.js'
@@ -23,12 +23,13 @@ export default {
     },
   },
   data: () => ({
-    frequenciesLayer: null,
-    sampleLayer: null,
-    primedLayer: null,
     scope: null,
-    fullHeight: document.documentElement.clientHeight,
-    fullWidth: document.documentElement.clientWidth,
+    frequenciesLayer: null,
+    editorWindowLayer: null,
+    selectedSampleLayer: null,
+    primedSampleLayer: null,
+    width: null,
+    height: null,
   }),
   computed: {
     ...mapGetters([
@@ -44,86 +45,111 @@ export default {
       'selectSample',
       'mouseSelectSample',
     ]),
-    handleResizeEvent: debounce(event => {
-      this.fullHeight = document.documentElement.clientHeight
-      this.fullWidth = document.documentElement.clientWidth
-
-      // this.redrawEditor()
-    }, 200),
-    redrawEditor: () => {
-      this.scope.activate()
-      if (this.frequenciesLayer != null) {
-        this.frequenciesLayer.remove()
+    renewLayer: (scope, layer) => {
+      if (layer != null) {
+        layer.remove()
       }
-      this.frequenciesLayer = new this.scope.Layer()
-
-      const index = this.selectedArea.scopedIndex + this.selectedArea.startIndex
-      this.selectSample(index)
-
-      // drawFrequencies(this.selectedArea, this.frequencyResponse, this.scope, this.fullHeight, this.fullWidth)
+      return new scope.Layer()
     },
+    updateFrequencies: function() {
+      this.scope.activate()
+      this.frequenciesLayer = this.renewLayer(this.scope, this.frequenciesLayer)
+
+      const params = {
+        selectedArea: this.selectedArea,
+        frequencyResponse: this.frequencyResponse,
+        width: this.width,
+        height: this.height,
+      }
+
+      drawFrequencies(params, this.scope)
+    },
+    updateEditorWindow: function() {
+      this.scope.activate()
+      this.editorWindowLayer = this.renewLayer(this.scope, this.editorWindowLayer)
+
+      const params = {
+        samplesShown: this.samplesShown,
+        width: this.width,
+        height: this.height,
+      }
+
+      drawEditorWindow(params, this.scope)
+    },
+    updateSelectedSample: function() {
+      this.scope.activate()
+      this.primedSampleLayer = this.renewLayer(this.scope, this.primedSampleLayer)
+      this.selectedSampleLayer = this.renewLayer(this.scope, this.selectedSampleLayer)
+
+      const params = {
+        selectedSample: this.selectedSample,
+        selectedArea: this.selectedArea,
+        width: this.width,
+        height: this.height,
+      }
+
+      drawSelectedSample(params, this.scope)
+    },
+    updatePrimedSample: function() {
+      this.scope.activate()
+      this.primedSampleLayer = this.renewLayer(this.scope, this.primedSampleLayer)
+
+      const params = {
+        primedSample: this.primedSample,
+        frequencyResponse: this.frequencyResponse,
+        selectedArea: this.selectedArea,
+        width: this.width,
+        height: this.height,
+      }
+
+      drawPrimedSample(params, this.scope)
+    },
+    handleResizeEvent: debounce(function(event) {
+      this.width = document.getElementById('editor').clientWidth
+      this.height = document.getElementById('editor').clientHeight
+
+      this.updateEditorWindow()
+      this.updateFrequencies()
+      this.updateSelectedSample()
+      this.updatePrimedSample()
+    }, 100),
   },
   watch: {
     samplesShown: {
       handler(s) {
-        this.scope.activate()
-        drawEditWindow(s, this.scope)
+        this.updateEditorWindow()
       }
     },
     selectedArea: {
       handler(s) {
-        this.scope.activate()
-        if (this.frequenciesLayer != null) {
-          this.frequenciesLayer.remove()
-        }
-        this.frequenciesLayer = new this.scope.Layer()
-
         const index = this.selectedArea.scopedIndex + this.selectedArea.startIndex
         this.selectSample(index)
 
-        const params = {
-          selectedArea: s,
-          frequencyResponse: this.frequencyResponse,
-          scope: this.scope,
-          width: this.width,
-          height: this.height,
-        }
-        console.log(params)
-        drawFrequencies(params)
+        this.updateFrequencies()
       },
       deep: true
     },
     selectedSample: {
       handler(s) {
-        this.scope.activate()
-        if (this.primedLayer != null) {
-          this.primedLayer.remove()
-        }
-        if (this.sampleLayer != null) {
-          this.sampleLayer.remove()
-        }
-        this.sampleLayer = new this.scope.Layer()
-        drawSelectedSample(s, this.selectedArea, this.scope)
+        this.updateSelectedSample()
       },
       deep: true
     },
     primedSample: {
       handler(s) {
-        this.scope.activate()
-        if (this.primedLayer != null) {
-          this.primedLayer.remove()
-        }
-        this.primedLayer = new this.scope.Layer()
-        drawPrimedSample(s, this.frequencyResponse, this.selectedArea, this.scope)
+        this.updatePrimedSample()
       },
       deep: true,
     }
   },
-  beforeDestroy: () => {
+  beforeDestroy: function() {
     window.removeEventListener('resize', this.handleResizeEvent)
   },
   mounted() {
     window.addEventListener('resize', this.handleResizeEvent)
+
+    this.width = document.getElementById('editor').clientWidth
+    this.height = document.getElementById('editor').clientHeight
 
     this.scope = new this.paper.PaperScope()
     this.scope.setup('editor')
@@ -133,5 +159,6 @@ export default {
 
 <style scoped>
 #editor, div {
+  width: 100%;
 }
 </style>
