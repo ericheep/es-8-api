@@ -45,7 +45,7 @@ export default {
       'selectSample',
       'mouseSelectSample',
     ]),
-    renewLayer: (scope, layer) => {
+    renewLayer: function(scope, layer) {
       if (layer != null) {
         layer.remove()
       }
