@@ -258,12 +258,6 @@ export const store = new Vuex.Store({
       }
     },
     SOCKET_INITIALIZE_SELECTED_AREA(state, selectedArea) {
-      state.selectedArea = {
-        ...state.selectedArea,
-        ...selectedArea,
-      }
-    },
-    SOCKET_UPDATE_SELECTED_AREA(state, selectedArea) {
       state.selectedArea = selectedArea
     },
     SOCKET_UPDATE_SELECTED_AREA_SAMPLES(state, samples) {
