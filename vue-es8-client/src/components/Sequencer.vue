@@ -4,6 +4,7 @@
     <Editor v-bind:paper="paper"/>
     <Transport v-bind:paper="paper"/>
     <SampleInfo/>
+    <Footer/>
   </div>
 </template>
 
@@ -14,6 +15,7 @@ import Controls from './Sequencer/Controls.vue'
 import Editor from './Sequencer/Editor.vue'
 import Transport from './Sequencer/Transport.vue'
 import SampleInfo from './Sequencer/SampleInfo.vue'
+import Footer from './Sequencer/Footer.vue'
 
 import { mapActions } from 'vuex'
 
@@ -24,6 +26,7 @@ export default {
     Editor,
     Transport,
     SampleInfo,
+    Footer,
   },
   computed: {
     paper: function() {

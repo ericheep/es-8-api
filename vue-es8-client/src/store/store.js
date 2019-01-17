@@ -9,6 +9,9 @@ export const store = new Vuex.Store({
   strict: true,
   state: {
     isConnected: '',
+    server: {
+      uptime: '00:00:00',
+    },
     sequencer: {
       length: 0,
       width: 0,
@@ -44,6 +47,9 @@ export const store = new Vuex.Store({
     },
   },
   getters: {
+    uptime: state => {
+      return state.server.uptime
+    },
     samplesShown: state => {
       return state.sequencer.samplesShown
     },
@@ -261,6 +267,9 @@ export const store = new Vuex.Store({
     },
     SOCKET_UPDATE_TRANSPORT_FREQUENCIES(state, frequencies) {
       state.transport.frequencies = frequencies
+    },
+    SOCKET_UPDATE_UPTIME(state, uptime) {
+      state.server.uptime = uptime
     },
     SOCKET_UPDATE_SAMPLE(state, sample) {
       const samples = state.selectedArea.samples

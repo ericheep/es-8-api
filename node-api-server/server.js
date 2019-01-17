@@ -9,9 +9,7 @@ const udpPort = new osc.UDPPort({
 })
 
 udpPort.open();
-
 const allowedOrigins = "http://localhost:* http://127.0.0.1:*";
-const wtc = require('wrtc')
 
 const io = require('socket.io')(server, {
   path: '/',
@@ -40,6 +38,18 @@ for (var i = 0; i < numSamples; i++) {
   }
 }
 
+const formatTime = (time) => {
+  var sec_num = parseInt(time, 10);
+  var hours   = Math.floor(sec_num / 3600);
+  var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+  var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+  if (hours   < 10) {hours   = "0"+hours;}
+  if (minutes < 10) {minutes = "0"+minutes;}
+  if (seconds < 10) {seconds = "0"+seconds;}
+  var time    = hours+':'+minutes+':'+seconds;
+  return time;
+}
 
 const averagedFrequencies = (frequencies, width) => {
   const averagedFreqs = []
@@ -67,6 +77,7 @@ const sequencer = {
 
 io.on('connect', (socket) => {
   io.emit('INITIALIZE_SEQUENCER', sequencer)
+  io.emit('UPDATE_UPTIME', formatTime(process.uptime() + ""))
   io.emit('UPDATE_SELECTED_AREA_SAMPLES', samples.slice(0, sequencer.samplesShown))
   console.log('connected')
 
