@@ -75,10 +75,17 @@ const sequencer = {
   length: frequencies.length,
 }
 
+const selectedArea = {
+  samples: samples.slice(0, sequencer.samplesShown),
+  startIndex: 0,
+  endIndex: sequencer.samplesShown,
+  scopedIndex: 0,
+}
+
 io.on('connect', (socket) => {
   io.emit('INITIALIZE_SEQUENCER', sequencer)
   io.emit('UPDATE_UPTIME', formatTime(process.uptime() + ""))
-  io.emit('UPDATE_SELECTED_AREA_SAMPLES', samples.slice(0, sequencer.samplesShown))
+  io.emit('UPDATE_SELECTED_AREA', selectedArea)
   console.log('connected')
 
   socket.on('emitUpdateSample', (data) => {

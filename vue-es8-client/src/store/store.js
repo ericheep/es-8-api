@@ -263,6 +263,9 @@ export const store = new Vuex.Store({
         ...selectedArea,
       }
     },
+    SOCKET_UPDATE_SELECTED_AREA(state, selectedArea) {
+      state.selectedArea = selectedArea
+    },
     SOCKET_UPDATE_SELECTED_AREA_SAMPLES(state, samples) {
       state.selectedArea.samples = samples
     },
