@@ -92,7 +92,7 @@ export const store = new Vuex.Store({
       let startIndex = state.selectedArea.startIndex - state.sequencer.samplesShown
       let endIndex = state.selectedArea.endIndex - state.sequencer.samplesShown
 
-      if (startIndex < 0) {
+      if (startIndex <= 0) {
         startIndex = 0
         endIndex = startIndex + state.sequencer.samplesShown
       }
@@ -201,8 +201,9 @@ export const store = new Vuex.Store({
     selectSample({ state, commit }, index) {
       if (state.selectedArea.samples.length > 0) {
         const samples = state.selectedArea.samples
-        const startIndex = samples[0].index
+        const startIndex = state.selectedArea.startIndex
         const endIndex = samples[samples.length - 1].index
+        console.log(state.selectedArea.startIndex, startIndex)
 
         if (index >= startIndex && index <= endIndex) {
           const freq = state.selectedArea.samples.find((el) => el.index === index).freq
