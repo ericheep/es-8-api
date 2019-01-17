@@ -109,5 +109,7 @@ export default {
 #transport, div {
   width: 100%;
   height: 100px;
+  min-height: 100px;
+  max-height: 100px;
 }
 </style>

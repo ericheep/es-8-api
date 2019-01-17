@@ -150,6 +150,7 @@ export default {
 
     this.width = document.getElementById('editor').clientWidth
     this.height = document.getElementById('editor').clientHeight
+    console.log(this.height)
 
     this.scope = new this.paper.PaperScope()
     this.scope.setup('editor')
@@ -158,7 +159,16 @@ export default {
 </script>
 
 <style scoped>
-#editor, div {
+div {
+  flex-grow: 1;
+  height: 100%;
+}
+#editor {
   width: 100%;
+  height: 100%;
+}
+canvas[resize]{
+  width: 100%;
+  height: 100%;
 }
 </style>

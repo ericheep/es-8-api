@@ -32,5 +32,6 @@ export default {
   width: 100%;
   font-size: 14px;
   margin-top: 5px;
+  padding-bottom: 10px;
 }
 </style>
