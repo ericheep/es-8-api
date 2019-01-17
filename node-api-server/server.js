@@ -101,8 +101,8 @@ io.on('connect', (socket) => {
     io.emit('UPDATE_SELECTED_AREA_SAMPLES', samples.slice(data.startIndex, data.endIndex))
   })
 
-  socket.on('emitGuideFrequencies', (width) => {
-    io.emit('UPDATE_GUIDE_FREQUENCIES', averagedFrequencies(frequencies, width))
+  socket.on('emitTransportFrequencies', (width) => {
+    io.emit('UPDATE_TRANSPORT_FREQUENCIES', averagedFrequencies(frequencies, width))
   })
 })
 
