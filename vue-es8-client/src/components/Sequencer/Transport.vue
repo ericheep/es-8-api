@@ -1,12 +1,13 @@
 <template>
   <div>
-    <canvas @click='mouseSelectArea' id='transport'></canvas>
+    <canvas @click='mouseSelectArea' id='transport' resize></canvas>
   </div>
 </template>
 
 <script>
+import { debounce } from 'debounce'
 import { mapActions, mapGetters } from 'vuex'
-import drawGuideWindow from '../../paper/drawGuideWindow.js'
+import drawTransportWindow from '../../paper/drawTransportWindow.js'
 import drawSelectedArea from '../../paper/drawSelectedArea.js'
 
 export default {
@@ -20,13 +21,13 @@ export default {
     },
   },
   data: () => ({
-    guideLayer: null,
+    transportWindowLayer: null,
     selectedAreaLayer: null,
     scope: null,
   }),
   computed: {
     ...mapGetters([
-      'guideFrequencies',
+      'transportFrequencies',
       'selectedArea',
       'sequenceLength',
       'frequencyResponse',
@@ -36,35 +37,68 @@ export default {
     ...mapActions([
       'mouseSelectArea',
     ]),
+    renewLayer: function(scope, layer) {
+      if (layer != null) {
+        layer.remove()
+      }
+      return new scope.Layer()
+    },
+    updateTransportWindow: function() {
+      this.scope.activate()
+      this.transportWindowLayer = this.renewLayer(this.scope, this.transportWindowLayer)
+
+      const params = {
+        transportFrequencies: this.transportFrequencies,
+        frequencyResponse: this.frequencyResponse,
+        width: this.width,
+        height: this.height,
+      }
+
+      if (this.frequencyResponse !== 0) drawTransportWindow(params, this.scope)
+    },
+    updateSelectedArea: function() {
+      this.scope.activate()
+      this.selectedAreaLayer = this.renewLayer(this.scope, this.selectedAreaLayer)
+
+      const params = {
+        selectedArea: this.selectedArea,
+        sequenceLength: this.sequenceLength,
+        width: this.width,
+        height: this.height,
+      }
+
+      drawSelectedArea(params, this.scope)
+    },
+    handleResizeEvent: debounce(function(event) {
+      this.width = document.getElementById('transport').clientWidth
+      this.height = document.getElementById('transport').clientHeight
+
+      this.updateTransportWindow()
+      this.updateSelectedArea()
+    }, 50),
   },
   watch: {
-    guideFrequencies: {
+    transportFrequencies: {
       handler(f) {
-        this.scope.activate()
-
-        if (this.guideLayer != null) {
-          this.guideLayer.remove()
-        }
-
-        this.guideLayer = new this.scope.Layer()
-        drawGuideWindow(f, this.frequencyResponse, this.scope)
+        this.updateTransportWindow()
       }
     },
     selectedArea: {
       handler(selectedArea) {
-        this.scope.activate()
-
-        if (this.selectedAreaLayer != null) {
-          this.selectedAreaLayer.remove()
-        }
-
-        this.selectedAreaLayer = new this.scope.Layer()
-        drawSelectedArea(selectedArea, this.sequenceLength, this.scope)
+        this.updateSelectedArea()
       },
       deep: true
     },
   },
+  beforeDestroy: function() {
+    window.removeEventListener('resize', this.handleResizeEvent)
+  },
   mounted() {
+    window.addEventListener('resize', this.handleResizeEvent)
+
+    this.width = document.getElementById('transport').clientWidth
+    this.height = document.getElementById('transport').clientHeight
+
     this.scope = new this.paper.PaperScope()
     this.scope.setup('transport')
   }

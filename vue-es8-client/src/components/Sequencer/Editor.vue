@@ -112,7 +112,7 @@ export default {
       this.updateFrequencies()
       this.updateSelectedSample()
       this.updatePrimedSample()
-    }, 100),
+    }, 50),
   },
   watch: {
     samplesShown: {

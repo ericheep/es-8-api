@@ -1,11 +1,8 @@
 import { frequencyToMIDIPitch } from '../helpers.js'
 
-export default (freqs, frequencyResponse, paper) => {
-  const div = document.getElementById('transport')
-  const width = div.clientWidth
-  const height = div.clientHeight
+export default ({ transportFrequencies, frequencyResponse, width, height }, paper) => {
+  const pitches = transportFrequencies.map(frequencyToMIDIPitch)
 
-  const pitches = freqs.map(frequencyToMIDIPitch)
   const [pitchLo, pitchHi] = frequencyResponse.map(frequencyToMIDIPitch)
   const range = pitchHi - pitchLo
   const scale = height / range

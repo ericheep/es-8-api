@@ -39,7 +39,7 @@ export const store = new Vuex.Store({
       endIndex: 0,
       scopedIndex: 0,
     },
-    guide: {
+    transport: {
       frequencies: [],
     },
   },
@@ -65,8 +65,8 @@ export const store = new Vuex.Store({
     selectedSampleIndex: state => {
       return state.selectedSample.index
     },
-    guideFrequencies: state => {
-      return state.guide.frequencies
+    transportFrequencies: state => {
+      return state.transport.frequencies
     },
     frequencyResponse: state => {
       return state.sequencer.frequencyResponse
@@ -150,13 +150,14 @@ export const store = new Vuex.Store({
     },
     updateSequencerWidth({ state, commit, dispatch }, width) {
       commit('UPDATE_SEQUENCER_WIDTH', width)
-      dispatch('emitGuideFrequencies', width)
+      dispatch('emitTransportFrequencies', width)
     },
     mouseSelectArea({ state, dispatch, commit }, mouse) {
+      const width = mouse.originalTarget.clientWidth
       const scopedIndex = state.selectedSample.index - state.selectedArea.startIndex
 
       const x = mouse.layerX - mouse.originalTarget.offsetLeft
-      const position = x / state.sequencer.width
+      const position = x / width
       let middleIndex = Math.floor(position * state.sequencer.length)
       let startIndex = middleIndex - Math.floor(state.sequencer.samplesShown / 2)
       let endIndex = startIndex + state.sequencer.samplesShown
@@ -207,8 +208,8 @@ export const store = new Vuex.Store({
     emitSelectedArea(state, selectedArea) {
       this._vm.$socket.emit('emitSelectedArea', selectedArea)
     },
-    emitGuideFrequencies(state, width) {
-      this._vm.$socket.emit('emitGuideFrequencies', width)
+    emitTransportFrequencies(state, width) {
+      this._vm.$socket.emit('emitTransportFrequencies', width)
     },
     emitUpdateSample({ state, commit }, sample) {
       this._vm.$socket.emit('emitUpdateSample', state.primedSample)
@@ -258,8 +259,8 @@ export const store = new Vuex.Store({
     SOCKET_UPDATE_SELECTED_AREA_SAMPLES(state, samples) {
       state.selectedArea.samples = samples
     },
-    SOCKET_UPDATE_GUIDE_FREQUENCIES(state, frequencies) {
-      state.guide.frequencies = frequencies
+    SOCKET_UPDATE_TRANSPORT_FREQUENCIES(state, frequencies) {
+      state.transport.frequencies = frequencies
     },
     SOCKET_UPDATE_SAMPLE(state, sample) {
       const samples = state.selectedArea.samples
