@@ -89,28 +89,38 @@ export const store = new Vuex.Store({
   },
   actions: {
     leftArrowClick({ state, commit, dispatch }, event) {
-      let startIndex = state.selectedArea.startIndex - state.sequencer.samplesShown
-      let endIndex = state.selectedArea.endIndex - state.sequencer.samplesShown
+      if (state.selectedArea.startIndex !== 0) {
+        let startIndex = state.selectedArea.startIndex - state.sequencer.samplesShown
+        let endIndex = state.selectedArea.endIndex - state.sequencer.samplesShown
 
-      if (startIndex <= 0) {
-        startIndex = 0
-        endIndex = startIndex + state.sequencer.samplesShown
+        if (startIndex <= 0) {
+          startIndex = 0
+          endIndex = startIndex + state.sequencer.samplesShown
+        }
+
+        dispatch('emitSelectedArea', {
+          startIndex,
+          endIndex,
+          scopedIndex: state.selectedArea.scopedIndex,
+        })
       }
-
-      commit('UPDATE_SELECTED_AREA', { startIndex, endIndex })
-      dispatch('emitSelectedArea', { startIndex, endIndex })
     },
     rightArrowClick({ state, commit, dispatch }, event) {
-      let startIndex = state.selectedArea.startIndex + state.sequencer.samplesShown
-      let endIndex = state.selectedArea.endIndex + state.sequencer.samplesShown
+      if (state.selectedArea.endIndex !== state.sequencer.length) {
+        let startIndex = state.selectedArea.startIndex + state.sequencer.samplesShown
+        let endIndex = state.selectedArea.endIndex + state.sequencer.samplesShown
 
-      if (endIndex >= state.sequencer.length) {
-        startIndex = state.sequencer.length - state.sequencer.samplesShown
-        endIndex = state.sequencer.length
+        if (endIndex >= state.sequencer.length) {
+          startIndex = state.sequencer.length - state.sequencer.samplesShown
+          endIndex = state.sequencer.length
+        }
+
+        dispatch('emitSelectedArea', {
+          startIndex,
+          endIndex,
+          scopedIndex: state.selectedArea.scopedIndex,
+        })
       }
-
-      commit('UPDATE_SELECTED_AREA', { startIndex, endIndex })
-      dispatch('emitSelectedArea', { startIndex, endIndex })
     },
     updatePrimedSampleFrequency({ state, commit }, event) {
       const isValid = RegExp(/^-?\d+\.?\d*$/).test(event.target.value)
@@ -177,8 +187,8 @@ export const store = new Vuex.Store({
         startIndex = state.sequencer.length - state.sequencer.samplesShown
         endIndex = state.sequencer.length
       }
-      commit('UPDATE_SELECTED_AREA', { startIndex, endIndex, scopedIndex })
-      dispatch('emitSelectedArea', { startIndex, endIndex })
+
+      dispatch('emitSelectedArea', { startIndex, endIndex, scopedIndex })
     },
     mouseSelectSample({ dispatch, commit, state }, mouse) {
       const height = mouse.originalTarget.clientHeight
@@ -199,17 +209,12 @@ export const store = new Vuex.Store({
       dispatch('selectSample', index)
     },
     selectSample({ state, commit }, index) {
-      if (state.selectedArea.samples.length > 0) {
-        const samples = state.selectedArea.samples
-        const startIndex = state.selectedArea.startIndex
-        const endIndex = samples[samples.length - 1].index
-        console.log(state.selectedArea.startIndex, startIndex)
+      const startIndex = state.selectedArea.startIndex
+      const scopedIndex = index - startIndex
 
-        if (index >= startIndex && index <= endIndex) {
-          const freq = state.selectedArea.samples.find((el) => el.index === index).freq
-          commit('UPDATE_SELECTED_SAMPLE', { index, freq })
-        }
-      }
+      const freq = state.selectedArea.samples.find((el) => el.index === index).freq
+      commit('UPDATE_SCOPED_INDEX', scopedIndex)
+      commit('UPDATE_SELECTED_SAMPLE', { index, freq })
     },
     // socket actions
     emitSelectedArea(state, selectedArea) {
@@ -223,12 +228,6 @@ export const store = new Vuex.Store({
     },
   },
   mutations: {
-    UPDATE_SELECTED_AREA(state, selectedArea) {
-      state.selectedArea = {
-        ...state.selectedArea,
-        ...selectedArea,
-      }
-    },
     UPDATE_SELECTED_SAMPLE(state, { index, freq }) {
       state.selectedSample = {
         freq: freq,
@@ -248,6 +247,9 @@ export const store = new Vuex.Store({
       state.primedSample.pitch = pitch
       state.primedSample.freq = pitchToFrequency(pitch)
     },
+    UPDATE_SCOPED_INDEX(state, scopedIndex) {
+      state.selectedArea.scopedIndex = scopedIndex
+    },
     UPDATE_SEQUENCER_WIDTH(state, width) {
       state.sequencer.width = width
     },
@@ -257,11 +259,8 @@ export const store = new Vuex.Store({
         ...sequencer,
       }
     },
-    SOCKET_INITIALIZE_SELECTED_AREA(state, selectedArea) {
+    SOCKET_UPDATE_SELECTED_AREA(state, selectedArea) {
       state.selectedArea = selectedArea
-    },
-    SOCKET_UPDATE_SELECTED_AREA_SAMPLES(state, samples) {
-      state.selectedArea.samples = samples
     },
     SOCKET_UPDATE_TRANSPORT_FREQUENCIES(state, frequencies) {
       state.transport.frequencies = frequencies

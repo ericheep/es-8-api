@@ -84,7 +84,7 @@ const selectedArea = {
 
 io.on('connect', (socket) => {
   io.emit('INITIALIZE_SEQUENCER', sequencer)
-  io.emit('INITIALIZE_SELECTED_AREA', selectedArea)
+  io.emit('UPDATE_SELECTED_AREA', selectedArea)
   io.emit('UPDATE_UPTIME', formatTime(process.uptime() + ""))
   console.log('connected')
 
@@ -116,7 +116,12 @@ io.on('connect', (socket) => {
   })
 
   socket.on('emitSelectedArea', (data) => {
-    io.emit('UPDATE_SELECTED_AREA_SAMPLES', samples.slice(data.startIndex, data.endIndex))
+    io.emit('UPDATE_SELECTED_AREA', {
+      startIndex: data.startIndex,
+      endIndex: data.endIndex,
+      scopedIndex: data.scopedIndex,
+      samples: samples.slice(data.startIndex, data.endIndex),
+    })
   })
 
   socket.on('emitTransportFrequencies', (width) => {
