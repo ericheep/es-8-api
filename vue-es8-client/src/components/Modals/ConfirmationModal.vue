@@ -27,7 +27,7 @@
           <button
             type="button"
             class="modal-button"
-            @click="emitCommitPrimedSample"
+            @click="commit"
           >
             Yes
           </button>
@@ -62,6 +62,10 @@ export default {
     },
     dateTime() {
       return format(new Date(), 'dddd, MMMM Do YYYY, h:mm:ss A')
+    },
+    commit() {
+      this.emitCommitPrimedSample(this.dateTime())
+      this.$emit('close')
     },
     close() {
       this.$emit('close')
@@ -126,5 +130,8 @@ export default {
 }
 .modal-button:active {
   padding: 8px 13px 6px;
+}
+a {
+  color: pink;
 }
 </style>

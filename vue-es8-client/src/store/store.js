@@ -26,6 +26,8 @@ export const store = new Vuex.Store({
         octave: 0,
         cents: '',
       },
+      dateTime: '00/00/00',
+      comment: '',
     },
     primedSample: {
       index: 0,
@@ -35,6 +37,8 @@ export const store = new Vuex.Store({
         octave: 0,
         cents: '',
       },
+      dateTime: '00/00/00',
+      comment: '',
     },
     selectedArea: {
       samples: [],
@@ -212,9 +216,9 @@ export const store = new Vuex.Store({
       const startIndex = state.selectedArea.startIndex
       const scopedIndex = index - startIndex
 
-      const freq = state.selectedArea.samples.find((el) => el.index === index).freq
+      // const freq = state.selectedArea.samples.find((el) => el.index === index).freq
       commit('UPDATE_SCOPED_INDEX', scopedIndex)
-      commit('UPDATE_SELECTED_SAMPLE', { index, freq })
+      commit('UPDATE_SELECTED_SAMPLE', index)
     },
     // socket actions
     emitSelectedArea({ state }, selectedArea) {
@@ -223,17 +227,14 @@ export const store = new Vuex.Store({
     emitTransportRanges({ state }, width) {
       this._vm.$socket.emit('emitTransportRanges', width)
     },
-    emitCommitPrimedSample({ state }) {
+    emitCommitPrimedSample({ state, commit }, dateTime) {
+      commit('UPDATE_PRIMED_SAMPLE_DATE_TIME', dateTime)
       this._vm.$socket.emit('emitCommitPrimedSample', state.primedSample)
     },
   },
   mutations: {
-    UPDATE_SELECTED_SAMPLE(state, { index, freq }) {
-      state.selectedSample = {
-        freq: freq,
-        index: index,
-        pitch: frequencyToPitch(freq),
-      }
+    UPDATE_SELECTED_SAMPLE(state, index) {
+      state.selectedSample = state.selectedArea.samples[index]
       state.primedSample.index = index
     },
     UPDATE_PRIMED_SAMPLE_FREQUENCY(state, freq) {
@@ -242,6 +243,9 @@ export const store = new Vuex.Store({
         pitch: frequencyToPitch(freq),
         index: state.selectedSample.index,
       }
+    },
+    UPDATE_PRIMED_SAMPLE_DATE_TIME(state, dateTime) {
+      state.primedSample.dateTime = dateTime
     },
     UPDATE_PRIMED_SAMPLE_PITCH(state, pitch) {
       state.primedSample.pitch = pitch
@@ -275,6 +279,8 @@ export const store = new Vuex.Store({
       samples[index] = {
         freq: sample.freq,
         index: sample.index,
+        dateTime: sample.dateTime,
+        comment: sample.comment,
       }
 
       state.selectedArea = {

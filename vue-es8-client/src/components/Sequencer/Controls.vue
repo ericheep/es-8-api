@@ -126,9 +126,9 @@ export default {
   flex-wrap: nowrap;
   justify-content: space-between;
   font-size: 14px;
-  height: 52px;
-  min-height: 52px;
-  max-height: 52px;
+  height: 55px;
+  min-height: 55px;
+  max-height: 55px;
   padding-top: 10px;
 }
 #left-side {

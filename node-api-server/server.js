@@ -1,6 +1,6 @@
+const osc = require('osc')
 const http = require('http')
 const server = http.createServer()
-const osc = require('osc')
 
 const udpPort = new osc.UDPPort({
   localAddress: "localhost",
@@ -24,18 +24,14 @@ const io = require('socket.io')(server, {
 
 var numSamples = 44100;
 var samples = []
-var scale = (24000.0 - 38.0) / numSamples
-var harmonic = 55.0
 
 for (var i = 0; i < numSamples; i++) {
   samples.push({
     index: i,
-    freq: Math.random() * 24038 - 38,
+    freq: null,
+    dateTime: null,
+    comment: null,
   })
-  harmonic *= 2
-  if (harmonic >= 24000) {
-    harmonic = 55.0
-  }
 }
 
 const formatTime = (time) => {
@@ -64,8 +60,6 @@ const rangesOfFrequencies = (frequencies, width) => {
 }
 
 
-const frequencies = samples.map((el) => el.freq)
-
 // 38hz to 24khz
 // frequency response of my Yamaha hs4s
 const sequencer = {
@@ -89,11 +83,13 @@ io.on('connect', (socket) => {
 
   socket.on('emitCommitPrimedSample', (data) => {
     const index = samples.findIndex((sample) => sample.index == data.index)
-    console.log(index)
+    console.log(data)
 
     samples[index] = {
       freq: data.freq,
       index: data.index,
+      dateTime: data.dateTime,
+      comment: data.comment,
     }
 
     io.emit('UPDATE_COMMITTED_SAMPLE', data)
@@ -125,6 +121,7 @@ io.on('connect', (socket) => {
   })
 
   socket.on('emitTransportRanges', (width) => {
+    const frequencies = samples.map((el) => el.freq)
     io.emit('UPDATE_TRANSPORT_RANGES', rangesOfFrequencies(frequencies, width))
   })
 })
