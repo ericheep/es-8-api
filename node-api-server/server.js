@@ -30,7 +30,7 @@ var harmonic = 55.0
 for (var i = 0; i < numSamples; i++) {
   samples.push({
     index: i,
-    freq: harmonic,
+    freq: Math.random() * 24038 - 38,
   })
   harmonic *= 2
   if (harmonic >= 24000) {
@@ -51,17 +51,16 @@ const formatTime = (time) => {
   return time;
 }
 
-const averagedFrequencies = (frequencies, width) => {
-  const averagedFreqs = []
+const rangesOfFrequencies = (frequencies, width) => {
+  const ranges = []
   const N = Math.floor(frequencies.length / width)
-  const reducer = (acc, curr) => acc + curr
 
   for (var i = 0; i < width; i++) {
     const slice = frequencies.slice(i * N, (i + 1) * N)
-    averagedFreqs[i] = slice.reduce(reducer) / slice.length
+    ranges[i] = [Math.min.apply(null, slice), Math.max.apply(null, slice)]
   }
 
-  return averagedFreqs
+  return ranges
 }
 
 
@@ -71,7 +70,7 @@ const frequencies = samples.map((el) => el.freq)
 // frequency response of my Yamaha hs4s
 const sequencer = {
   frequencyResponse: [38.0, 24000.0],
-  samplesShown: 70,
+  samplesShown: 100,
   length: frequencies.length,
 }
 
@@ -89,7 +88,8 @@ io.on('connect', (socket) => {
   console.log('connected')
 
   socket.on('emitCommitPrimedSample', (data) => {
-    const index = samples.findIndex((sample) => sample.index = data.index)
+    const index = samples.findIndex((sample) => sample.index == data.index)
+    console.log(index)
 
     samples[index] = {
       freq: data.freq,
@@ -124,8 +124,8 @@ io.on('connect', (socket) => {
     })
   })
 
-  socket.on('emitTransportFrequencies', (width) => {
-    io.emit('UPDATE_TRANSPORT_FREQUENCIES', averagedFrequencies(frequencies, width))
+  socket.on('emitTransportRanges', (width) => {
+    io.emit('UPDATE_TRANSPORT_RANGES', rangesOfFrequencies(frequencies, width))
   })
 })
 

@@ -43,7 +43,7 @@ export const store = new Vuex.Store({
       scopedIndex: 0,
     },
     transport: {
-      frequencies: [],
+      ranges: [],
     },
   },
   getters: {
@@ -71,8 +71,8 @@ export const store = new Vuex.Store({
     selectedSampleIndex: state => {
       return state.selectedSample.index
     },
-    transportFrequencies: state => {
-      return state.transport.frequencies
+    transportRanges: state => {
+      return state.transport.ranges
     },
     frequencyResponse: state => {
       return state.sequencer.frequencyResponse
@@ -166,7 +166,7 @@ export const store = new Vuex.Store({
     },
     updateSequencerWidth({ state, commit, dispatch }, width) {
       commit('UPDATE_SEQUENCER_WIDTH', width)
-      dispatch('emitTransportFrequencies', width)
+      dispatch('emitTransportRanges', width)
     },
     mouseSelectArea({ state, dispatch, commit }, mouse) {
       const width = mouse.originalTarget.clientWidth
@@ -220,8 +220,8 @@ export const store = new Vuex.Store({
     emitSelectedArea({ state }, selectedArea) {
       this._vm.$socket.emit('emitSelectedArea', selectedArea)
     },
-    emitTransportFrequencies({ state }, width) {
-      this._vm.$socket.emit('emitTransportFrequencies', width)
+    emitTransportRanges({ state }, width) {
+      this._vm.$socket.emit('emitTransportRanges', width)
     },
     emitCommitPrimedSample({ state }) {
       this._vm.$socket.emit('emitCommitPrimedSample', state.primedSample)
@@ -262,8 +262,8 @@ export const store = new Vuex.Store({
     SOCKET_UPDATE_SELECTED_AREA(state, selectedArea) {
       state.selectedArea = selectedArea
     },
-    SOCKET_UPDATE_TRANSPORT_FREQUENCIES(state, frequencies) {
-      state.transport.frequencies = frequencies
+    SOCKET_UPDATE_TRANSPORT_RANGES(state, ranges) {
+      state.transport.ranges = ranges
     },
     SOCKET_UPDATE_UPTIME(state, uptime) {
       state.server.uptime = uptime

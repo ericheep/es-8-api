@@ -27,7 +27,7 @@ export default {
   }),
   computed: {
     ...mapGetters([
-      'transportFrequencies',
+      'transportRanges',
       'selectedArea',
       'sequenceLength',
       'frequencyResponse',
@@ -48,7 +48,7 @@ export default {
       this.transportWindowLayer = this.renewLayer(this.scope, this.transportWindowLayer)
 
       const params = {
-        transportFrequencies: this.transportFrequencies,
+        transportRanges: this.transportRanges,
         frequencyResponse: this.frequencyResponse,
         width: this.width,
         height: this.height,
@@ -78,7 +78,7 @@ export default {
     }, 50),
   },
   watch: {
-    transportFrequencies: {
+    transportRanges: {
       handler(f) {
         this.updateTransportWindow()
       }
