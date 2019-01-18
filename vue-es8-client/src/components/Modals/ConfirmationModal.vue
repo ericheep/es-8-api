@@ -27,7 +27,7 @@
           <button
             type="button"
             class="modal-button"
-            @click="emitUpdateSample"
+            @click="emitCommitPrimedSample"
           >
             Yes
           </button>
@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'emitUpdateSample',
+      'emitCommitPrimedSample',
     ]),
     formatSelectedPitchAndFreq() {
       return formatPitchAndFreq(this.selectedSample)

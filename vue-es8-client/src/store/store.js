@@ -217,14 +217,14 @@ export const store = new Vuex.Store({
       commit('UPDATE_SELECTED_SAMPLE', { index, freq })
     },
     // socket actions
-    emitSelectedArea(state, selectedArea) {
+    emitSelectedArea({ state }, selectedArea) {
       this._vm.$socket.emit('emitSelectedArea', selectedArea)
     },
-    emitTransportFrequencies(state, width) {
+    emitTransportFrequencies({ state }, width) {
       this._vm.$socket.emit('emitTransportFrequencies', width)
     },
-    emitUpdateSample({ state, commit }, sample) {
-      this._vm.$socket.emit('emitUpdateSample', state.primedSample)
+    emitCommitPrimedSample({ state }) {
+      this._vm.$socket.emit('emitCommitPrimedSample', state.primedSample)
     },
   },
   mutations: {
@@ -268,7 +268,7 @@ export const store = new Vuex.Store({
     SOCKET_UPDATE_UPTIME(state, uptime) {
       state.server.uptime = uptime
     },
-    SOCKET_UPDATE_SAMPLE(state, sample) {
+    SOCKET_UPDATE_COMMITTED_SAMPLE(state, sample) {
       const samples = state.selectedArea.samples
       const index = samples.findIndex((s) => s.index === sample.index)
 
@@ -277,7 +277,12 @@ export const store = new Vuex.Store({
         index: sample.index,
       }
 
-      state.selectedArea.samples = samples
+      state.selectedArea = {
+        samples: samples,
+        startIndex: state.selectedArea.startIndex,
+        endIndex: state.selectedArea.endIndex,
+        scopedIndex: state.selectedArea.scopedIndex,
+      }
     },
     SOCKET_CONNECT(state) {
       state.isConnected = true
