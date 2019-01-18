@@ -88,7 +88,7 @@ io.on('connect', (socket) => {
   io.emit('UPDATE_UPTIME', formatTime(process.uptime() + ""))
   console.log('connected')
 
-  socket.on('emitUpdateSample', (data) => {
+  socket.on('emitCommitPrimedSample', (data) => {
     const index = samples.findIndex((sample) => sample.index = data.index)
 
     samples[index] = {
@@ -96,7 +96,7 @@ io.on('connect', (socket) => {
       index: data.index,
     }
 
-    io.emit('UPDATE_SAMPLE', data)
+    io.emit('UPDATE_COMMITTED_SAMPLE', data)
 
     /*
     // send osc to ChucK
