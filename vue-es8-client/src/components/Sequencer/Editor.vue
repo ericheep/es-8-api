@@ -124,8 +124,8 @@ export default {
     },
     selectedArea: {
       handler(s) {
-        const index = this.selectedArea.scopedIndex + this.selectedArea.startIndex
-        this.selectSample(index)
+        // const index = this.selectedArea.scopedIndex + this.selectedArea.startIndex
+        // this.selectSample(index)
 
         this.updateFrequencies()
       },
