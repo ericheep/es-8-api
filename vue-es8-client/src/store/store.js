@@ -216,7 +216,6 @@ export const store = new Vuex.Store({
       const startIndex = state.selectedArea.startIndex
       const scopedIndex = index - startIndex
 
-      // const freq = state.selectedArea.samples.find((el) => el.index === index).freq
       commit('UPDATE_SCOPED_INDEX', scopedIndex)
       commit('UPDATE_SELECTED_SAMPLE', index)
     },
@@ -235,6 +234,10 @@ export const store = new Vuex.Store({
   mutations: {
     UPDATE_SELECTED_SAMPLE(state, index) {
       state.selectedSample = state.selectedArea.samples[index]
+
+      const freq = state.selectedArea.samples.find((el) => el.index === index).freq
+      state.selectedSample.freq = freq
+      state.selectedSample.pitch = frequencyToPitch(freq)
       state.primedSample.index = index
     },
     UPDATE_PRIMED_SAMPLE_FREQUENCY(state, freq) {

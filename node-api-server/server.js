@@ -28,11 +28,12 @@ var samples = []
 for (var i = 0; i < numSamples; i++) {
   samples.push({
     index: i,
-    freq: null,
+    freq: (38 + i) % 24000,
     dateTime: null,
-    comment: null,
   })
 }
+
+const frequencies = samples.map((el) => el.freq)
 
 const formatTime = (time) => {
   var sec_num = parseInt(time, 10);
@@ -89,7 +90,6 @@ io.on('connect', (socket) => {
       freq: data.freq,
       index: data.index,
       dateTime: data.dateTime,
-      comment: data.comment,
     }
 
     io.emit('UPDATE_COMMITTED_SAMPLE', data)
@@ -121,7 +121,6 @@ io.on('connect', (socket) => {
   })
 
   socket.on('emitTransportRanges', (width) => {
-    const frequencies = samples.map((el) => el.freq)
     io.emit('UPDATE_TRANSPORT_RANGES', rangesOfFrequencies(frequencies, width))
   })
 })
