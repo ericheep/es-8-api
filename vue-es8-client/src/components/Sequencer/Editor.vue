@@ -108,8 +108,6 @@ export default {
       this.width = document.getElementById('editor').clientWidth
       this.height = document.getElementById('editor').clientHeight
 
-      // console.log(document.getElementById('canvas-div'))
-
       this.updateEditorWindow()
       this.updateFrequencies()
       this.updateSelectedSample()
@@ -124,8 +122,8 @@ export default {
     },
     selectedArea: {
       handler(s) {
-        // const index = this.selectedArea.scopedIndex + this.selectedArea.startIndex
-        // this.selectSample(index)
+        const index = this.selectedArea.scopedIndex + this.selectedArea.startIndex
+        this.selectSample(index)
 
         this.updateFrequencies()
       },

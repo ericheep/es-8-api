@@ -12,8 +12,8 @@ export default ({ transportRanges, frequencyResponse, width, height }, paper) =>
   for (var i = 0; i < width; i++) {
     const [rangeLo, rangeHi] = transportRanges[i].map(frequencyToMIDIPitch)
     const pitchRect = new paper.Path.Rectangle({
-      size: [1, scale * rangeHi - scale * rangeLo],
-      center: [i, height - (rangeHi - rangeLo) * scale],
+      size: [1, (rangeHi - rangeLo) * scale],
+      center: [i, height - ((rangeHi + rangeLo) * 0.5 - pitchLo) * scale],
     })
     pitchRect.fillColor = 'black'
   }

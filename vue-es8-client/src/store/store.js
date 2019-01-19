@@ -233,11 +233,12 @@ export const store = new Vuex.Store({
   },
   mutations: {
     UPDATE_SELECTED_SAMPLE(state, index) {
-      state.selectedSample = state.selectedArea.samples[index]
-
       const freq = state.selectedArea.samples.find((el) => el.index === index).freq
+
       state.selectedSample.freq = freq
       state.selectedSample.pitch = frequencyToPitch(freq)
+      state.selectedSample.index = index
+
       state.primedSample.index = index
     },
     UPDATE_PRIMED_SAMPLE_FREQUENCY(state, freq) {
