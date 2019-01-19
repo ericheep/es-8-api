@@ -36,6 +36,7 @@ export default {
   methods: {
     ...mapActions([
       'mouseSelectArea',
+      'updateSequencerWidth',
     ]),
     renewLayer: function(scope, layer) {
       if (layer != null) {
@@ -96,8 +97,11 @@ export default {
   mounted() {
     window.addEventListener('resize', this.handleResizeEvent)
 
+    console.log(document.getElementById('transport'))
+
     this.width = document.getElementById('transport').clientWidth
     this.height = document.getElementById('transport').clientHeight
+    this.updateSequencerWidth(this.width)
 
     this.scope = new this.paper.PaperScope()
     this.scope.setup('transport')

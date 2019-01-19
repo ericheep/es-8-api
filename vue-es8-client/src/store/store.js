@@ -177,6 +177,7 @@ export const store = new Vuex.Store({
       const scopedIndex = state.selectedSample.index - state.selectedArea.startIndex
 
       const x = mouse.layerX - mouse.originalTarget.offsetLeft
+      console.log(x)
       const position = x / width
       let middleIndex = Math.floor(position * state.sequencer.length)
       let startIndex = middleIndex - Math.floor(state.sequencer.samplesShown / 2)

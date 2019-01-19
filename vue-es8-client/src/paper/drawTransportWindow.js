@@ -4,6 +4,7 @@ export default ({ transportRanges, frequencyResponse, width, height }, paper) =>
   const [pitchLo, pitchHi] = frequencyResponse.map(frequencyToMIDIPitch)
   const range = pitchHi - pitchLo
   const scale = height / range
+  console.log(width)
 
   const path = new paper.Path.Rectangle(0, 0, width, height)
   path.strokeColor = 'gray'

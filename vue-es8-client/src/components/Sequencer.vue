@@ -17,8 +17,6 @@ import Transport from './Sequencer/Transport.vue'
 import SampleInfo from './Sequencer/SampleInfo.vue'
 import Footer from './Sequencer/Footer.vue'
 
-import { mapActions } from 'vuex'
-
 export default {
   name: 'Sequencer',
   components: {
@@ -33,15 +31,6 @@ export default {
       return paper
     }
   },
-  methods: {
-    ...mapActions([
-      'updateSequencerWidth',
-    ]),
-  },
-  mounted() {
-    const div = document.getElementById('sequencer')
-    this.updateSequencerWidth(div.clientWidth)
-  }
 }
 </script>
 

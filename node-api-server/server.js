@@ -28,12 +28,11 @@ var samples = []
 for (var i = 0; i < numSamples; i++) {
   samples.push({
     index: i,
-    freq: (38 + i) % 24000,
+    freq: (38 + i * 3) % 24000,
     dateTime: null,
   })
 }
 
-const frequencies = samples.map((el) => el.freq)
 
 const formatTime = (time) => {
   var sec_num = parseInt(time, 10);
@@ -48,43 +47,42 @@ const formatTime = (time) => {
   return time;
 }
 
-const rangesOfFrequencies = (frequencies, width) => {
+const rangesOfFrequencies = (width) => {
+  const frequencies = samples.map((el) => el.freq)
   const ranges = []
-  const N = Math.floor(frequencies.length / width)
+  const N = frequencies.length / width
 
   for (var i = 0; i < width; i++) {
-    const slice = frequencies.slice(i * N, (i + 1) * N)
-    ranges[i] = [Math.min.apply(null, slice), Math.max.apply(null, slice)]
+    const startIndex = Math.floor(i * N)
+    const endIndex = Math.floor((i + 1) * N)
+    const slice = frequencies.slice(startIndex, endIndex)
+    ranges.push([Math.min.apply(null, slice), Math.max.apply(null, slice)])
   }
 
   return ranges
 }
-
 
 // 38hz to 24khz
 // frequency response of my Yamaha hs4s
 const sequencer = {
   frequencyResponse: [38.0, 24000.0],
   samplesShown: 100,
-  length: frequencies.length,
-}
-
-const selectedArea = {
-  samples: samples.slice(0, sequencer.samplesShown),
-  startIndex: 0,
-  endIndex: sequencer.samplesShown,
-  scopedIndex: 0,
+  length: samples.length,
 }
 
 io.on('connect', (socket) => {
   io.emit('INITIALIZE_SEQUENCER', sequencer)
-  io.emit('UPDATE_SELECTED_AREA', selectedArea)
+  io.emit('UPDATE_SELECTED_AREA', {
+    startIndex: 0,
+    endIndex: sequencer.samplesShown,
+    scopedIndex: 0,
+    samples: samples.slice(0, sequencer.samplesShown),
+  })
   io.emit('UPDATE_UPTIME', formatTime(process.uptime() + ""))
   console.log('connected')
 
   socket.on('emitCommitPrimedSample', (data) => {
     const index = samples.findIndex((sample) => sample.index == data.index)
-    console.log(data)
 
     samples[index] = {
       freq: data.freq,
@@ -121,7 +119,8 @@ io.on('connect', (socket) => {
   })
 
   socket.on('emitTransportRanges', (width) => {
-    io.emit('UPDATE_TRANSPORT_RANGES', rangesOfFrequencies(frequencies, width))
+    console.log(width)
+    io.emit('UPDATE_TRANSPORT_RANGES', rangesOfFrequencies(width))
   })
 })
 
