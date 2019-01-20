@@ -119,7 +119,7 @@ io.on('connect', (socket) => {
   })
 
   socket.on('emitTransportRanges', (width) => {
-    console.log(width)
+    console.log(width, 'width')
     io.emit('UPDATE_TRANSPORT_RANGES', rangesOfFrequencies(width))
   })
 })

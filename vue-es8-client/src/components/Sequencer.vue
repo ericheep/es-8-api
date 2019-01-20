@@ -4,7 +4,6 @@
     <Editor v-bind:paper="paper"/>
     <Transport v-bind:paper="paper"/>
     <SampleInfo/>
-    <Footer/>
   </div>
 </template>
 
@@ -15,7 +14,6 @@ import Controls from './Sequencer/Controls.vue'
 import Editor from './Sequencer/Editor.vue'
 import Transport from './Sequencer/Transport.vue'
 import SampleInfo from './Sequencer/SampleInfo.vue'
-import Footer from './Sequencer/Footer.vue'
 
 export default {
   name: 'Sequencer',
@@ -24,7 +22,6 @@ export default {
     Editor,
     Transport,
     SampleInfo,
-    Footer,
   },
   computed: {
     paper: function() {
@@ -38,9 +35,6 @@ export default {
 #sequencer {
   display: flex;
   flex-direction: column;
-  padding: 0px 10px 0px 0px;
-  min-width: 740px;
   width: 100%;
-  height: 100%;
 }
 </style>

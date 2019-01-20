@@ -23,7 +23,7 @@
         </div>
     </div>
     <div id="right-side">
-      <div>
+      <div class="flex-column">
         <div class="right-items">
           <div>Frequency:
             <input
@@ -126,10 +126,12 @@ export default {
   flex-wrap: nowrap;
   justify-content: space-between;
   font-size: 14px;
+
+  margin-bottom: 5px;
+
   height: 55px;
   min-height: 55px;
   max-height: 55px;
-  padding-top: 10px;
 }
 #left-side {
   display: flex;
@@ -156,13 +158,9 @@ button:hover {
   flex-direction: column;
   justify-content: space-evenly;
 }
-.commit-button:active {
-  padding: 8px 13px 6px;
-}
 .commit-button {
   margin-left: 10px;
-  margin-top: 3px;
-  height: 89%;
+  height: 100%;
   width: 110px;
 }
 .left-items {
@@ -177,8 +175,6 @@ button:hover {
 .left-items, .right-items {
   display: flex;
   flex-direction: row;
-  margin-bottom: 3px;
-  margin-top: 3px;
 }
 .input-right {
   margin-left: 15px;
@@ -186,7 +182,7 @@ button:hover {
 .arrow-button {
   text-align: center;
   width: 40px;
-  height: 89%px;
+  height: 100%;
   margin-right: 6px;
 }
 </style>

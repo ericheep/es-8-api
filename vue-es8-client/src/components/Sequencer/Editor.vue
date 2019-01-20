@@ -44,6 +44,7 @@ export default {
     ...mapActions([
       'selectSample',
       'mouseSelectSample',
+      'updateTransportWidth',
     ]),
     renewLayer: function(scope, layer) {
       if (layer != null) {
@@ -112,7 +113,8 @@ export default {
       this.updateFrequencies()
       this.updateSelectedSample()
       this.updatePrimedSample()
-    }, 50),
+      this.updateTransportWidth(this.width)
+    }, 100),
   },
   watch: {
     samplesShown: {
@@ -159,7 +161,8 @@ export default {
 
 <style scoped>
 #editor {
-  height: 400px;
+  min-height: 355px;
+  max-height: 355px;
   width: 100%;
 }
 </style>

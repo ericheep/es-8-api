@@ -21,11 +21,8 @@ export default {
 <style scoped>
 #info {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-between;
-
-  min-width: 260px;
-  max-width: 260px;
-  padding: 10px;
+  padding-top: 15px;
 }
 </style>

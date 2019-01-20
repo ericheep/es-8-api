@@ -36,7 +36,7 @@ export default {
   methods: {
     ...mapActions([
       'mouseSelectArea',
-      'updateSequencerWidth',
+      'updateTransportWidth',
     ]),
     renewLayer: function(scope, layer) {
       if (layer != null) {
@@ -74,7 +74,6 @@ export default {
       this.width = document.getElementById('transport').clientWidth
       this.height = document.getElementById('transport').clientHeight
 
-      this.updateTransportWindow()
       this.updateSelectedArea()
     }, 50),
   },
@@ -97,11 +96,10 @@ export default {
   mounted() {
     window.addEventListener('resize', this.handleResizeEvent)
 
-    console.log(document.getElementById('transport'))
-
     this.width = document.getElementById('transport').clientWidth
     this.height = document.getElementById('transport').clientHeight
-    this.updateSequencerWidth(this.width)
+
+    this.updateTransportWidth(this.width)
 
     this.scope = new this.paper.PaperScope()
     this.scope.setup('transport')
@@ -113,7 +111,7 @@ export default {
 #transport, div {
   width: 100%;
   height: 100px;
-  min-height: 100px;
-  max-height: 100px;
+  min-height: 45px;
+  max-height: 45px;
 }
 </style>

@@ -14,7 +14,6 @@ export const store = new Vuex.Store({
     },
     sequencer: {
       length: 0,
-      width: 0,
       samplesShown: 0,
       frequencyResponse: 0,
     },
@@ -168,8 +167,8 @@ export const store = new Vuex.Store({
         commit('UPDATE_PRIMED_SAMPLE_PITCH', pitch)
       }
     },
-    updateSequencerWidth({ state, commit, dispatch }, width) {
-      commit('UPDATE_SEQUENCER_WIDTH', width)
+    updateTransportWidth({ state, commit, dispatch }, width) {
+      // commit('UPDATE_TT_WIDTH', width)
       dispatch('emitTransportRanges', width)
     },
     mouseSelectArea({ state, dispatch, commit }, mouse) {
@@ -177,7 +176,6 @@ export const store = new Vuex.Store({
       const scopedIndex = state.selectedSample.index - state.selectedArea.startIndex
 
       const x = mouse.layerX - mouse.originalTarget.offsetLeft
-      console.log(x)
       const position = x / width
       let middleIndex = Math.floor(position * state.sequencer.length)
       let startIndex = middleIndex - Math.floor(state.sequencer.samplesShown / 2)
@@ -258,9 +256,6 @@ export const store = new Vuex.Store({
     },
     UPDATE_SCOPED_INDEX(state, scopedIndex) {
       state.selectedArea.scopedIndex = scopedIndex
-    },
-    UPDATE_SEQUENCER_WIDTH(state, width) {
-      state.sequencer.width = width
     },
     SOCKET_INITIALIZE_SEQUENCER(state, sequencer) {
       state.sequencer = {
