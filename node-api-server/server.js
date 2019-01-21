@@ -57,7 +57,11 @@ const rangesOfFrequencies = (width) => {
     const startIndex = Math.floor(i * N)
     const endIndex = Math.floor((i + 1) * N)
     const slice = frequencies.slice(startIndex, endIndex)
-    ranges.push([Math.min.apply(null, slice), Math.max.apply(null, slice)])
+
+    ranges.push([
+      Math.min.apply(null, slice.filter(Boolean)),
+      Math.max.apply(null, slice.filter(Boolean))]
+    )
   }
 
   return ranges
