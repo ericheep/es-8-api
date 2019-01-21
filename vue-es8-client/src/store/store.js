@@ -81,6 +81,9 @@ export const store = new Vuex.Store({
     frequencyResponse: state => {
       return state.sequencer.frequencyResponse
     },
+    pitchResponse: state => {
+      return state.sequencer.pitchResponse
+    },
     primedSampleFrequency: state => {
       return state.primedSample.freq
     },
@@ -108,7 +111,6 @@ export const store = new Vuex.Store({
         dispatch('emitSelectedArea', {
           startIndex,
           endIndex,
-          scopedIndex: state.sequencer.scopedIndex,
         })
       }
     },
@@ -125,7 +127,6 @@ export const store = new Vuex.Store({
         dispatch('emitSelectedArea', {
           startIndex,
           endIndex,
-          scopedIndex: state.sequencer.scopedIndex,
         })
       }
     },
@@ -209,15 +210,18 @@ export const store = new Vuex.Store({
       const index = state.selectedArea.startIndex + offsetIndex
 
       dispatch('selectSample', index)
+      dispatch('updateScopedIndex', index)
 
       commit('UPDATE_PRIMED_SAMPLE_INDEX', index)
       commit('UPDATE_PRIMED_SAMPLE_FREQUENCY', freq)
     },
-    selectSample({ state, commit }, index) {
+    updateScopedIndex({ state, commit }, index) {
       const startIndex = state.selectedArea.startIndex
       const scopedIndex = index - startIndex
 
       commit('UPDATE_SCOPED_INDEX', scopedIndex)
+    },
+    selectSample({ state, commit }, index) {
       commit('UPDATE_SELECTED_SAMPLE', index)
     },
     // socket actions
@@ -285,12 +289,11 @@ export const store = new Vuex.Store({
         comment: sample.comment,
       }
 
-      // state.selectedArea = {
-      //   samples: samples,
-      //   startIndex: state.selectedArea.startIndex,
-      //   endIndex: state.selectedArea.endIndex,
-      //   scopedIndex: state.selectedArea.scopedIndex,
-      // }
+      state.selectedArea = {
+        samples: samples,
+        startIndex: state.selectedArea.startIndex,
+        endIndex: state.selectedArea.endIndex,
+      }
     },
     SOCKET_CONNECT(state) {
       state.isConnected = true
