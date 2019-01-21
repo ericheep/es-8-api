@@ -1,11 +1,10 @@
 <template>
   <div>
-    <canvas @click='mouseSelectSample' id='editor' resize></canvas>
+    <canvas @click='mouseSelectSample' id='editor'></canvas>
   </div>
 </template>
 
 <script>
-import { debounce } from 'debounce'
 import { mapGetters, mapActions } from 'vuex'
 import drawEditorWindow from '../../paper/drawEditorWindow.js'
 import drawFrequencies from '../../paper/drawFrequencies.js'
@@ -104,15 +103,6 @@ export default {
 
       drawPrimedSample(params, this.scope)
     },
-    handleResizeEvent: debounce(function(event) {
-      this.width = document.getElementById('editor').clientWidth
-      this.height = document.getElementById('editor').clientHeight
-
-      this.updateEditorWindow()
-      this.updateFrequencies()
-      this.updateSelectedSample()
-      this.updatePrimedSample()
-    }, 100),
   },
   watch: {
     samplesShown: {
@@ -142,12 +132,7 @@ export default {
       deep: true,
     }
   },
-  beforeDestroy: function() {
-    window.removeEventListener('resize', this.handleResizeEvent)
-  },
   mounted() {
-    window.addEventListener('resize', this.handleResizeEvent)
-
     this.width = document.getElementById('editor').clientWidth
     this.height = document.getElementById('editor').clientHeight
 

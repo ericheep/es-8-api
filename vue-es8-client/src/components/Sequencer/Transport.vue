@@ -1,11 +1,10 @@
 <template>
   <div>
-    <canvas @click='mouseSelectArea' id='transport' resize></canvas>
+    <canvas @click='mouseSelectArea' id='transport'></canvas>
   </div>
 </template>
 
 <script>
-import { debounce } from 'debounce'
 import { mapActions, mapGetters } from 'vuex'
 import drawTransportWindow from '../../paper/drawTransportWindow.js'
 import drawSelectedArea from '../../paper/drawSelectedArea.js'
@@ -69,13 +68,6 @@ export default {
 
       drawSelectedArea(params, this.scope)
     },
-    handleResizeEvent: debounce(function(event) {
-      this.width = document.getElementById('transport').clientWidth
-      this.height = document.getElementById('transport').clientHeight
-
-      this.updateSelectedArea()
-      this.updateTransportWindow()
-    }, 50),
   },
   watch: {
     transportRanges: {
@@ -90,12 +82,7 @@ export default {
       deep: true
     },
   },
-  beforeDestroy: function() {
-    window.removeEventListener('resize', this.handleResizeEvent)
-  },
   mounted() {
-    window.addEventListener('resize', this.handleResizeEvent)
-
     this.width = document.getElementById('transport').clientWidth
     this.height = document.getElementById('transport').clientHeight
 

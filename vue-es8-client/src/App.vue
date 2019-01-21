@@ -39,8 +39,8 @@ div {
 
   text-align: left;
   color: #2c3e50;
-  min-width: 740px;
-  max-width: 1100px;
+  min-width: 760px;
+  max-width: 760px;
 
   margin-left: auto;
   margin-right: auto;

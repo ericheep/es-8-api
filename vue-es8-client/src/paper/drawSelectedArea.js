@@ -5,8 +5,8 @@ export default ({ selectedArea, sequenceLength, width, height }, paper) => {
   const centerPixel = centerIndex / sequenceLength * width
 
   const selectedAreaRect = new paper.Path.Rectangle({
-    size: [selectedAreaWidth, height],
+    size: [selectedAreaWidth, height - 2],
     center: [centerPixel, height * 0.5],
   })
-  selectedAreaRect.fillColor = new paper.Color(0, 0, 0, 0.05)
+  selectedAreaRect.fillColor = 'pink'
 }

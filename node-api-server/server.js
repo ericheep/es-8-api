@@ -78,7 +78,7 @@ io.on('connect', (socket) => {
     scopedIndex: 0,
     samples: samples.slice(0, sequencer.samplesShown),
   })
-  io.emit('UPDATE_TRANSPORT_RANGES', rangesOfFrequencies(2000))
+  io.emit('UPDATE_TRANSPORT_RANGES', rangesOfFrequencies(760))
   io.emit('UPDATE_UPTIME', formatTime(process.uptime() + ""))
   console.log('connected')
 
@@ -92,6 +92,7 @@ io.on('connect', (socket) => {
     }
 
     io.emit('UPDATE_COMMITTED_SAMPLE', data)
+    io.emit('UPDATE_TRANSPORT_RANGES', rangesOfFrequencies(760))
 
     /*
     // send osc to ChucK
