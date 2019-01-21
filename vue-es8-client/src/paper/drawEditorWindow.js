@@ -11,23 +11,5 @@ export default ({ samplesShown, width, height }, paper) => {
       strokeColor: 'gray',
     })
     line.dashArray = [1, 10]
-
-    let widthSubtract = 0
-    if (i === 0 || i === length - 1) {
-      widthSubtract = 8
-    }
-
-    const highlight = new paper.Path.Rectangle({
-      size: [sampleWidth - widthSubtract, height - 8],
-      center: [i * sampleWidth + sampleWidth / 2, height / 2],
-      fillColor: 'white',
-    })
-
-    highlight.onMouseEnter = function(event) {
-      this.fillColor = new paper.Color(0, 0, 0, 0.025)
-    }
-    highlight.onMouseLeave = function(event) {
-      this.fillColor = 'white'
-    }
   }
 }

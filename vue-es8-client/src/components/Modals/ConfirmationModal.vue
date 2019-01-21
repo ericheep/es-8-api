@@ -8,8 +8,7 @@
       </header>
       <section class="modal-body">
         <slot name="body">
-        Are you sure that you want to change sample at index {{ selectedSample.index }}
-        from
+        Are you sure that you want to set sample at index {{ selectedSample.index }}
         {{ formatSelectedPitchAndFreq() }}  to
         {{ formatPrimedPitchAndFreq() }}
         on {{ dateTime() }} from XXX.XXX.XXX.XXX?
@@ -21,14 +20,14 @@
             type="button"
             class="modal-button"
             @click="close"
-          >
+            >
             No
           </button>
           <button
             type="button"
             class="modal-button"
             @click="commit"
-          >
+            >
             Yes
           </button>
         </slot>
@@ -55,7 +54,11 @@ export default {
       'emitCommitPrimedSample',
     ]),
     formatSelectedPitchAndFreq() {
-      return formatPitchAndFreq(this.selectedSample)
+      if (this.selectedSample.freq) {
+        return 'from ' + formatPitchAndFreq(this.selectedSample)
+      } else {
+        return ''
+      }
     },
     formatPrimedPitchAndFreq() {
       return formatPitchAndFreq(this.primedSample)
@@ -125,7 +128,7 @@ export default {
   font: normal 16px inconsolata;
 }
 .modal-button:hover {
-  background-color: black;
+  background-color: pink;
   color: white;
 }
 .modal-button:active {

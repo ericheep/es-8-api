@@ -1,5 +1,7 @@
 const osc = require('osc')
 const http = require('http')
+const ipaddress = require('ip-address')
+
 const server = http.createServer()
 
 const udpPort = new osc.UDPPort({
@@ -28,11 +30,10 @@ var samples = []
 for (var i = 0; i < numSamples; i++) {
   samples.push({
     index: i,
-    freq: (38 + i * 3) % 24000,
+    freq: null,
     dateTime: null,
   })
 }
-
 
 const formatTime = (time) => {
   var sec_num = parseInt(time, 10);
@@ -80,10 +81,12 @@ io.on('connect', (socket) => {
   })
   io.emit('UPDATE_TRANSPORT_RANGES', rangesOfFrequencies(760))
   io.emit('UPDATE_UPTIME', formatTime(process.uptime() + ""))
-  console.log('connected')
+  // const ipaddr = new ipaddress.Address6(socket.handshake.headers.origin)
+  // console.log(ipaddr)
 
   socket.on('emitCommitPrimedSample', (data) => {
     const index = samples.findIndex((sample) => sample.index == data.index)
+    console.log(data)
 
     samples[index] = {
       freq: data.freq,

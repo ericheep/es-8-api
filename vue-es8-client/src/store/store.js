@@ -225,11 +225,12 @@ export const store = new Vuex.Store({
   },
   mutations: {
     UPDATE_SELECTED_SAMPLE(state, index) {
-      const freq = state.selectedArea.samples.find((el) => el.index === index).freq
+      const sample = state.selectedArea.samples.find((el) => el.index === index)
 
-      state.selectedSample.freq = freq
-      state.selectedSample.pitch = frequencyToPitch(freq)
+      state.selectedSample.freq = sample.freq
+      state.selectedSample.pitch = frequencyToPitch(sample.freq)
       state.selectedSample.index = index
+      state.selectedSample.dateTime = sample.dateTime
 
       state.primedSample.index = index
     },
@@ -276,12 +277,12 @@ export const store = new Vuex.Store({
         comment: sample.comment,
       }
 
-      state.selectedArea = {
-        samples: samples,
-        startIndex: state.selectedArea.startIndex,
-        endIndex: state.selectedArea.endIndex,
-        scopedIndex: state.selectedArea.scopedIndex,
-      }
+      // state.selectedArea = {
+      //   samples: samples,
+      //   startIndex: state.selectedArea.startIndex,
+      //   endIndex: state.selectedArea.endIndex,
+      //   scopedIndex: state.selectedArea.scopedIndex,
+      // }
     },
     SOCKET_CONNECT(state) {
       state.isConnected = true

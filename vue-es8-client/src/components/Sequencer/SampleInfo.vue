@@ -1,7 +1,6 @@
 <template>
   <div id="sample-info">
-    Modified by 242.142.132.041 on {{ dateTime() }}
-    {{ formatSelectedPitchAndFreq() }}
+    {{ formatSampleInfo() }}
   </div>
 </template>
 
@@ -17,12 +16,16 @@ export default {
     ]),
   },
   methods: {
-    formatSelectedPitchAndFreq() {
-      return formatPitchAndFreq(this.selectedSample)
-    },
-    dateTime() {
-      return this.selectedSample.dateTime
-    },
+    formatSampleInfo() {
+      if (this.selectedSample.freq !== null) {
+        return 'Modified by 127.0.0.1 on ' +
+        this.selectedSample.dateTime +
+        ' ' +
+        formatPitchAndFreq(this.selectedSample)
+      } else {
+        return 'Unmodified sample.'
+      }
+    }
   }
 }
 </script>

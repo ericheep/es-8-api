@@ -150,7 +150,7 @@ button {
   font: normal 16px inconsolata;
 }
 button:hover {
-  background-color: black;
+  background-color: pink;
   color: white;
 }
 .flex-column {
