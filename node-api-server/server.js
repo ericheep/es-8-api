@@ -122,7 +122,6 @@ io.on('connect', (socket) => {
     io.emit('UPDATE_SELECTED_AREA', {
       startIndex: data.startIndex,
       endIndex: data.endIndex,
-      scopedIndex: data.scopedIndex,
       samples: samples.slice(data.startIndex, data.endIndex),
     })
   })

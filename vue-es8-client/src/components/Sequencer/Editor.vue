@@ -37,7 +37,7 @@ export default {
       'samplesShown',
       'selectedSample',
       'primedSample',
-      'frequencyResponse',
+      'pitchResponse',
     ]),
   },
   methods: {
@@ -57,7 +57,7 @@ export default {
 
       const params = {
         selectedArea: this.selectedArea,
-        frequencyResponse: this.frequencyResponse,
+        pitchResponse: this.pitchResponse,
         width: this.width,
         height: this.height,
       }
@@ -78,7 +78,6 @@ export default {
     },
     updateSelectedSample: function() {
       this.scope.activate()
-      this.primedSampleLayer = this.renewLayer(this.scope, this.primedSampleLayer)
       this.selectedSampleLayer = this.renewLayer(this.scope, this.selectedSampleLayer)
 
       const params = {
@@ -96,8 +95,9 @@ export default {
 
       const params = {
         primedSample: this.primedSample,
-        frequencyResponse: this.frequencyResponse,
+        pitchResponse: this.pitchResponse,
         selectedArea: this.selectedArea,
+        scopedIndex: this.scopedIndex,
         width: this.width,
         height: this.height,
       }
@@ -113,10 +113,10 @@ export default {
     },
     selectedArea: {
       handler(s) {
+        this.updateFrequencies()
+
         const index = this.scopedIndex + this.selectedArea.startIndex
         this.selectSample(index)
-
-        this.updateFrequencies()
       },
       deep: true
     },
