@@ -16,6 +16,8 @@ export const store = new Vuex.Store({
       length: 0,
       samplesShown: 0,
       frequencyResponse: 0,
+      pitchResponse: 0,
+      scopedIndex: 0,
     },
     selectedSample: {
       index: 0,
@@ -43,7 +45,6 @@ export const store = new Vuex.Store({
       samples: [],
       startIndex: 0,
       endIndex: 0,
-      scopedIndex: 0,
     },
     transport: {
       ranges: [],
@@ -89,6 +90,9 @@ export const store = new Vuex.Store({
     primedSample: state => {
       return state.primedSample
     },
+    scopedIndex: state => {
+      return state.sequencer.scopedIndex
+    },
   },
   actions: {
     leftArrowClick({ state, commit, dispatch }, event) {
@@ -104,7 +108,7 @@ export const store = new Vuex.Store({
         dispatch('emitSelectedArea', {
           startIndex,
           endIndex,
-          scopedIndex: state.selectedArea.scopedIndex,
+          scopedIndex: state.sequencer.scopedIndex,
         })
       }
     },
@@ -121,7 +125,7 @@ export const store = new Vuex.Store({
         dispatch('emitSelectedArea', {
           startIndex,
           endIndex,
-          scopedIndex: state.selectedArea.scopedIndex,
+          scopedIndex: state.sequencer.scopedIndex,
         })
       }
     },
@@ -194,11 +198,10 @@ export const store = new Vuex.Store({
       const width = mouse.originalTarget.clientWidth
 
       const pos = (mouse.layerY - mouse.originalTarget.offsetTop) / height
-      const [pitchLo, pitchHi] = state.sequencer.frequencyResponse.map(frequencyToMIDIPitch)
+      const [pitchLo, pitchHi] = state.sequencer.pitchResponse
       const range = pitchHi - pitchLo
       const pitch = (range - pos * range) + pitchLo
       const freq = MIDIPitchToFrequency(pitch)
-      commit('UPDATE_PRIMED_SAMPLE_FREQUENCY', freq)
 
       const x = mouse.layerX - mouse.originalTarget.offsetLeft
       const position = x / width
@@ -206,6 +209,9 @@ export const store = new Vuex.Store({
       const index = state.selectedArea.startIndex + offsetIndex
 
       dispatch('selectSample', index)
+
+      commit('UPDATE_PRIMED_SAMPLE_INDEX', index)
+      commit('UPDATE_PRIMED_SAMPLE_FREQUENCY', freq)
     },
     selectSample({ state, commit }, index) {
       const startIndex = state.selectedArea.startIndex
@@ -231,8 +237,6 @@ export const store = new Vuex.Store({
       state.selectedSample.pitch = frequencyToPitch(sample.freq)
       state.selectedSample.index = index
       state.selectedSample.dateTime = sample.dateTime
-
-      state.primedSample.index = index
     },
     UPDATE_PRIMED_SAMPLE_FREQUENCY(state, freq) {
       state.primedSample = {
@@ -240,6 +244,9 @@ export const store = new Vuex.Store({
         pitch: frequencyToPitch(freq),
         index: state.selectedSample.index,
       }
+    },
+    UPDATE_PRIMED_SAMPLE_INDEX(state, index) {
+      state.primedSample.index = index
     },
     UPDATE_PRIMED_SAMPLE_DATE_TIME(state, dateTime) {
       state.primedSample.dateTime = dateTime
@@ -249,12 +256,13 @@ export const store = new Vuex.Store({
       state.primedSample.freq = pitchToFrequency(pitch)
     },
     UPDATE_SCOPED_INDEX(state, scopedIndex) {
-      state.selectedArea.scopedIndex = scopedIndex
+      state.sequencer.scopedIndex = scopedIndex
     },
     SOCKET_INITIALIZE_SEQUENCER(state, sequencer) {
       state.sequencer = {
         ...state.sequencer,
         ...sequencer,
+        pitchResponse: sequencer.frequencyResponse.map(frequencyToMIDIPitch),
       }
     },
     SOCKET_UPDATE_SELECTED_AREA(state, selectedArea) {

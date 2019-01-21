@@ -32,6 +32,7 @@ export default {
   }),
   computed: {
     ...mapGetters([
+      'scopedIndex',
       'selectedArea',
       'samplesShown',
       'selectedSample',
@@ -112,7 +113,7 @@ export default {
     },
     selectedArea: {
       handler(s) {
-        const index = this.selectedArea.scopedIndex + this.selectedArea.startIndex
+        const index = this.scopedIndex + this.selectedArea.startIndex
         this.selectSample(index)
 
         this.updateFrequencies()
