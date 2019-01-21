@@ -36,7 +36,6 @@ export default {
   methods: {
     ...mapActions([
       'mouseSelectArea',
-      'updateTransportWidth',
     ]),
     renewLayer: function(scope, layer) {
       if (layer != null) {
@@ -75,6 +74,7 @@ export default {
       this.height = document.getElementById('transport').clientHeight
 
       this.updateSelectedArea()
+      this.updateTransportWindow()
     }, 50),
   },
   watch: {
@@ -98,8 +98,6 @@ export default {
 
     this.width = document.getElementById('transport').clientWidth
     this.height = document.getElementById('transport').clientHeight
-
-    this.updateTransportWidth(this.width)
 
     this.scope = new this.paper.PaperScope()
     this.scope.setup('transport')

@@ -44,7 +44,6 @@ export default {
     ...mapActions([
       'selectSample',
       'mouseSelectSample',
-      'updateTransportWidth',
     ]),
     renewLayer: function(scope, layer) {
       if (layer != null) {
@@ -113,7 +112,6 @@ export default {
       this.updateFrequencies()
       this.updateSelectedSample()
       this.updatePrimedSample()
-      this.updateTransportWidth(this.width)
     }, 100),
   },
   watch: {

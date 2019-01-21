@@ -78,6 +78,7 @@ io.on('connect', (socket) => {
     scopedIndex: 0,
     samples: samples.slice(0, sequencer.samplesShown),
   })
+  io.emit('UPDATE_TRANSPORT_RANGES', rangesOfFrequencies(2000))
   io.emit('UPDATE_UPTIME', formatTime(process.uptime() + ""))
   console.log('connected')
 
@@ -116,11 +117,6 @@ io.on('connect', (socket) => {
       scopedIndex: data.scopedIndex,
       samples: samples.slice(data.startIndex, data.endIndex),
     })
-  })
-
-  socket.on('emitTransportRanges', (width) => {
-    console.log(width, 'width')
-    io.emit('UPDATE_TRANSPORT_RANGES', rangesOfFrequencies(width))
   })
 })
 

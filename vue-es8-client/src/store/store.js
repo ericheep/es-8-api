@@ -167,10 +167,6 @@ export const store = new Vuex.Store({
         commit('UPDATE_PRIMED_SAMPLE_PITCH', pitch)
       }
     },
-    updateTransportWidth({ state, commit, dispatch }, width) {
-      // commit('UPDATE_TT_WIDTH', width)
-      dispatch('emitTransportRanges', width)
-    },
     mouseSelectArea({ state, dispatch, commit }, mouse) {
       const width = mouse.originalTarget.clientWidth
       const scopedIndex = state.selectedSample.index - state.selectedArea.startIndex
@@ -221,9 +217,6 @@ export const store = new Vuex.Store({
     // socket actions
     emitSelectedArea({ state }, selectedArea) {
       this._vm.$socket.emit('emitSelectedArea', selectedArea)
-    },
-    emitTransportRanges({ state }, width) {
-      this._vm.$socket.emit('emitTransportRanges', width)
     },
     emitCommitPrimedSample({ state, commit }, dateTime) {
       commit('UPDATE_PRIMED_SAMPLE_DATE_TIME', dateTime)
