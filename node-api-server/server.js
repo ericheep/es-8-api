@@ -1,18 +1,11 @@
-const osc = require('osc')
 const http = require('http')
 const ipaddress = require('ip-address')
 const { formatTime, getRangesOfFrequencies, getInitialState } = require('./helpers')
+const { updateSample } = require('./osc')
 
 const server = http.createServer()
 const { sequencer, samples } = getInitialState()
 
-const udpPort = new osc.UDPPort({
-  localAddress: "localhost",
-  localPort: 10001,
-  metadata: true
-})
-
-udpPort.open();
 const allowedOrigins = "http://localhost:* http://127.0.0.1:*";
 
 const io = require('socket.io')(server, {
@@ -55,22 +48,6 @@ io.on('connect', (socket) => {
     io.emit('UPDATE_TRANSPORT_RANGES',
       getRangesOfFrequencies(samples.map((sample) => sample.freq), 760)
     )
-
-    /*
-    // send osc to ChucK
-    udpPort.send({
-      address: '/updateSample',
-      args: [
-        {
-          type: 'f',
-          value: data.freq,
-        },
-        {
-          type: 'i',
-          value: data.index,
-        }
-      ]
-    }, '127.0.0.1', 12345)*/
   })
 
   socket.on('emitSelectedArea', (data) => {
