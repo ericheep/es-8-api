@@ -9,7 +9,7 @@ const udpPort = new osc.UDPPort({
 udpPort.open()
 
 // send osc to ChucK
-function updateSample(data) {
+const updateSample = (data) => {
   udpPort.send({
     address: '/updateSample',
     args: [

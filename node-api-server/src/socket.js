@@ -1,9 +1,11 @@
-const { formatTime, getRangesOfFrequencies, getInitialState } = require('./helpers')
 const ipaddress = require('ip-address')
+
 const { updateSample } = require('./osc')
+const { formatTime, getRangesOfFrequencies, getInitialState } = require('./helpers')
+
 const { sequencer, samples } = getInitialState()
 
-function onConnection(io) {
+const onConnection = (io) => {
   io.on('connect', (socket) => {
     io.emit('INITIALIZE_SEQUENCER', sequencer)
     io.emit('UPDATE_SELECTED_AREA', {

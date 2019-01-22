@@ -1,4 +1,4 @@
-function formatTime(time) {
+const formatTime = (time) => {
   var sec_num = parseInt(time, 10)
   var hours   = Math.floor(sec_num / 3600)
   var minutes = Math.floor((sec_num - (hours * 3600)) / 60)
@@ -11,7 +11,7 @@ function formatTime(time) {
   return time
 }
 
-function getNullSamples(numSamples) {
+const getNullSamples = (numSamples) => {
   var samples = []
 
   for (var i = 0; i < numSamples; i++) {
@@ -25,7 +25,7 @@ function getNullSamples(numSamples) {
   return samples
 }
 
-function getInitialState() {
+const getInitialState = () => {
   return {
     samples: getNullSamples(44100),
     sequencer: {
@@ -36,7 +36,7 @@ function getInitialState() {
   }
 }
 
-function getRangesOfFrequencies(frequencies, width) {
+const getRangesOfFrequencies = (frequencies, width) => {
   const ranges = []
   const N = frequencies.length / width
 
