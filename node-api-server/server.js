@@ -1,6 +1,7 @@
 const osc = require('osc')
 const http = require('http')
 const ipaddress = require('ip-address')
+const { formatTime, getRangesOfFrequencies } = require('./helpers')
 
 const server = http.createServer()
 
@@ -35,38 +36,6 @@ for (var i = 0; i < numSamples; i++) {
   })
 }
 
-const formatTime = (time) => {
-  var sec_num = parseInt(time, 10);
-  var hours   = Math.floor(sec_num / 3600);
-  var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-  var seconds = sec_num - (hours * 3600) - (minutes * 60);
-
-  if (hours   < 10) {hours   = "0"+hours;}
-  if (minutes < 10) {minutes = "0"+minutes;}
-  if (seconds < 10) {seconds = "0"+seconds;}
-  var time    = hours+':'+minutes+':'+seconds;
-  return time;
-}
-
-const rangesOfFrequencies = (width) => {
-  const frequencies = samples.map((el) => el.freq)
-  const ranges = []
-  const N = frequencies.length / width
-
-  for (var i = 0; i < width; i++) {
-    const startIndex = Math.floor(i * N)
-    const endIndex = Math.floor((i + 1) * N)
-    const slice = frequencies.slice(startIndex, endIndex)
-
-    ranges.push([
-      Math.min.apply(null, slice.filter(Boolean)),
-      Math.max.apply(null, slice.filter(Boolean))]
-    )
-  }
-
-  return ranges
-}
-
 // 38hz to 24khz
 // frequency response of my Yamaha hs4s
 const sequencer = {
@@ -74,6 +43,8 @@ const sequencer = {
   samplesShown: 100,
   length: samples.length,
 }
+
+
 
 io.on('connect', (socket) => {
   io.emit('INITIALIZE_SEQUENCER', sequencer)
@@ -83,7 +54,9 @@ io.on('connect', (socket) => {
     scopedIndex: 0,
     samples: samples.slice(0, sequencer.samplesShown),
   })
-  io.emit('UPDATE_TRANSPORT_RANGES', rangesOfFrequencies(760))
+  io.emit('UPDATE_TRANSPORT_RANGES',
+    getRangesOfFrequencies(samples.map((sample) => sample.freq), 760)
+  )
   io.emit('UPDATE_UPTIME', formatTime(process.uptime() + ""))
   // const ipaddr = new ipaddress.Address6(socket.handshake.headers.origin)
   // console.log(ipaddr)
@@ -99,7 +72,9 @@ io.on('connect', (socket) => {
     }
 
     io.emit('UPDATE_COMMITTED_SAMPLE', data)
-    io.emit('UPDATE_TRANSPORT_RANGES', rangesOfFrequencies(760))
+    io.emit('UPDATE_TRANSPORT_RANGES',
+      getRangesOfFrequencies(samples.map((sample) => sample.freq), 760)
+    )
 
     /*
     // send osc to ChucK
