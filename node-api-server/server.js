@@ -1,9 +1,10 @@
 const osc = require('osc')
 const http = require('http')
 const ipaddress = require('ip-address')
-const { formatTime, getRangesOfFrequencies } = require('./helpers')
+const { formatTime, getRangesOfFrequencies, getInitialState } = require('./helpers')
 
 const server = http.createServer()
+const { sequencer, samples } = getInitialState()
 
 const udpPort = new osc.UDPPort({
   localAddress: "localhost",
@@ -24,27 +25,6 @@ const io = require('socket.io')(server, {
   pingTimeout: 5000,
   cookie: false
 })
-
-var numSamples = 44100;
-var samples = []
-
-for (var i = 0; i < numSamples; i++) {
-  samples.push({
-    index: i,
-    freq: null,
-    dateTime: null,
-  })
-}
-
-// 38hz to 24khz
-// frequency response of my Yamaha hs4s
-const sequencer = {
-  frequencyResponse: [38.0, 24000.0],
-  samplesShown: 100,
-  length: samples.length,
-}
-
-
 
 io.on('connect', (socket) => {
   io.emit('INITIALIZE_SEQUENCER', sequencer)

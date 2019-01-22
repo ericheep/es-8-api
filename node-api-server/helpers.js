@@ -11,6 +11,31 @@ function formatTime(time) {
   return time
 }
 
+function getNullSamples(numSamples) {
+  var samples = []
+
+  for (var i = 0; i < numSamples; i++) {
+    samples.push({
+      index: i,
+      freq: null,
+      dateTime: null,
+    })
+  }
+
+  return samples
+}
+
+function getInitialState() {
+  return {
+    samples: getNullSamples(44100),
+    sequencer: {
+      frequencyResponse: [38, 24000.0],
+      samplesShown: 100,
+      length: 44100,
+    },
+  }
+}
+
 function getRangesOfFrequencies(frequencies, width) {
   const ranges = []
   const N = frequencies.length / width
@@ -31,3 +56,4 @@ function getRangesOfFrequencies(frequencies, width) {
 
 module.exports.formatTime = formatTime
 module.exports.getRangesOfFrequencies = getRangesOfFrequencies
+module.exports.getInitialState = getInitialState
