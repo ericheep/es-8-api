@@ -32,12 +32,15 @@ const checkIpAddress = (socket) => {
   return ipAddresses.includes(ipaddr)
 }
 
+const getTransportRanges = () => {
+  const frequencies = samples.map((sample) => sample.freq)
+  return getRangesOfFrequencies(frequencies, sequencer.width)
+}
+
 const initializeClient = (socket) => {
   socket.emit('INITIALIZE_SEQUENCER', sequencer)
   socket.emit('UPDATE_SELECTED_AREA', initialSelectedArea)
-  socket.emit('UPDATE_TRANSPORT_RANGES',
-    getRangesOfFrequencies(samples.map((sample) => sample.freq), 760)
-  )
+  socket.emit('UPDATE_TRANSPORT_RANGES', getTransportRanges())
   socket.emit('UPDATE_UPTIME', formatTime(process.uptime() + ""))
   socket.emit('UPDATE_COMMIT_ALLOWED', !checkIpAddress(socket))
 }
@@ -47,10 +50,9 @@ const onConnection = (io) => {
     initializeClient(socket)
 
     socket.on('emitCommitPrimedSample', (data) => {
+      updateSample(data)
       io.emit('UPDATE_COMMITTED_SAMPLE', data)
-      io.emit('UPDATE_TRANSPORT_RANGES',
-        getRangesOfFrequencies(samples.map((sample) => sample.freq), 760)
-      )
+      socket.emit('UPDATE_TRANSPORT_RANGES', getTransportRanges())
       storeIpAddress(socket)
       socket.emit('UPDATE_COMMIT_ALLOWED', !checkIpAddress(socket))
     })

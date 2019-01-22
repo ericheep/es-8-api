@@ -32,6 +32,7 @@ const getInitialState = () => {
       frequencyResponse: [38, 24000.0],
       samplesShown: 100,
       length: 44100,
+      width: 760,
     },
   }
 }
