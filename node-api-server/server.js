@@ -31,8 +31,8 @@ io.on('connect', (socket) => {
     getRangesOfFrequencies(samples.map((sample) => sample.freq), 760)
   )
   io.emit('UPDATE_UPTIME', formatTime(process.uptime() + ""))
-  // const ipaddr = new ipaddress.Address6(socket.handshake.headers.origin)
-  // console.log(ipaddr)
+  const ipaddr = new ipaddress.Address4(socket.request.connection.remoteAddress)
+  console.log(ipaddr)
 
   socket.on('emitCommitPrimedSample', (data) => {
     const index = samples.findIndex((sample) => sample.index == data.index)
@@ -51,7 +51,7 @@ io.on('connect', (socket) => {
   })
 
   socket.on('emitSelectedArea', (data) => {
-    io.emit('UPDATE_SELECTED_AREA', {
+    socket.emit('UPDATE_SELECTED_AREA', {
       startIndex: data.startIndex,
       endIndex: data.endIndex,
       samples: samples.slice(data.startIndex, data.endIndex),
@@ -59,4 +59,4 @@ io.on('connect', (socket) => {
   })
 })
 
-server.listen(3000)
+server.listen(3000, '0.0.0.0')
