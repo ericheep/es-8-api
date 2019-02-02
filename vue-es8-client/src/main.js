@@ -6,7 +6,7 @@ import io from 'socket.io-client'
 import { store } from './store/store'
 
 Vue.config.productionTip = false
-Vue.use(VueSocketio, io('http://localhost:3000'), { store })
+Vue.use(VueSocketio, io('http://es-8-server.ericheep.com'), { store })
 Vue.use(VueYoutube)
 
 new Vue({
