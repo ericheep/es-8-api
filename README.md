@@ -1,21 +1,13 @@
-# vue-es8-client
+# es8-client
 
-> A Vue.js project
+A Vue.js interface that allows for a user to make exactly one edit into a communal sequencer.
 
-## Build Setup
+After committing a change to the sequence the user's IP address will be banned from making any further changes.
 
-``` bash
-# install dependencies
-npm install
+The sequencer is in sync with a Raspberry Pi that is updating an analog synth at 44100 samples per second.
 
-# serve with hot reload at localhost:8080
-npm run dev
+	Vue App <-> Node API Server -> RPi <-> ES-8 DAC/ADC <-> Dixie II
+	                            |
+	Vue App <-> YouTube Live <- /
 
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+[ChucK code](https://github.com/ericheep/eri-Ck/tree/master/es-8)
