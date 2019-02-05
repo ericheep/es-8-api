@@ -1,9 +1,21 @@
-ES-8-API
---------
+# vue-es8-client
 
-A Vue.js interface that allows for a user to make a single change to a sequencer which is controlling an analog synth which that is looping through 44100 pitches/frequencies each second.
+> A Vue.js project
 
-After committing a change to the sequence the user's IP will then be banned from making any further changes.
+## Build Setup
 
-	Vue App <-> Node API Server -> ChucK OSC Script -> ES-8 DAC/ADC -> Dixie II
+``` bash
+# install dependencies
+npm install
 
+# serve with hot reload at localhost:8080
+npm run dev
+
+# build for production with minification
+npm run build
+
+# build for production and view the bundle analyzer report
+npm run build --report
+```
+
+For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
