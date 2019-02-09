@@ -10,7 +10,7 @@
       Edits: 14
     </div>
     <div>
-      Centroid: 440.0hz, A4 +00
+      Average: add freq
     </div>
     <div>
       Server Uptime: {{ uptime }}
