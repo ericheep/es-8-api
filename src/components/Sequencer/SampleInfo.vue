@@ -19,8 +19,8 @@ export default {
   methods: {
     formatSampleInfo() {
       if (this.selectedSample.frequency !== null) {
-        return 'Modified by ' +
-        this.selectedSample.ipv4Address +
+        return 'Modified from ' +
+        this.selectedSample.origin +
         ' on ' +
         format(this.selectedSample.time, 'dddd, MMMM Do YYYY, h:mm:ss A') +
         ' to ' +

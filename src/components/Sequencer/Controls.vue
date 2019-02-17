@@ -105,7 +105,6 @@ export default {
   watch: {
     primedSampleFrequency: {
       handler(s) {
-        console.log('primedSampleFrequency')
         this.pitchInput = this.primedSample.pitch.pitchClass
         this.octaveInput = this.primedSample.pitch.octave
         this.centsInput = Math.round(this.primedSample.pitch.cents)

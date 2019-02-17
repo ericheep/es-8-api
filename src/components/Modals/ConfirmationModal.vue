@@ -62,7 +62,7 @@ export default {
       return formatPitchAndFrequency(this.primedSample)
     },
     commit() {
-      this.emitCommitPrimedSample(this.dateTime())
+      this.emitCommitPrimedSample()
       this.$emit('close')
     },
     close() {

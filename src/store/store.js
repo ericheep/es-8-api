@@ -230,7 +230,7 @@ export const store = new Vuex.Store({
     },
     emitCommitPrimedSample({ state, commit }) {
       const params = {
-        primedSample: state.primedSample,
+        sample: state.primedSample,
         selectedArea: state.selectedArea,
       }
 
@@ -247,12 +247,14 @@ export const store = new Vuex.Store({
         state.selectedSample.index = index
         state.selectedSample.time = sample.time
         state.selectedSample.ipv4Address = sample.ipv4Address
+        state.selectedSample.origin = sample.origin
       } else {
         state.selectedSample.frequency = null
         state.selectedSample.pitch = null
         state.selectedSample.index = null
         state.selectedSample.time = null
         state.selectedSample.ipv4Address = null
+        state.selectedSample.origin = null
       }
     },
     UPDATE_PRIMED_SAMPLE_FREQUENCY(state, frequency) {
@@ -284,22 +286,6 @@ export const store = new Vuex.Store({
     },
     SOCKET_UPDATE_TRANSPORT_RANGES(state, ranges) {
       state.transport.ranges = ranges
-    },
-    SOCKET_UPDATE_COMMITTED_SAMPLE(state, sample) {
-      const samples = state.selectedArea.samples
-      const index = samples.findIndex((s) => s.index === sample.index)
-
-      samples[index] = {
-        frequency: sample.frequency,
-        index: sample.index,
-        comment: sample.comment,
-      }
-
-      state.selectedArea = {
-        samples: samples,
-        startIndex: state.selectedArea.startIndex,
-        endIndex: state.selectedArea.endIndex,
-      }
     },
     SOCKET_CONNECT(state) {
       state.isConnected = true
