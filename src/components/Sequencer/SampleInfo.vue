@@ -18,7 +18,9 @@ export default {
   methods: {
     formatSampleInfo() {
       if (this.selectedSample.frequency !== null) {
-        return 'Modified by 127.0.0.1 on ' +
+        return 'Modified by ' +
+        this.selectedSample.ipv4Address +
+        ' on ' +
         this.selectedSample.dateTime +
         ' ' +
         formatPitchAndFrequency(this.selectedSample)

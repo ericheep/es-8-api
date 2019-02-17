@@ -10,8 +10,7 @@
         <slot name="body">
         Are you sure that you want to set sample at index {{ selectedSample.index }}
         {{ formatSelectedPitchAndFrequency() }}  to
-        {{ formatPrimedPitchAndFrequency() }}
-        on {{ dateTime() }} from XXX.XXX.XXX.XXX?
+        {{ formatPrimedPitchAndFrequency() }}?
         </slot>
       </section>
       <footer class="modal-footer">
@@ -38,7 +37,6 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import format from 'date-fns/format'
 import { formatPitchAndFrequency } from '../../helpers'
 
 export default {
@@ -62,9 +60,6 @@ export default {
     },
     formatPrimedPitchAndFrequency() {
       return formatPitchAndFrequency(this.primedSample)
-    },
-    dateTime() {
-      return format(new Date(), 'dddd, MMMM Do YYYY, h:mm:ss A')
     },
     commit() {
       this.emitCommitPrimedSample(this.dateTime())
