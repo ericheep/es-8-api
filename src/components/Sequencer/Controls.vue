@@ -15,7 +15,7 @@
         </div>
         <div class="flex-column">
           <div>
-            Sample: {{ selectedSample.index }}
+            Index: {{ primedSample.index }}
           </div>
           <div>
             Selected Range: {{ selectedAreaStartIndex }} - {{ selectedAreaEndIndex }}
@@ -100,7 +100,7 @@ export default {
     },
     closeConfirmationModal() {
       this.isModalVisible = false
-    }
+    },
   },
   watch: {
     primedSampleFrequency: {
