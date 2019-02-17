@@ -1,6 +1,6 @@
 <template>
   <div>
-    <canvas @click='mouseSelectSample' id='editor'></canvas>
+    <canvas @click='mouseSelect' id='editor'></canvas>
   </div>
 </template>
 
@@ -8,8 +8,8 @@
 import { mapGetters, mapActions } from 'vuex'
 import drawEditorWindow from '../../paper/drawEditorWindow.js'
 import drawFrequencies from '../../paper/drawFrequencies.js'
-import drawSelectedSample from '../../paper/drawSelectedSample.js'
 import drawPrimedSample from '../../paper/drawPrimedSample.js'
+import drawSelectedIndex from '../../paper/drawSelectedIndex.js'
 
 export default {
   name: 'Editor',
@@ -23,16 +23,13 @@ export default {
   },
   data: () => ({
     scope: null,
-    frequenciesLayer: null,
-    editorWindowLayer: null,
-    selectedSampleLayer: null,
-    primedSampleLayer: null,
     width: null,
     height: null,
   }),
   computed: {
     ...mapGetters([
-      'scopedIndex',
+      'config',
+      'mouseIndex',
       'selectedArea',
       'samplesShown',
       'selectedSample',
@@ -43,7 +40,7 @@ export default {
   methods: {
     ...mapActions([
       'selectSample',
-      'mouseSelectSample',
+      'mouseSelect',
     ]),
     renewLayer: function(scope, layer) {
       if (layer != null) {
@@ -76,18 +73,18 @@ export default {
 
       drawEditorWindow(params, this.scope)
     },
-    updateSelectedSample: function() {
+    updateSelectedIndex: function() {
       this.scope.activate()
-      this.selectedSampleLayer = this.renewLayer(this.scope, this.selectedSampleLayer)
+      this.mouseIndexLayer = this.renewLayer(this.scope, this.mouseIndexLayer)
 
       const params = {
-        selectedSample: this.selectedSample,
-        selectedArea: this.selectedArea,
+        mouseIndex: this.mouseIndex,
+        samplesShown: this.samplesShown,
         width: this.width,
         height: this.height,
       }
 
-      drawSelectedSample(params, this.scope)
+      drawSelectedIndex(params, this.scope)
     },
     updatePrimedSample: function() {
       this.scope.activate()
@@ -96,10 +93,10 @@ export default {
       const params = {
         primedSample: this.primedSample,
         pitchResponse: this.pitchResponse,
-        selectedArea: this.selectedArea,
-        scopedIndex: this.scopedIndex,
+        mouseIndex: this.mouseIndex,
         width: this.width,
         height: this.height,
+        samplesShown: this.samplesShown,
       }
 
       drawPrimedSample(params, this.scope)
@@ -115,20 +112,26 @@ export default {
       handler(s) {
         this.updateFrequencies()
 
-        const index = this.scopedIndex + this.selectedArea.startIndex
+        const index = this.mouseIndex + this.selectedArea.startIndex
         this.selectSample(index)
       },
       deep: true
     },
     selectedSample: {
       handler(s) {
-        this.updateSelectedSample()
+        // this.updateSelectedSample()
       },
       deep: true
     },
     primedSample: {
       handler(s) {
         this.updatePrimedSample()
+      },
+      deep: true,
+    },
+    mouseIndex: {
+      handler(s) {
+        this.updateSelectedIndex()
       },
       deep: true,
     }

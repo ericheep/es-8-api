@@ -6,7 +6,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { formatPitchAndFreq } from '../../helpers'
+import { formatPitchAndFrequency } from '../../helpers'
 
 export default {
   name: 'SampleInfo',
@@ -17,11 +17,11 @@ export default {
   },
   methods: {
     formatSampleInfo() {
-      if (this.selectedSample.freq !== null) {
+      if (this.selectedSample.frequency !== null) {
         return 'Modified by 127.0.0.1 on ' +
         this.selectedSample.dateTime +
         ' ' +
-        formatPitchAndFreq(this.selectedSample)
+        formatPitchAndFrequency(this.selectedSample)
       } else {
         return 'Unmodified sample.'
       }

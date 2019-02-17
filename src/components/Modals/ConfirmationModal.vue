@@ -9,8 +9,8 @@
       <section class="modal-body">
         <slot name="body">
         Are you sure that you want to set sample at index {{ selectedSample.index }}
-        {{ formatSelectedPitchAndFreq() }}  to
-        {{ formatPrimedPitchAndFreq() }}
+        {{ formatSelectedPitchAndFrequency() }}  to
+        {{ formatPrimedPitchAndFrequency() }}
         on {{ dateTime() }} from XXX.XXX.XXX.XXX?
         </slot>
       </section>
@@ -39,7 +39,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import format from 'date-fns/format'
-import { formatPitchAndFreq } from '../../helpers'
+import { formatPitchAndFrequency } from '../../helpers'
 
 export default {
   name: 'ConfirmationModal',
@@ -53,15 +53,15 @@ export default {
     ...mapActions([
       'emitCommitPrimedSample',
     ]),
-    formatSelectedPitchAndFreq() {
-      if (this.selectedSample.freq) {
-        return 'from ' + formatPitchAndFreq(this.selectedSample)
+    formatSelectedPitchAndFrequency() {
+      if (this.selectedSample.frequency) {
+        return 'from ' + formatPitchAndFrequency(this.selectedSample)
       } else {
         return ''
       }
     },
-    formatPrimedPitchAndFreq() {
-      return formatPitchAndFreq(this.primedSample)
+    formatPrimedPitchAndFrequency() {
+      return formatPitchAndFrequency(this.primedSample)
     },
     dateTime() {
       return format(new Date(), 'dddd, MMMM Do YYYY, h:mm:ss A')

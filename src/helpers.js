@@ -1,5 +1,5 @@
-export const frequencyToMIDIPitch = (freq) => {
-  return 12 * Math.log(freq / 440.0) / Math.log(2) + 69
+export const frequencyToMIDIPitch = (frequency) => {
+  return 12 * Math.log(frequency / 440.0) / Math.log(2) + 69
 }
 
 export const MIDIPitchToFrequency = (pitch) => {
@@ -14,17 +14,17 @@ const formatPitch = (pitch) => {
   return pitch.pitchClass + pitch.octave + ' ' + cents
 }
 
-const formatFreq = (freq) => {
-  return freq.toFixed(2) + 'hz'
+const formatFrequency = (frequency) => {
+  return frequency.toFixed(2) + 'hz'
 }
 
-export const formatPitchAndFreq = (sample) => {
-  return formatPitch(sample.pitch) + ' (' + formatFreq(sample.freq) + ')'
+export const formatPitchAndFrequency = (sample) => {
+  return formatPitch(sample.pitch) + ' (' + formatFrequency(sample.frequency) + ')'
 }
 
-export const frequencyToPitch = (freq) => {
+export const frequencyToPitch = (frequency) => {
   const pitchClasses = ['A', 'Bb', 'B', 'C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab']
-  const MIDIpitch = frequencyToMIDIPitch(freq)
+  const MIDIpitch = frequencyToMIDIPitch(frequency)
   let cents = ((MIDIpitch % 1) * 100).toFixed(4)
   let pitchAdjust = 0
 

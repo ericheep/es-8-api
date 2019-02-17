@@ -12,9 +12,6 @@
     <div>
       Average: add freq
     </div>
-    <div>
-      Server Uptime: {{ uptime }}
-    </div>
   </div>
 </template>
 
@@ -25,7 +22,6 @@ export default {
   name: 'Footer',
   computed: {
     ...mapGetters([
-      'uptime',
     ]),
   },
 }

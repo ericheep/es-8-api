@@ -9,19 +9,16 @@ export const store = new Vuex.Store({
   strict: true,
   state: {
     isConnected: '',
-    server: {
-      uptime: '00:00:00',
-    },
-    sequencer: {
+    config: {
       length: 0,
       samplesShown: 0,
       frequencyResponse: 0,
       pitchResponse: 0,
-      scopedIndex: 0,
+      mouseIndex: 0,
     },
     selectedSample: {
       index: 0,
-      freq: 0,
+      frequency: 0,
       pitch: {
         pitchClass: '',
         octave: 0,
@@ -32,7 +29,7 @@ export const store = new Vuex.Store({
     },
     primedSample: {
       index: 0,
-      freq: 0,
+      frequency: 0,
       pitch: {
         pitchClass: '',
         octave: 0,
@@ -51,14 +48,14 @@ export const store = new Vuex.Store({
     },
   },
   getters: {
-    uptime: state => {
-      return state.server.uptime
+    config: state => {
+      return state.config
     },
     samplesShown: state => {
-      return state.sequencer.samplesShown
+      return state.config.samplesShown
     },
     sequenceLength: state => {
-      return state.sequencer.length
+      return state.config.length
     },
     selectedArea: state => {
       return state.selectedArea
@@ -79,13 +76,13 @@ export const store = new Vuex.Store({
       return state.transport.ranges
     },
     frequencyResponse: state => {
-      return state.sequencer.frequencyResponse
+      return state.config.frequencyResponse
     },
     pitchResponse: state => {
-      return state.sequencer.pitchResponse
+      return state.config.pitchResponse
     },
     primedSampleFrequency: state => {
-      return state.primedSample.freq
+      return state.primedSample.frequency
     },
     primedSamplePitch: state => {
       return state.primedSample.pitch
@@ -93,19 +90,19 @@ export const store = new Vuex.Store({
     primedSample: state => {
       return state.primedSample
     },
-    scopedIndex: state => {
-      return state.sequencer.scopedIndex
+    mouseIndex: state => {
+      return state.config.mouseIndex
     },
   },
   actions: {
     leftArrowClick({ state, commit, dispatch }, event) {
       if (state.selectedArea.startIndex !== 0) {
-        let startIndex = state.selectedArea.startIndex - state.sequencer.samplesShown
-        let endIndex = state.selectedArea.endIndex - state.sequencer.samplesShown
+        let startIndex = state.selectedArea.startIndex - state.config.samplesShown
+        let endIndex = state.selectedArea.endIndex - state.config.samplesShown
 
         if (startIndex <= 0) {
           startIndex = 0
-          endIndex = startIndex + state.sequencer.samplesShown
+          endIndex = startIndex + state.config.samplesShown
         }
 
         dispatch('emitSelectedArea', {
@@ -115,13 +112,13 @@ export const store = new Vuex.Store({
       }
     },
     rightArrowClick({ state, commit, dispatch }, event) {
-      if (state.selectedArea.endIndex !== state.sequencer.length) {
-        let startIndex = state.selectedArea.startIndex + state.sequencer.samplesShown
-        let endIndex = state.selectedArea.endIndex + state.sequencer.samplesShown
+      if (state.selectedArea.endIndex !== state.config.length) {
+        let startIndex = state.selectedArea.startIndex + state.config.samplesShown
+        let endIndex = state.selectedArea.endIndex + state.config.samplesShown
 
-        if (endIndex >= state.sequencer.length) {
-          startIndex = state.sequencer.length - state.sequencer.samplesShown
-          endIndex = state.sequencer.length
+        if (endIndex >= state.config.length) {
+          startIndex = state.config.length - state.config.samplesShown
+          endIndex = state.config.length
         }
 
         dispatch('emitSelectedArea', {
@@ -174,52 +171,56 @@ export const store = new Vuex.Store({
     },
     mouseSelectArea({ state, dispatch, commit }, mouse) {
       const width = mouse.originalTarget.clientWidth
-      const scopedIndex = state.selectedSample.index - state.selectedArea.startIndex
+      const mouseIndex = state.selectedSample.index - state.selectedArea.startIndex
 
       const x = mouse.layerX - mouse.originalTarget.offsetLeft
       const position = x / width
-      let middleIndex = Math.floor(position * state.sequencer.length)
-      let startIndex = middleIndex - Math.floor(state.sequencer.samplesShown / 2)
-      let endIndex = startIndex + state.sequencer.samplesShown
+      let middleIndex = Math.floor(position * state.config.length)
+      let startIndex = middleIndex - Math.floor(state.config.samplesShown / 2)
+      let endIndex = startIndex + state.config.samplesShown
 
       if (startIndex < 0) {
         startIndex = 0
-        endIndex = startIndex + state.sequencer.samplesShown
+        endIndex = startIndex + state.config.samplesShown
       }
 
-      if (endIndex >= state.sequencer.length) {
-        startIndex = state.sequencer.length - state.sequencer.samplesShown
-        endIndex = state.sequencer.length
+      if (endIndex >= state.config.length) {
+        startIndex = state.config.length - state.config.samplesShown
+        endIndex = state.config.length
       }
 
-      dispatch('emitSelectedArea', { startIndex, endIndex, scopedIndex })
+      dispatch('emitSelectedArea', { startIndex, endIndex, mouseIndex })
     },
-    mouseSelectSample({ dispatch, commit, state }, mouse) {
-      const height = mouse.originalTarget.clientHeight
+    mouseSelect({ dispatch, commit, state }, mouse) {
+      dispatch('mouseSelectIndex', mouse)
+      dispatch('mouseSelectFrequency', mouse)
+    },
+    mouseSelectIndex({ dispatch, commit, state }, mouse) {
       const width = mouse.originalTarget.clientWidth
-
-      const pos = (mouse.layerY - mouse.originalTarget.offsetTop) / height
-      const [pitchLo, pitchHi] = state.sequencer.pitchResponse
-      const range = pitchHi - pitchLo
-      const pitch = (range - pos * range) + pitchLo
-      const freq = MIDIPitchToFrequency(pitch)
-
       const x = mouse.layerX - mouse.originalTarget.offsetLeft
-      const position = x / width
-      const offsetIndex = Math.floor(position * state.sequencer.samplesShown)
-      const index = state.selectedArea.startIndex + offsetIndex
+      const xPosition = x / width
+      const mouseIndex = Math.floor(xPosition * state.config.samplesShown)
+
+      dispatch('updateMouseIndex', mouseIndex)
+
+      const index = mouseIndex + state.selectedArea.startIndex
+      commit('UPDATE_PRIMED_SAMPLE_INDEX', index)
 
       dispatch('selectSample', index)
-      dispatch('updateScopedIndex', index)
-
-      commit('UPDATE_PRIMED_SAMPLE_INDEX', index)
-      commit('UPDATE_PRIMED_SAMPLE_FREQUENCY', freq)
     },
-    updateScopedIndex({ state, commit }, index) {
-      const startIndex = state.selectedArea.startIndex
-      const scopedIndex = index - startIndex
+    mouseSelectFrequency({ dispatch, commit, state }, mouse) {
+      const height = mouse.originalTarget.clientHeight
+      const yPosition = (mouse.layerY - mouse.originalTarget.offsetTop) / height
 
-      commit('UPDATE_SCOPED_INDEX', scopedIndex)
+      const [pitchLo, pitchHi] = state.config.pitchResponse
+      const range = pitchHi - pitchLo
+      const pitch = (range - yPosition * range) + pitchLo
+      const frequency = MIDIPitchToFrequency(pitch)
+
+      commit('UPDATE_PRIMED_SAMPLE_FREQUENCY', frequency)
+    },
+    updateMouseIndex({ state, commit }, mouseIndex) {
+      commit('UPDATE_MOUSE_INDEX', mouseIndex)
     },
     selectSample({ state, commit }, index) {
       commit('UPDATE_SELECTED_SAMPLE', index)
@@ -237,53 +238,55 @@ export const store = new Vuex.Store({
     UPDATE_SELECTED_SAMPLE(state, index) {
       const sample = state.selectedArea.samples.find((el) => el.index === index)
 
-      state.selectedSample.freq = sample.freq
-      state.selectedSample.pitch = frequencyToPitch(sample.freq)
-      state.selectedSample.index = index
-      state.selectedSample.dateTime = sample.dateTime
+      if (sample) {
+        state.selectedSample.frequency = sample.frequency
+        state.selectedSample.pitch = frequencyToPitch(sample.frequency)
+        state.selectedSample.index = index
+        state.selectedSample.dateTime = sample.dateTime
+      } else {
+        state.selectedSample.frequency = null
+        state.selectedSample.pitch = null
+        state.selectedSample.index = null
+        state.selectedSample.dateTime = null
+      }
     },
-    UPDATE_PRIMED_SAMPLE_FREQUENCY(state, freq) {
+    UPDATE_PRIMED_SAMPLE_FREQUENCY(state, frequency) {
       state.primedSample = {
-        freq: freq,
-        pitch: frequencyToPitch(freq),
-        index: state.selectedSample.index,
+        ...state.primedSample,
+        frequency: frequency,
+        pitch: frequencyToPitch(frequency),
       }
     },
     UPDATE_PRIMED_SAMPLE_INDEX(state, index) {
       state.primedSample.index = index
     },
-    UPDATE_PRIMED_SAMPLE_DATE_TIME(state, dateTime) {
-      state.primedSample.dateTime = dateTime
-    },
     UPDATE_PRIMED_SAMPLE_PITCH(state, pitch) {
       state.primedSample.pitch = pitch
-      state.primedSample.freq = pitchToFrequency(pitch)
+      state.primedSample.frequency = pitchToFrequency(pitch)
     },
-    UPDATE_SCOPED_INDEX(state, scopedIndex) {
-      state.sequencer.scopedIndex = scopedIndex
+    UPDATE_MOUSE_INDEX(state, mouseIndex) {
+      state.config.mouseIndex = mouseIndex
     },
-    SOCKET_INITIALIZE_SEQUENCER(state, sequencer) {
-      state.sequencer = {
-        ...state.sequencer,
-        ...sequencer,
-        pitchResponse: sequencer.frequencyResponse.map(frequencyToMIDIPitch),
+    SOCKET_INITIALIZE_CONFIG(state, config) {
+      state.config = {
+        ...state.config,
+        ...config,
+        pitchResponse: config.frequencyResponse.map(frequencyToMIDIPitch),
       }
     },
     SOCKET_UPDATE_SELECTED_AREA(state, selectedArea) {
       state.selectedArea = selectedArea
+      console.log(selectedArea)
     },
     SOCKET_UPDATE_TRANSPORT_RANGES(state, ranges) {
       state.transport.ranges = ranges
-    },
-    SOCKET_UPDATE_UPTIME(state, uptime) {
-      state.server.uptime = uptime
     },
     SOCKET_UPDATE_COMMITTED_SAMPLE(state, sample) {
       const samples = state.selectedArea.samples
       const index = samples.findIndex((s) => s.index === sample.index)
 
       samples[index] = {
-        freq: sample.freq,
+        frequency: sample.frequency,
         index: sample.index,
         dateTime: sample.dateTime,
         comment: sample.comment,
