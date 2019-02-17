@@ -171,7 +171,6 @@ export const store = new Vuex.Store({
     },
     mouseSelectArea({ state, dispatch, commit }, mouse) {
       const width = mouse.originalTarget.clientWidth
-      const mouseIndex = state.selectedSample.index - state.selectedArea.startIndex
 
       const x = mouse.layerX - mouse.originalTarget.offsetLeft
       const position = x / width
@@ -189,7 +188,7 @@ export const store = new Vuex.Store({
         endIndex = state.config.length
       }
 
-      dispatch('emitSelectedArea', { startIndex, endIndex, mouseIndex })
+      dispatch('emitSelectedArea', { startIndex, endIndex })
     },
     mouseSelect({ dispatch, commit, state }, mouse) {
       dispatch('mouseSelectIndex', mouse)
@@ -276,7 +275,6 @@ export const store = new Vuex.Store({
     },
     SOCKET_UPDATE_SELECTED_AREA(state, selectedArea) {
       state.selectedArea = selectedArea
-      console.log(selectedArea)
     },
     SOCKET_UPDATE_TRANSPORT_RANGES(state, ranges) {
       state.transport.ranges = ranges

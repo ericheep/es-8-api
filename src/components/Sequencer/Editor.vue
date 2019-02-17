@@ -57,6 +57,7 @@ export default {
         pitchResponse: this.pitchResponse,
         width: this.width,
         height: this.height,
+        samplesShown: this.samplesShown,
       }
 
       drawFrequencies(params, this.scope)
