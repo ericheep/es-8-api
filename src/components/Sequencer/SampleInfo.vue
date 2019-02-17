@@ -6,6 +6,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import format from 'date-fns/format'
 import { formatPitchAndFrequency } from '../../helpers'
 
 export default {
@@ -21,8 +22,8 @@ export default {
         return 'Modified by ' +
         this.selectedSample.ipv4Address +
         ' on ' +
-        this.selectedSample.dateTime +
-        ' ' +
+        format(this.selectedSample.time, 'dddd, MMMM Do YYYY, h:mm:ss A') +
+        ' to ' +
         formatPitchAndFrequency(this.selectedSample)
       } else {
         return 'Unmodified sample.'
