@@ -8,9 +8,14 @@
       </header>
       <section class="modal-body">
         <slot name="body">
-        Are you sure that you want to set sample at index {{ selectedSample.index }}
-        {{ formatSelectedPitchAndFrequency() }}  to
-        {{ formatPrimedPitchAndFrequency() }}?
+          <p>
+            Are you sure that you want to set sample at index {{ primedSample.index }}
+            {{ formatSelectedPitchAndFrequency() }}  to
+            {{ formatPrimedPitchAndFrequency() }}?
+          </p>
+          <p>
+            I mean, it's not a big deal, I'm just double checking.
+          </p>
         </slot>
       </section>
       <footer class="modal-footer">
