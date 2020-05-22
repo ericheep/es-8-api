@@ -105,12 +105,12 @@ export default {
   },
   watch: {
     samplesShown: {
-      handler(s) {
+      handler() {
         this.updateEditorWindow()
       }
     },
     selectedArea: {
-      handler(s) {
+      handler() {
         this.updateFrequencies()
 
         const index = this.mouseIndex + this.selectedArea.startIndex
@@ -119,19 +119,19 @@ export default {
       deep: true
     },
     selectedSample: {
-      handler(s) {
+      handler() {
         // this.updateSelectedSample()
       },
       deep: true
     },
     primedSample: {
-      handler(s) {
+      handler() {
         this.updatePrimedSample()
       },
       deep: true,
     },
     mouseIndex: {
-      handler(s) {
+      handler() {
         this.updateSelectedIndex()
       },
       deep: true,

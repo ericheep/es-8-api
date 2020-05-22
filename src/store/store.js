@@ -95,7 +95,7 @@ export const store = new Vuex.Store({
     },
   },
   actions: {
-    leftArrowClick({ state, commit, dispatch }, event) {
+    leftArrowClick({ state, dispatch }) {
       if (state.selectedArea.startIndex !== 0) {
         let startIndex = state.selectedArea.startIndex - state.config.samplesShown
         let endIndex = state.selectedArea.endIndex - state.config.samplesShown
@@ -111,7 +111,7 @@ export const store = new Vuex.Store({
         })
       }
     },
-    rightArrowClick({ state, commit, dispatch }, event) {
+    rightArrowClick({ state, dispatch }) {
       if (state.selectedArea.endIndex !== state.config.length) {
         let startIndex = state.selectedArea.startIndex + state.config.samplesShown
         let endIndex = state.selectedArea.endIndex + state.config.samplesShown
@@ -127,13 +127,13 @@ export const store = new Vuex.Store({
         })
       }
     },
-    updatePrimedSampleFrequency({ state, commit }, event) {
+    updatePrimedSampleFrequency({ commit }, event) {
       const isValid = RegExp(/^-?\d+\.?\d*$/).test(event.target.value)
       if (isValid) {
         commit('UPDATE_PRIMED_SAMPLE_FREQUENCY', parseFloat(event.target.value))
       }
     },
-    updatePrimedSamplePitch({ state, commit }, pitch) {
+    updatePrimedSamplePitch({ commit }, pitch) {
       commit('UPDATE_PRIMED_SAMPLE_PITCH', pitch)
     },
     updatePrimedSamplePitchClass({ state, commit }, event) {
@@ -169,7 +169,7 @@ export const store = new Vuex.Store({
         commit('UPDATE_PRIMED_SAMPLE_PITCH', pitch)
       }
     },
-    mouseSelectArea({ state, dispatch, commit }, mouse) {
+    mouseSelectArea({ state, dispatch }, mouse) {
       const width = mouse.originalTarget.clientWidth
 
       const x = mouse.layerX - mouse.originalTarget.offsetLeft
@@ -190,7 +190,7 @@ export const store = new Vuex.Store({
 
       dispatch('emitSelectedArea', { startIndex, endIndex })
     },
-    mouseSelect({ dispatch, commit, state }, mouse) {
+    mouseSelect({ dispatch }, mouse) {
       dispatch('mouseSelectIndex', mouse)
       dispatch('mouseSelectFrequency', mouse)
     },
@@ -207,7 +207,7 @@ export const store = new Vuex.Store({
 
       dispatch('selectSample', index)
     },
-    mouseSelectFrequency({ dispatch, commit, state }, mouse) {
+    mouseSelectFrequency({ commit, state }, mouse) {
       const height = mouse.originalTarget.clientHeight
       const yPosition = (mouse.layerY - mouse.originalTarget.offsetTop) / height
 
@@ -218,17 +218,17 @@ export const store = new Vuex.Store({
 
       commit('UPDATE_PRIMED_SAMPLE_FREQUENCY', frequency)
     },
-    updateMouseIndex({ state, commit }, mouseIndex) {
+    updateMouseIndex({ commit }, mouseIndex) {
       commit('UPDATE_MOUSE_INDEX', mouseIndex)
     },
-    selectSample({ state, commit }, index) {
+    selectSample({ commit }, index) {
       commit('UPDATE_SELECTED_SAMPLE', index)
     },
     // socket actions
-    emitSelectedArea({ state }, selectedArea) {
+    emitSelectedArea(selectedArea) {
       this._vm.$socket.emit('emitSelectedArea', selectedArea)
     },
-    emitCommitPrimedSample({ state, commit }) {
+    emitCommitPrimedSample({state}) {
       const params = {
         sample: state.primedSample,
         selectedArea: state.selectedArea,

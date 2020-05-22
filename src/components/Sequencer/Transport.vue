@@ -71,12 +71,12 @@ export default {
   },
   watch: {
     transportRanges: {
-      handler(f) {
+      handler() {
         this.updateTransportWindow()
       }
     },
     selectedArea: {
-      handler(selectedArea) {
+      handler() {
         this.updateSelectedArea()
       },
       deep: true
