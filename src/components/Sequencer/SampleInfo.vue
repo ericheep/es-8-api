@@ -21,7 +21,7 @@ export default {
       const sampleTime = parseISO(this.selectedSample.time)
       if (this.selectedSample.frequency !== null && isValid(sampleTime)) {
         return 'Modified from ' +
-          this.selectedSample.origin +
+          this.selectedSample.ipv4Address +
           ', ' +
           formatDistance(sampleTime, new Date()) +
           ' ago, to ' +

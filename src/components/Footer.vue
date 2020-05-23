@@ -10,7 +10,7 @@
       Edits: {{ edits }}
     </div>
     <div>
-      Average: add freq
+      Average: {{ averageFrequency.toFixed(3) }}
     </div>
   </div>
 </template>
@@ -23,6 +23,7 @@ export default {
   computed: {
     ...mapGetters([
       'edits',
+      'averageFrequency',
     ]),
   },
 }

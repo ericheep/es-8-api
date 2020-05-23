@@ -16,6 +16,7 @@ export const store = new Vuex.Store({
       pitchResponse: 0,
       mouseIndex: 0,
       edits: 0,
+      averageFrequency: 0,
     },
     selectedSample: {
       index: 0,
@@ -96,6 +97,9 @@ export const store = new Vuex.Store({
     },
     edits: state => {
       return state.config.edits
+    },
+    averageFrequency: state => {
+      return state.config.averageFrequency
     },
   },
   actions: {
@@ -294,6 +298,9 @@ export const store = new Vuex.Store({
     },
     SOCKET_UPDATE_EDITS(state, edits) {
       state.config.edits = edits
+    },
+    SOCKET_UPDATE_AVERAGE_FREQUENCY(state, averageFrequency) {
+      state.config.averageFrequency = averageFrequency
     },
     SOCKET_CONNECT(state) {
       state.isConnected = true
