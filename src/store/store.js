@@ -225,7 +225,8 @@ export const store = new Vuex.Store({
       commit('UPDATE_SELECTED_SAMPLE', index)
     },
     // socket actions
-    emitSelectedArea(selectedArea) {
+    emitSelectedArea(_, selectedArea) {
+      console.log(selectedArea)
       this._vm.$socket.client.emit('emitSelectedArea', selectedArea)
     },
     emitCommitPrimedSample({ state }) {
