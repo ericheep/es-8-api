@@ -104,14 +104,14 @@ export default {
   },
   watch: {
     primedSampleFrequency: {
-      handler(s) {
+      handler() {
         this.pitchInput = this.primedSample.pitch.pitchClass
         this.octaveInput = this.primedSample.pitch.octave
         this.centsInput = Math.round(this.primedSample.pitch.cents)
       }
     },
     primedSamplePitch: {
-      handler(s) {
+      handler() {
         this.frequencyInput = this.primedSample.frequency
       }
     },

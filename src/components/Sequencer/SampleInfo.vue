@@ -6,7 +6,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import format from 'date-fns/format'
+import { isValid, parseISO, formatDistance } from 'date-fns'
 import { formatPitchAndFrequency } from '../../helpers'
 
 export default {
@@ -18,13 +18,14 @@ export default {
   },
   methods: {
     formatSampleInfo() {
-      if (this.selectedSample.frequency !== null) {
+      const sampleTime = parseISO(this.selectedSample.time)
+      if (this.selectedSample.frequency !== null && isValid(sampleTime)) {
         return 'Modified from ' +
-        this.selectedSample.origin +
-        ' on ' +
-        format(this.selectedSample.time, 'dddd, MMMM Do YYYY, h:mm:ss A') +
-        ' to ' +
-        formatPitchAndFrequency(this.selectedSample)
+          this.selectedSample.origin +
+          ', ' +
+          formatDistance(sampleTime, new Date()) +
+          ' ago, to ' +
+          formatPitchAndFrequency(this.selectedSample)
       } else {
         return 'Unmodified sample.'
       }

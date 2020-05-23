@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+  <title>test</title>
     <Info/>
     <Sequencer/>
     <Footer/>
@@ -22,7 +23,6 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css?family=Inconsolata|Nova+Mono');
 html, body, #app {
   margin: 0px;
   border: none;

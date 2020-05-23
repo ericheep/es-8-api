@@ -1,19 +1,19 @@
 <template>
   <div id="info">
     <About/>
-    <YouTube/>
+    <!-- <YouTube/> -->
   </div>
 </template>
 
 <script>
 import About from './Info/About.vue'
-import YouTube from './Info/YouTube.vue'
+// import YouTube from './Info/YouTube.vue'
 
 export default {
   name: 'Info',
   components: {
     About,
-    YouTube,
+    // YouTube,
   },
 }
 </script>

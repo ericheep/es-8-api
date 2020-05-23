@@ -226,15 +226,15 @@ export const store = new Vuex.Store({
     },
     // socket actions
     emitSelectedArea(selectedArea) {
-      this._vm.$socket.emit('emitSelectedArea', selectedArea)
+      this._vm.$socket.client.emit('emitSelectedArea', selectedArea)
     },
-    emitCommitPrimedSample({state}) {
+    emitCommitPrimedSample({ state }) {
       const params = {
         sample: state.primedSample,
         selectedArea: state.selectedArea,
       }
 
-      this._vm.$socket.emit('emitCommitPrimedSample', params)
+      this._vm.$socket.client.emit('emitCommitPrimedSample', params)
     },
   },
   mutations: {
