@@ -7,7 +7,7 @@
       <a href="https://github.com/ericheep/es-8-api">code</a>
     </div>
     <div>
-      Edits: 14
+      Edits: {{ edits }}
     </div>
     <div>
       Average: add freq
@@ -22,6 +22,7 @@ export default {
   name: 'Footer',
   computed: {
     ...mapGetters([
+      'edits',
     ]),
   },
 }

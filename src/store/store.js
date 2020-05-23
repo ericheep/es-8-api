@@ -15,6 +15,7 @@ export const store = new Vuex.Store({
       frequencyResponse: 0,
       pitchResponse: 0,
       mouseIndex: 0,
+      edits: 0,
     },
     selectedSample: {
       index: 0,
@@ -92,6 +93,9 @@ export const store = new Vuex.Store({
     },
     mouseIndex: state => {
       return state.config.mouseIndex
+    },
+    edits: state => {
+      return state.config.edits
     },
   },
   actions: {
@@ -287,6 +291,9 @@ export const store = new Vuex.Store({
     },
     SOCKET_UPDATE_TRANSPORT_RANGES(state, ranges) {
       state.transport.ranges = ranges
+    },
+    SOCKET_UPDATE_EDITS(state, edits) {
+      state.config.edits = edits
     },
     SOCKET_CONNECT(state) {
       state.isConnected = true
