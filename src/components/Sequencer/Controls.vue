@@ -29,6 +29,8 @@
             <input
               v-model="frequencyInput"
               @input="updatePrimedSampleFrequency"
+              type="number"
+              step="0.0000000000000001"
               style="width:65px"
               placeholder="hz"
               >
@@ -184,5 +186,16 @@ button:hover {
   width: 40px;
   height: 100%;
   margin-right: 6px;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }
 </style>
