@@ -239,7 +239,10 @@ export const store = new Vuex.Store({
     emitCommitPrimedSample({ state }) {
       const params = {
         sample: state.primedSample,
-        selectedArea: state.selectedArea,
+        bounds: {
+          startIndex: state.selectedArea.startIndex,
+          endIndex: state.selectedArea.endIndex,
+        }
       }
 
       this._vm.$socket.client.emit('emitCommitPrimedSample', params)
@@ -290,17 +293,19 @@ export const store = new Vuex.Store({
       }
     },
     SOCKET_UPDATE_SELECTED_AREA(state, selectedArea) {
-      state.selectedArea = selectedArea
+      state.selectedArea = {
+        samples: selectedArea.samples,
+        startIndex: selectedArea.bounds.startIndex,
+        endIndex: selectedArea.bounds.endIndex,
+      }
       state.primedSample.index = state.selectedArea.startIndex + state.config.mouseIndex
     },
     SOCKET_UPDATE_TRANSPORT_RANGES(state, ranges) {
       state.transport.ranges = ranges
     },
-    SOCKET_UPDATE_EDITS(state, edits) {
-      state.config.edits = edits
-    },
-    SOCKET_UPDATE_AVERAGE_FREQUENCY(state, averageFrequency) {
-      state.config.averageFrequency = averageFrequency
+    SOCKET_UPDATE_STATS(state, stats) {
+      state.config.edits = stats.count
+      state.config.averageFrequency = stats.mean
     },
     SOCKET_CONNECT(state) {
       state.isConnected = true
