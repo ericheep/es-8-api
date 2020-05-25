@@ -37,6 +37,7 @@ export default {
   justify-content: space-between;
   width: 100%;
   font-size: 14px;
+  padding-top: 15px;
   padding-bottom: 15px;
 }
 </style>
