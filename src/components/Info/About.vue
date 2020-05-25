@@ -1,19 +1,13 @@
 <template>
   <div id="about">
-    <h1>
-      <b>hi</b>
-    </h1>
     <p>
-      Before you is an interface that controls a ChucK script on a Raspberry Pi, which in turn controls an Expert Sleepers ES-8 audio interface, which in turn controls an Intellijel Dixie 2. There is a loop that runs at a rate of once per second at a sample rate of 44100hz.
+      This is a sequencer that controls my analog synth. There is control loop that runs at a rate of once per second at a sample rate of 44100hz.
     </p>
     <p>
-      This interface allows you to modify one of those samples, One out of 44100; you can make fill in an empty slot or overwrite an existing sample. Once you do, your IP will be logged and you'll be unable to edit another (well, for most of you, those who know how to change your IP can run wild).
+      This interface allows you to modify one of those samples; just one, One out of 44100. You can fill in an empty slot or overwrite an existing slot. If you want that sample to be heard, I wouldn't choose below 38hz or above 15khz (but I suppose that's dependent on your hearing).
     </p>
     <p>
-      You can choose one, or go back to Facebook, or go outside, no judgement, this is a difficult time. We're doing our best. This is just art for the sake of nothing, it's late, I'm going to eat another quesadilla.
-    </p>
-    <p>
-      I didn't build a database for this, once the node script on the Pi gets reset it all goes away. So don't think too hard about this, we have enough to worry about.
+      Once you commit a sample, your IP will be logged and you'll be unable to edit another (well, for some of you, those of you who know how to change your IP can run wild).
     </p>
   </div>
 </template>
