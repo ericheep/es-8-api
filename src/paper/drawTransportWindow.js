@@ -9,17 +9,18 @@ export default ({ transportRanges, frequencyResponse, width, height }, paper) =>
   path.strokeColor = 'black'
   path.strokeWidth = 2
 
-  for (var i = 0; i < width; i++) {
-    const [rangeLo, rangeHi] = transportRanges[i]
-    if (rangeLo !== 0 && rangeHi !== 0) {
-      const [pitchRangeLo, pitchRangeHi] = [rangeLo, rangeHi].map(frequencyToMIDIPitch)
-      const ySize = Math.max((pitchRangeHi - pitchRangeLo) * scale, 1.0)
+  transportRanges.forEach(element => {
+    const rangeLo = element.min
+    const rangeHi = element.max
+    const index = element.transportGroup
 
-      const pitchRect = new paper.Path.Rectangle({
-        size: [1, ySize],
-        center: [i, height - ((pitchRangeHi + pitchRangeLo) * 0.5 - pitchLo) * scale],
-      })
-      pitchRect.fillColor = 'black'
-    }
-  }
+    const [pitchRangeLo, pitchRangeHi] = [rangeLo, rangeHi].map(frequencyToMIDIPitch)
+    const ySize = Math.max((pitchRangeHi - pitchRangeLo) * scale, 1.0)
+
+    const pitchRect = new paper.Path.Rectangle({
+      size: [1, ySize],
+      center: [index, height - ((pitchRangeHi + pitchRangeLo) * 0.5 - pitchLo) * scale],
+    })
+    pitchRect.fillColor = 'black'
+  })
 }
