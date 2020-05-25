@@ -1,6 +1,6 @@
 export default ({ selectedArea, sequenceLength, width, height }, paper) => {
   const selectedAreaDistance = (selectedArea.endIndex - selectedArea.startIndex)
-  const selectedAreaWidth = selectedAreaDistance / sequenceLength * width
+  const selectedAreaWidth = width / sequenceLength * selectedAreaDistance
   const centerIndex = (selectedArea.endIndex + selectedArea.startIndex) * 0.5
   const centerPixel = centerIndex / sequenceLength * width
 
