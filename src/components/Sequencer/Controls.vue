@@ -114,7 +114,7 @@ export default {
     },
     primedSamplePitch: {
       handler() {
-        this.frequencyInput = this.primedSample.frequency
+        this.frequencyInput = this.primedSample.frequency.toFixed(5)
       }
     },
   },
