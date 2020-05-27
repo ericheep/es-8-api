@@ -9,4 +9,5 @@ export default ({ selectedArea, sequenceLength, width, height }, paper) => {
     center: [centerPixel, height * 0.5],
   })
   selectedAreaRect.fillColor = 'pink'
+  selectedAreaRect.fillColor.alpha = 0.5
 }
