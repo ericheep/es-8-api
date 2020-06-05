@@ -299,7 +299,6 @@ export const store = new Vuex.Store({
         startIndex: selectedArea.bounds.startIndex,
         endIndex: selectedArea.bounds.endIndex,
       }
-      // state.primedSample.index = state.selectedArea.startIndex + state.config.mouseIndex
     },
     SOCKET_UPDATE_TRANSPORT_RANGES(state, ranges) {
       state.transport.ranges = ranges
