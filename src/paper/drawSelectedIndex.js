@@ -7,4 +7,6 @@ export default ({ mouseIndex, samplesShown, width, height }, paper) => {
     strokeWidth: 2,
   })
   selectedIndexRect.strokeColor = 'black'
+  selectedIndexRect.fillColor = 'black'
+  selectedIndexRect.fillColor.alpha = 0.05
 }

@@ -118,12 +118,6 @@ export default {
       },
       deep: true
     },
-    selectedSample: {
-      handler() {
-        // this.updateSelectedSample()
-      },
-      deep: true
-    },
     primedSample: {
       handler() {
         this.updatePrimedSample()
@@ -133,6 +127,7 @@ export default {
     mouseIndex: {
       handler() {
         this.updateSelectedIndex()
+        this.updatePrimedSample()
       },
       deep: true,
     }

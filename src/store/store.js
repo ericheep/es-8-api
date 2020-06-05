@@ -17,6 +17,7 @@ export const store = new Vuex.Store({
       mouseIndex: 0,
       edits: 0,
       averageFrequency: 0,
+      duration: 0,
     },
     selectedSample: {
       index: 0,
@@ -285,7 +286,7 @@ export const store = new Vuex.Store({
     UPDATE_MOUSE_INDEX(state, mouseIndex) {
       state.config.mouseIndex = mouseIndex
     },
-    SOCKET_INITIALIZE_CONFIG(state, config) {
+    SOCKET_UPDATE_CONFIG(state, config) {
       state.config = {
         ...state.config,
         ...config,
@@ -298,7 +299,7 @@ export const store = new Vuex.Store({
         startIndex: selectedArea.bounds.startIndex,
         endIndex: selectedArea.bounds.endIndex,
       }
-      state.primedSample.index = state.selectedArea.startIndex + state.config.mouseIndex
+      // state.primedSample.index = state.selectedArea.startIndex + state.config.mouseIndex
     },
     SOCKET_UPDATE_TRANSPORT_RANGES(state, ranges) {
       state.transport.ranges = ranges
@@ -306,6 +307,9 @@ export const store = new Vuex.Store({
     SOCKET_UPDATE_STATS(state, stats) {
       state.config.edits = stats.count
       state.config.averageFrequency = stats.mean
+    },
+    SOCKET_UPDATE_DURATION(state, params) {
+      state.config.duration = params.duration
     },
     SOCKET_CONNECT(state) {
       state.isConnected = true

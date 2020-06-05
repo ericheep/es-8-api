@@ -18,7 +18,7 @@
             Index: {{ primedSample.index }}
           </div>
           <div>
-            Selected Range: {{ selectedAreaStartIndex }} - {{ selectedAreaEndIndex }}
+            Selected Range: {{ startIndex }} - {{ endIndex }}
           </div>
         </div>
     </div>
@@ -73,12 +73,13 @@ export default {
     pitchInput: 0,
     octaveInput: 0,
     centsInput: 0,
+    startIndex: 0,
+    endIndex: 0,
     isModalVisible: false,
   }),
   computed: {
     ...mapGetters([
-      'selectedAreaStartIndex',
-      'selectedAreaEndIndex',
+      'selectedArea',
       'selectedSample',
       'primedSampleFrequency',
       'primedSamplePitch',
@@ -114,8 +115,17 @@ export default {
     },
     primedSamplePitch: {
       handler() {
-        this.frequencyInput = this.primedSample.frequency.toFixed(5)
+        this.frequencyInput = this.primedSample.frequency
       }
+    },
+    selectedArea: {
+      handler() {
+        this.startIndex = this.selectedArea.startIndex
+        this.endIndex = this.selectedArea.endIndex
+        console.log(this.selectedArea.startIndex)
+        console.log(this.selectedArea.endIndex)
+      },
+      deep: true,
     },
   },
 }

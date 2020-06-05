@@ -49,6 +49,7 @@ export default {
       const params = {
         transportRanges: this.transportRanges,
         frequencyResponse: this.frequencyResponse,
+        length: this.sequenceLength,
         width: this.width,
         height: this.height,
       }
