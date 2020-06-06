@@ -7,8 +7,8 @@ import { store } from './store/store'
 
 Vue.config.productionTip = false
 
-Vue.use(VueSocketio, io('http://127.0.0.1:8081'), { store })
-// Vue.use(VueSocketio, io('http://10.0.0.39:8081'), { store })
+// Vue.use(VueSocketio, io('http://127.0.0.1:8081'), { store })
+Vue.use(VueSocketio, io('http://174.56.50.77:8081'), { store })
 Vue.use(VueYoutube)
 
 new Vue({

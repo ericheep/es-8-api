@@ -122,8 +122,6 @@ export default {
       handler() {
         this.startIndex = this.selectedArea.startIndex
         this.endIndex = this.selectedArea.endIndex
-        console.log(this.selectedArea.startIndex)
-        console.log(this.selectedArea.endIndex)
       },
       deep: true,
     },

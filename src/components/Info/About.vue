@@ -1,23 +1,48 @@
 <template>
   <div id="about">
     <p>
-      This is a sequencer that controls my analog synth. There is control loop that runs at a rate of once per second at a sample rate of 44100hz.
+      This is a sequencer that controls my analog synth. There is control loop that plays each frequency back at a rate of {{ rate }} per frequency, for a total of {{ length }} frequencies.
     </p>
     <p>
-      This interface allows you to modify one of those samples; just one, One out of 44100. You can fill in an empty slot or overwrite an existing slot. You're free to choose any frequency, but if you want that sample to be heard I wouldn't choose below 38hz or above 15khz.
-    </p>
-    <p>
-      Once you commit a sample, your IP will be logged and you'll be unable to edit another (well, for some of you, hint hint).
-    </p>
-    <p>
-      It'd be cool if you could come over and hear it, but you know -- quarantine, sorry.
+      You can fill in an empty slot or overwrite an existing slot. You're free to choose any frequency, but if you want that frequency to be heard I wouldn't choose anything below 38hz or above 15khz.
     </p>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
+/* const formatFreq = ((freq) => { */
+/*   if (freq > 1000) { */
+
+/*   } */
+/* }) */
+
 export default {
   name: 'About',
+  data: () => ({
+    rate: 0,
+    length: 0,
+    loFreq: 0,
+    hiFreq: 0,
+  }),
+  computed: {
+    ...mapGetters([
+      'config',
+    ]),
+  },
+  watch: {
+    config: {
+      handler() {
+        this.length = this.config.length
+        this.rate = this.config.rate
+        this.loFreq = this.config.frequencyResponse[0]
+        this.hiFreq = this.config.frequencyResponse[1]
+
+      },
+      deep: true
+    }
+  }
 }
 </script>
 

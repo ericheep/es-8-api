@@ -10,6 +10,7 @@ export const store = new Vuex.Store({
   state: {
     isConnected: '',
     config: {
+      rate: 0,
       length: 0,
       samplesShown: 0,
       frequencyResponse: 0,
